@@ -1,0 +1,1300 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>3. Heuristic Search &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'topic3';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Introduction to the practical part of TAB2025" href="practice_intro.html" />
+    <link rel="prev" title="2. Simulated and Deterministic Annealing" href="topic2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2024
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">NP-Hardness and Graph Matching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Heuristic Search</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Heuristic Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_intro.html">4. Introduction to the practical part of TAB2025</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Ftopic3.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/topic3.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Heuristic Search</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rubik-s-cube">3.1. Rubik’s cube</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.2. Heuristic Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#search-tree">3.2.1. Search Tree</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heuristics">3.2.2. Heuristics</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#admissible-heuristics">3.2.2.1. Admissible heuristics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pruning-power">3.2.2.2. Pruning power</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-condition">3.2.3. Failure condition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pattern-databases">3.2.4. Pattern Databases</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-deepening">3.3. Iterative Deepening</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-strategies">3.3.1. Mixed Strategies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-iterative-deepening">3.3.2. DF Iterative Deepening</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast">3.3.3. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast-for-rubik">3.3.4. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> for Rubik</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learnable-heuristics">3.4. Learnable Heuristics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-oracles">3.4.1. Deep Oracles</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="heuristic-search">
+<h1><span class="section-number">3. </span>Heuristic Search<a class="headerlink" href="#heuristic-search" title="Permalink to this heading">#</a></h1>
+<section id="rubik-s-cube">
+<h2><span class="section-number">3.1. </span>Rubik’s cube<a class="headerlink" href="#rubik-s-cube" title="Permalink to this heading">#</a></h2>
+<p><strong>Motivation</strong>. Heuristic search was born to address combinatorial problems in terms of <span style="color:#f88146">state-space expansion</span>. This is clearly exemplified by the well known Rubik’s cube, with <span class="math notranslate nohighlight">\(3\times 3\)</span> colored stickers per face. Then, given the <strong>solved</strong> cube (left), someone <strong>scrambles</strong> it (right) by applying a sequence of rotations. We have six types of <span class="math notranslate nohighlight">\(90^{\circ}\)</span> clockwise rotations or <span style="color:#f88146">states</span> following the <a class="reference external" href="https://ruwix.com/the-rubiks-cube/notation/">standard notation</a>:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Clockwise</p></th>
+<th class="head"><p>Rotational Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>U</p></td>
+<td><p>Upper-horizontal block (top-to-left)</p></td>
+</tr>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>Down-horizontal block (front-to-right)</p></td>
+</tr>
+<tr class="row-even"><td><p>R</p></td>
+<td><p>Right-vertical block (front-to-top)</p></td>
+</tr>
+<tr class="row-odd"><td><p>L</p></td>
+<td><p>Left-vertical block (front-to-down)</p></td>
+</tr>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Front-face block (front-to-right)</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>Back-face block (back-to-left)</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Solved Cube</p></th>
+<th class="head"><p>Scrambled Cube</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img src="_images/RubikSol-removebg-preview.png" alt="Descripción de la imagen" width="400" height="400"></p></td>
+<td><p><img src="_images/Rubik-Scramble-removebg-preview2.png" alt="Descripción de la imagen" width="400" height="400"></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Permutations</strong>. Note that we have 3 types of move: horizontal, vertical and face (side) twist. In addition, if we rotate the upper block to the left, the opposite is to make the same rotation but <strong>counter-clockwise</strong>. Thus, we have six more rotations: U’, D’, R’, L’, F’ and B’. Thus, strictly speaking, we have <span class="math notranslate nohighlight">\(12\)</span> possible rotations to choose from any configuration. In the state-space language, <span style="color:#f88146">each state <strong>may span</strong> <span class="math notranslate nohighlight">\(n=12\)</span> states</span>.</p>
+<p>Mathematically each configuration can be considered as a sequence of <span class="math notranslate nohighlight">\(6\times 3\times 3 = 54\)</span> elements containing numbers from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(6\)</span>. <span style="color:#f88146"><em>How many permutations (with repetition) do we have?</em></span> Well, for <span class="math notranslate nohighlight">\(n=6\)</span> and <span class="math notranslate nohighlight">\(r=54\)</span> we have <span class="math notranslate nohighlight">\(n^r\approx 10^{42}\)</span>. However, the <a class="reference external" href="https://web.mit.edu/sp.268/www/rubik.pdf">symmetries of the problem</a> lead to the following reasoning:</p>
+<ul class="simple">
+<li><p><strong>Corners</strong>. There are <span class="math notranslate nohighlight">\(8\)</span> corners in the cube. Then, we have <span class="math notranslate nohighlight">\(n_{corners}=8!\)</span> corner arrangements.</p></li>
+<li><p><strong>Corners Orientations</strong>. Each corner arrangement may have <span class="math notranslate nohighlight">\(3\)</span> possible orientations (there are <span class="math notranslate nohighlight">\(3\)</span> colors that can face up). Then, we have <span class="math notranslate nohighlight">\(n_{CO}=3^{8}\)</span> possibilities per corner permutation.</p></li>
+<li><p><strong>Edges</strong>. There are <span class="math notranslate nohighlight">\((9-4=5-1=4)\times 3\)</span> non-corner and non-center pieces, called edges. These edges can be arranged in <span class="math notranslate nohighlight">\(n_{edges}=12!\)</span> ways.</p></li>
+<li><p><strong>Edges Orientations</strong>. Since each edge may have <span class="math notranslate nohighlight">\(2\)</span> orientations (colors), we have <span class="math notranslate nohighlight">\(n_{EO}=2^{12}\)</span>.</p></li>
+</ul>
+<p>The product rule of combinatorics leads to:</p>
+<div class="math notranslate nohighlight">
+\[
+n_{corners}\cdot n_{CO}\cdot n_{edges}\cdot n_{EO} = 8!\cdot 3^{8}\cdot 12!\cdot 2^{12}
+\]</div>
+<p>Analyzing a bit more the cube, we have that:</p>
+<ul class="simple">
+<li><p>Only <span class="math notranslate nohighlight">\(1/3\)</span> of the permutations have the correct orientations.</p></li>
+<li><p>Only <span class="math notranslate nohighlight">\(1/2\)</span> of the permutations have the same edge orientations.</p></li>
+<li><p>Only <span class="math notranslate nohighlight">\(1/2\)</span> of the latter permutations have the correct “parity” (a concept of <strong>group theory</strong>)</p></li>
+</ul>
+<p>Then, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{n_{corners}\cdot n_{CO}\cdot n_{edges}\cdot n_{EO}}{3\cdot 2\cdot 3} = 4.3253\cdot 10^{19}\;\text{moves}\;.
+\]</div>
+<p><strong>God’s number N</strong>. Given a scrambled cube, <em><span style="color:#f88146">What is the minimum number of steps to get back to the initial state?</em></span> Well, remember that we can perform <span class="math notranslate nohighlight">\(n=12\)</span> moves each time. However, given the first <span class="math notranslate nohighlight">\(12\)</span>, next time we can only do <span class="math notranslate nohighlight">\(11\)</span> (the other one undoes the first move). Then:</p>
+<div class="math notranslate nohighlight">
+\[
+12\cdot 11^{\mathbf{N}-1}\ge 4.3253\cdot 10^{19}\Rightarrow \mathbf{N} \ge 19\;.
+\]</div>
+<p>Actually, in 2013 <a class="reference external" href="https://tomas.rokicki.com/rubik20.pdf">Rokicki et al.</a> proved that the “diameter of the Rubik’s Cube is <span class="math notranslate nohighlight">\(\mathbf{N}=20\)</span>”, i.e. it can be solved in <span class="math notranslate nohighlight">\(20\)</span> moves or less.</p>
+<p>The sequence found for the above case is:</p>
+<p>R’ D L’ F R F’ D’ R’ D’ F’ U L’ U R R U R’ F D R’ D’ F D’ L F R F’ D F R’ F’ L’ R</p>
+<p>and it has <span class="math notranslate nohighlight">\(33\)</span> moves. How is it done? Answering this question leads to study the rudiments of <strong>heuristic search</strong> and a <strong>particular approach</strong> (called Iterative Deepening Search) for the Rubik’s Cube (RC in the following).</p>
+</section>
+<section id="id1">
+<h2><span class="section-number">3.2. </span>Heuristic Search<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<section id="search-tree">
+<h3><span class="section-number">3.2.1. </span>Search Tree<a class="headerlink" href="#search-tree" title="Permalink to this heading">#</a></h3>
+<p>Classical textbooks such as Pearl’s one <span style="color:#f88146">”Heuristics: Intelligent Search Strategies for Problem Solving”</span>, address Heuristic Search (HS) in terms of <em><span style="color:#f88146">expanding a search tree</span> from the <span style="color:#f88146">root</span> until the <span style="color:#f88146">target</span> is found</em>.</p>
+<ol class="arabic simple">
+<li><p><strong>Root</strong>. <ins>Initial state</ins> <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span>. For the RC, it can be any of the <span class="math notranslate nohighlight">\(4.3253\cdot 10^{19}\)</span> configurations corresponding to a scrambled RC.</p></li>
+<li><p><strong>Target</strong>. <ins>Final state</ins> <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>. Obviously, for the RC we have the configuration where all the faces have uniform color.</p></li>
+<li><p><strong>Expansion</strong>. Going from <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> is implemented by <ins>deploying a search tree</ins>, i.e. a graph. Such a deploying is performed acording o a given <strong>search strategy</strong>. One strategy is considered to be <ins>more intelligent than another</ins> if it founds the target minimizing the number of intermediate nodes <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> explored.</p></li>
+</ol>
+<p>The well-known <span class="math notranslate nohighlight">\(A^{\ast}\)</span> algorithm has the following features:</p>
+<ol class="arabic simple">
+<li><p>It holds a <strong>search border</strong> (the list OPEN) and a list of <strong>interior nodes</strong> (CLOSED).</p></li>
+<li><p>Aims to minimize a <strong>cost function</strong> <span class="math notranslate nohighlight">\(f(\mathbf{n})\)</span> for <span class="math notranslate nohighlight">\(\mathbf{n}\in \Omega\)</span> (the search space). The cost function is additive and accounts both for the <strong>best cost</strong> from <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> as well as <strong>approximated cost</strong> from <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>.</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{n}) = g(\mathbf{n}) + h(\mathbf{n})\;,
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> is the <span style="color:#f88146">cost of the current path</span> <span class="math notranslate nohighlight">\(\Gamma_{\mathbf{n}_0,\mathbf{n}}\)</span> from <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. Note that the graph is a tree, i.e. we only hold backpointers encoding the path with minimal cost from <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. Obviously, it satisfies <span class="math notranslate nohighlight">\(g(\mathbf{n}_0)=0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(h(\mathbf{n})\)</span> is an <span style="color:#f88146"><strong>estimation</strong> of the cost</span> from <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>. This function is the <span style="color:#f88146"><strong>heuristic</strong></span> and it satisfies <span class="math notranslate nohighlight">\(h(\mathbf{n}_F)=0\)</span>.</p></li>
+</ul>
+<div class="proof algorithm admonition" id="Astar">
+<p class="admonition-title"><span class="caption-number">Algorithm 3.1 </span> (General <span class="math notranslate nohighlight">\(A^{\ast}\)</span>)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Start node <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span><br />
+<strong>Output</strong> Target node <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> and path <span class="math notranslate nohighlight">\(\Gamma_{\mathbf{n}_0,\mathbf{n}_F}\)</span> or FAILURE.</p>
+<ol class="arabic">
+<li><p><span class="math notranslate nohighlight">\(\text{OPEN}\leftarrow \{\mathbf{n}_0\}\)</span>.</p></li>
+<li><p><strong>while</strong> <span class="math notranslate nohighlight">\(\text{OPEN}\neq\emptyset\)</span>:</p>
+<ol class="arabic">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{n}\leftarrow \arg\min_{\mathbf{n}\in \text{OPEN}}f(\mathbf{n})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{OPEN}\leftarrow \text{OPEN}-\{\mathbf{n}\}\)</span> // Remove from OPEN and put in CLOSE</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{CLOSE}\leftarrow \text{CLOSE}\cup\{\mathbf{n}\}\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathbf{n}=\mathbf{n}_F\)</span> <strong>return</strong> (<span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>,     <span class="math notranslate nohighlight">\(\Gamma_{\mathbf{n}_0,\mathbf{n}_F}\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\({\cal N}_{\mathbf{n}},\{\Gamma_{\mathbf{n}_0,\mathbf{n}'\in {\cal N}_{\mathbf{n}}}\}\leftarrow \text{EXPAND}(\mathbf{n})\)</span> // Generate neighbors and backpointers</p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\in {\cal N}_{\mathbf{n}}\)</span>:</p>
+<ol class="arabic">
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\not\in\text{OPEN}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{n}'\not\in\text{CLOSED}\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(f(\mathbf{n}')=g(\mathbf{n}') + h(\mathbf{n}')\)</span> with <span class="math notranslate nohighlight">\(g(\mathbf{n}') = g(\mathbf{n}) + c(\mathbf{n},\mathbf{n}')\)</span></p>
+</li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\in\text{OPEN}\)</span> or <span class="math notranslate nohighlight">\(\mathbf{n}'\in\text{CLOSED}\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(\Gamma_{\mathbf{n}_0,\mathbf{n}'}\leftarrow \text{REDIRECT}(\Gamma_{\mathbf{n}_0,\mathbf{n}'})\)</span></p>
+</li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\in\text{CLOSED}\)</span> and Reditect(<span class="math notranslate nohighlight">\(\mathbf{n}'\)</span>)=True:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\text{CLOSE}\leftarrow \text{CLOSE}-\{\mathbf{n}'\}\)</span> // Reopen</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{OPEN}\leftarrow \text{OPEN}\cup\{\mathbf{n}'\}\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>return</strong> FAILURE</p></li>
+</ol>
+</section>
+</div><p>In summary, <span class="math notranslate nohighlight">\(A^{\ast}\)</span> proceeds as follows:</p>
+<ol class="arabic simple">
+<li><p>It selects the best node <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> wrt <span class="math notranslate nohighlight">\(f(.)\)</span> in the border to <strong>expand</strong> it. Only when it is select it is moved to CLOSE, not when it is expanded!</p></li>
+<li><p>Expanding a node <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> means to <strong>create a neighborhood</strong> of states <span class="math notranslate nohighlight">\({\cal N}_{\mathbf{u}}\)</span>.</p></li>
+<li><p>The algorithm <strong>attends</strong> <span class="math notranslate nohighlight">\(\mathbf{n}\in{\cal N}_{\mathbf{u}}\)</span> to determine whether <span class="math notranslate nohighlight">\(f(.)\)</span> is needed and the backpointers that hold the minimal-cost path <span class="math notranslate nohighlight">\(\Gamma_{\mathbf{n}_0,\mathbf{n}'}\)</span> must be adjusted. Excepcionally we way re-open a node.</p></li>
+<li><p>The algorithm ends either when we find the target <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> or OPEN is empty.</p></li>
+</ol>
+<p>As example of application of <span class="math notranslate nohighlight">\(A^{\ast}\)</span> to the 8-puzzle problem (see next section) we have <a class="reference internal" href="#puzzle-man"><span class="std std-numref">Fig. 3.1</span></a></p>
+<figure class="align-center" id="puzzle-man">
+<a class="reference internal image-reference" href="_images/8-puzzle-tree-Man-removebg-preview.png"><img alt="_images/8-puzzle-tree-Man-removebg-preview.png" src="_images/8-puzzle-tree-Man-removebg-preview.png" style="width: 500px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">8-puzzle with Manhattan: Nodes: <span class="math notranslate nohighlight">\(271\)</span>, Expanded: <span class="math notranslate nohighlight">\(164\)</span></span><a class="headerlink" href="#puzzle-man" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>where almost <span class="math notranslate nohighlight">\(300\)</span> nodes are expanded, i.e. selected according to Step 2.1. The backpointers from <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> are shown in red and the intensity of the node is the value of the heuristic <span class="math notranslate nohighlight">\(h(\mathbf{n})\)</span> (the larger the higher) as we see in the next section.</p>
+</section>
+<section id="heuristics">
+<h3><span class="section-number">3.2.2. </span>Heuristics<a class="headerlink" href="#heuristics" title="Permalink to this heading">#</a></h3>
+<p>Let us give some details about how to build a basic heuristic.</p>
+<p><strong>8-Puzzle</strong>. A well-known simplification of jigsaw puzzle problems consists of defining a state <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> as an <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix of tiles <span class="math notranslate nohighlight">\(1\ldots 8\)</span> plus a ‘space’ named as <span class="math notranslate nohighlight">\(0\)</span>. Given an initial permutation <span class="math notranslate nohighlight">\(\mathbf{n}_0\in\Pi_{8\cup 0}\)</span>, the objective is to reach a final permutation <span class="math notranslate nohighlight">\(\mathbf{n}_f\in\Pi_{8\cup 0}\)</span> <span style="color:#f88146">by <strong>moving the space</strong>: ‘up’, ‘down’, ‘left’ or ‘right’*</span>.</p>
+<p>As we see in <a class="reference internal" href="#puzzle-show"><span class="std std-numref">Fig. 3.2</span></a>, moving the space is equivalent to a more human-mind way of moving one of the up to <span class="math notranslate nohighlight">\(4\)</span> adjacent tiles to fill the space. In the example, we move from the current-state from the next-state by moving the <span class="math notranslate nohighlight">\(0\)</span> left, i.e. by moving the <span class="math notranslate nohighlight">\(5\)</span> right.</p>
+<figure class="align-center" id="puzzle-show">
+<a class="reference internal image-reference" href="_images/8puzzle-show-removebg-preview.png"><img alt="_images/8puzzle-show-removebg-preview.png" src="_images/8puzzle-show-removebg-preview.png" style="width: 800px; height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">8-puzzle: States showing the Manhattan geometry of moves.</span><a class="headerlink" href="#puzzle-show" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note that <em>diagonals are not allowed</em>. This is consistent with the <a class="reference external" href="https://en.wikipedia.org/wiki/Taxicab_geometry">Taxicab geometry or Manhattan World</a>. This provides a <strong>natural heuristic</strong> <span class="math notranslate nohighlight">\(h_{Manhattan}(.)\)</span> for estimating the cost from the current state to the target:</p>
+<div class="math notranslate nohighlight">
+\[
+h_{Manhattan}(\mathbf{n})=\sum_{i&gt;0}\underbrace{|\mathbf{n}(i,x)-\mathbf{n}_F(i,x)|}_{\text{x-diff}(i)} + \underbrace{|\mathbf{n}(i,y)-\mathbf{n}_F(i,y)|}_{\text{y-diff}(i)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{n}(i,x)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{n}(i,y)\)</span> are the <span class="math notranslate nohighlight">\(x\)</span> <strong>(col)</strong> and <span class="math notranslate nohighlight">\(y\)</span> <strong>(row)</strong>  coordinates of the <span class="math notranslate nohighlight">\(i-\)</span>th tile (without the space). In the example we have</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tile (current-state)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mathbf{n}\)</span> coords</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\text{x-diff} + \text{y-diff}\)</span></p></th>
+<th class="head"><p>Cumulative <span class="math notranslate nohighlight">\(h_{Manhattan}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>(2,2)</p></td>
+<td><p>abs(2 - 0) + abs(2 - 0) = 4</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>(2,1)</p></td>
+<td><p>abs(2 - 0) + abs(1 - 1) = 2</p></td>
+<td><p>6</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>(2,0)</p></td>
+<td><p>abs(2 - 0) + abs(0 - 2) = 4</p></td>
+<td><p>12</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>(1,2)</p></td>
+<td><p>abs(1 - 1) + abs(2 - 0) = 2</p></td>
+<td><p>14</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>(1,1)</p></td>
+<td><p>abs(1 - 1) + abs(1 - 1) = 0</p></td>
+<td><p>14</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>(0,0)</p></td>
+<td><p>abs(0 - 1) + abs(0 - 2) = 3</p></td>
+<td><p>17</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>(0,2)</p></td>
+<td><p>abs(0 - 2) + abs(2 - 0) = 4</p></td>
+<td><p>21</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>(0,1)</p></td>
+<td><p>abs(0 - 2) + abs(1 - 1) = 2</p></td>
+<td><p>23</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>23</p></td>
+</tr>
+</tbody>
+</table>
+<p>Obviously <span class="math notranslate nohighlight">\(\max h_{Manhattan}(\mathbf{n}) = 8\times 4 = 32\)</span>, since <span class="math notranslate nohighlight">\(4\)</span> is the largest shortest path in the Taxicab geometry between a tile and its ideal position. Any coincidence in row or column with the ideal position reduces the global cost. For instance, note that tile <span class="math notranslate nohighlight">\(5\)</span> is correctly posed and its contribution is <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<p>Note that computing <span class="math notranslate nohighlight">\(h_{Manhattan}\)</span> for the new state <span class="math notranslate nohighlight">\(\mathbf{n}'\in {\cal N}_{\mathbf{n}}\)</span> (expanded from <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>) is quite <strong>incremental</strong>. If <span class="math notranslate nohighlight">\(j\)</span> is the ‘moved tile’ we have</p>
+<div class="math notranslate nohighlight">
+\[
+h_{Manhattan}(\mathbf{n}')=h_{Manhattan}(\mathbf{n}) + \nabla h_{Manhattan}(\mathbf{n}')
+\]</div>
+<p>where, for the moved tile <span class="math notranslate nohighlight">\(j\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla h_{Manhattan}(\mathbf{n}') = \underbrace{|\mathbf{n}'(j,x)-\mathbf{n}_F(j,x)|}_{\text{x-diff}'(j)} + \underbrace{|\mathbf{n}'(j,y)-\mathbf{n}_F(j,y)|}_{\text{y-diff}'(j)} - (\text{x-diff}(j) + \text{y-diff}(j))\;,
+\]</div>
+<p>which only implies a couple of subractions!</p>
+<p>For the above example, where <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n})=24\)</span>, the move of tile <span class="math notranslate nohighlight">\(j=5\)</span> to the left (desplacement of the space to the right) makes:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\nabla h_{Manhattan}(\mathbf{n}') &amp;= \underbrace{|\mathbf{n}'(5,x)-\mathbf{n}_F(5,x)|}_{\text{x-diff}'(5)} + \underbrace{|\mathbf{n}'(5,y)-\mathbf{n}_F(5,y)|}_{\text{y-diff}'(5)} - (0 + 0)\\
+ &amp;= \underbrace{|1-1|}_{\text{x-diff}'(j)} + \underbrace{|0-1|}_{\text{y-diff}'(j)} - (0 + 0)\\
+  &amp;= 0 + 1 - (0 + 0)\\
+  &amp;= 1\;.
+\end{align}
+\end{split}\]</div>
+<p>As a result, since <span class="math notranslate nohighlight">\(\nabla h_{Manhattan}(\mathbf{n}')&gt;0\)</span> (the <strong>gradient</strong> is positive) we have that <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n}')&gt;h_{Manhattan}(\mathbf{n})\)</span> and the new solution is worse.</p>
+<p>Note also that for any <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> in the 8-Puzzle, we have that its maximum neighborhood’s size is <span class="math notranslate nohighlight">\(4\)</span> (<span class="math notranslate nohighlight">\(|{\cal N}_{\mathbf{u}}|\le 4\)</span>). In the above case, for the current-move (left) only <span class="math notranslate nohighlight">\(3\)</span> moves are possible: <span class="math notranslate nohighlight">\(j=5\)</span>, <span class="math notranslate nohighlight">\(j=6\)</span> and <span class="math notranslate nohighlight">\(j=3\)</span>. Then, we have</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(j\)</span></p></th>
+<th class="head"><p>New position</p></th>
+<th class="head"><p>Ideal position</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\nabla h_{Manhattan}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>(1,0)</p></td>
+<td><p>(1,1)</p></td>
+<td><p>0 + 1 - (0 + 0) = 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>(1,0)</p></td>
+<td><p>(1,2)</p></td>
+<td><p>abs(1-1) + abs(0-2)- 3 = -1</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>(1,0)</p></td>
+<td><p>(0,2)</p></td>
+<td><p>abs(1-0) + abs(0-2)- 3 = 0</p></td>
+</tr>
+</tbody>
+</table>
+<p>which shows that the best local decision is to move <span class="math notranslate nohighlight">\(j=6\)</span> down to the space (negative gradient).
+<br></br>
+<span style="color:#d94f0b">
+<strong>Exercise</strong>. Given the ‘New State’ in the above figure (center),
+<strong>a)</strong> Compute the value of <span class="math notranslate nohighlight">\(h_{Manhattan}\)</span> for this configuration. <strong>b)</strong> Compute the gradients for all the possible moves. <strong>c)</strong> Identify the best move and update <span class="math notranslate nohighlight">\(h_{Manhattan}\)</span> accordingly.
+<br></br>
+Answer:
+<br></br>
+<strong>a)</strong> <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n})=24\)</span> (can be deduced from above). The associated table is
+<br></br>
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+&amp;\begin{array}{|c|c|c|c|c|}
+\hline \hline \text{Tile} &amp;  \text{Initial} &amp;  \text{Ideal} &amp; \text{x-diff + y-diff} &amp; \text{Cumulative}  \\
+\hline 
+0 &amp; (1,1) &amp; (2,2) &amp; 1+1=2 &amp; 2\\
+1 &amp; (2,2) &amp; (0,0) &amp; 2+2=4 &amp; 6\\
+2 &amp; (2,1) &amp; (0,1) &amp; 2+0=2 &amp; 8\\
+3 &amp; (2,0) &amp; (0,2) &amp; 2+2=4 &amp; 12\\
+4 &amp; (1,2) &amp; (1,0) &amp; 0+2=2 &amp; 14\\
+5 &amp; (1,0) &amp; (1,1) &amp; 0+1=1 &amp; 15\\
+6 &amp; (0,0) &amp; (1,2) &amp; 1+2=3 &amp; 18\\
+7 &amp; (0,2) &amp; (2,0) &amp; 2+2=4 &amp; 22\\
+8 &amp; (0,1) &amp; (2,1) &amp; 2+0=2 &amp; 24\\
+\hline
+\end{array}
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>b)</strong> Gradients <span class="math notranslate nohighlight">\(\nabla h_{Manhattan}(\mathbf{n}')\)</span> for <span class="math notranslate nohighlight">\(\mathbf{n}'\in {\cal N}_{\mathbf{n}}\)</span>. There are <span class="math notranslate nohighlight">\(4\)</span> neighboring tiles with <span class="math notranslate nohighlight">\(j=8,5,2,4\)</span> respectively.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+&amp;\begin{array}{|c|c|c|c|c|}
+\hline \hline j &amp;  \text{New} &amp;  \text{Ideal} &amp; \text{x-diff'(j)}+ \text{y-diff'(j)} &amp; \text{x-diff(j)}+ \text{y-diff(j)} &amp; \nabla h_{Manhattan}(\mathbf{n}')\\
+\hline 
+8 &amp; (1,1) &amp; (2,1) &amp; |1-2|+|1-1|=1 &amp; 2 &amp; 1-2 = -1\\
+5 &amp; (1,1) &amp; (1,1) &amp; |1-1|+|1-1|=0 &amp; 1 &amp; 0-1 = -1\\
+2 &amp; (1,1) &amp; (0,1) &amp; |1-0|+|1-1|=1 &amp; 2 &amp; 1-2 = -1\\
+4 &amp; (1,1) &amp; (1,0) &amp; |1-1|+|1-0|=1 &amp; 2 &amp; 1-2 = -1\\
+\hline
+\end{array}
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>c)</strong> Best move? The above table shows that all moves are equally good. Why? A human would tend to move <span class="math notranslate nohighlight">\(5\)</span> to the center. Such a move would end up in <span class="math notranslate nohighlight">\(8\)</span>, <span class="math notranslate nohighlight">\(5\)</span> and <span class="math notranslate nohighlight">\(2\)</span> in the correct column. However, since <span class="math notranslate nohighlight">\(8\)</span> and <span class="math notranslate nohighlight">\(2\)</span> are in an <strong>inverted position</strong>, the Manhattan heuristic is not able to run in favor of centering <span class="math notranslate nohighlight">\(5\)</span>. Even moving <span class="math notranslate nohighlight">\(4\)</span> to the center and approach it to its ideal column is equally valid!
+</span></p>
+<p><strong>Improving Manhattan</strong>. Inversions or <span style="color:#f88146">linear conflicts</span> (two tiles in the correct row or column but in inverted order) are powerful structural violations due to the symmetry of the problem. The <span style="color:#f88146">Manhattan distance is <strong>blind</strong> to linear conflicts</span> because it accounts for the shortest paths (in the Taxicab geometry) of each tile, independently of the others.</p>
+<p>Basically, the following algorithm, proposed by <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/002002559290070O">Hanson et al</a> in Information Sciences</p>
+<div class="proof algorithm admonition" id="LC">
+<p class="admonition-title"><span class="caption-number">Algorithm 3.2 </span> (Linear-Conflicts)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> A 8-puzzle state <span class="math notranslate nohighlight">\(\mathbf{n}\)</span><br />
+<strong>Output</strong> <span class="math notranslate nohighlight">\(h_{Manhanttan}(\mathbf{n}) + h_{LC}(\mathbf{n})\)</span></p>
+<ol class="arabic simple">
+<li><p><strong>for</strong> each row <span class="math notranslate nohighlight">\(r_i\)</span> of <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(lc(r_i,\mathbf{n})\leftarrow 0\)</span></p></li>
+<li><p><strong>for</strong> each col <span class="math notranslate nohighlight">\(j\in r_i\)</span>:</p>
+<ol class="arabic simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(C(j,r_i)\)</span>: the number of LCs with <span class="math notranslate nohighlight">\(j\)</span>.</p></li>
+<li><p><strong>while</strong> <span class="math notranslate nohighlight">\(\exists j: C(j,r_i)&gt;0\)</span>:</p>
+<ol class="arabic simple">
+<li><p>Remove <span class="math notranslate nohighlight">\(k\)</span> with maximal LCs in <span class="math notranslate nohighlight">\(r_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(C(k,r_i)\leftarrow 0\)</span></p></li>
+<li><p><strong>for</strong> each col <span class="math notranslate nohighlight">\(j\)</span> which has in conflict with <span class="math notranslate nohighlight">\(k\)</span>: <span class="math notranslate nohighlight">\(C(j,r_i)\leftarrow C(j,r_i)-1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(lc(r_i,\mathbf{n})\leftarrow lc(r_i,\mathbf{n}) + 1\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>repeat</strong> 1 for cols and compute <span class="math notranslate nohighlight">\(lc(c_j,\mathbf{n})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(h_{LC}(\mathbf{n})\leftarrow 2(\sum_{i}lc(r_i,\mathbf{n}) + \sum_{j}lc(c_j,\mathbf{n}))\)</span></p></li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n})\)</span></p></li>
+</ol>
+</section>
+</div><p>accounts for linear conflicts (LCs) in the following way:</p>
+<ol class="arabic simple">
+<li><p>Analize row by row. If a LC is found, add <span class="math notranslate nohighlight">\(2\)</span> to Manhattan.</p></li>
+<li><p>Repeat for columns.</p></li>
+</ol>
+<p>The basic idea of <strong>Linear-Conflicts</strong> is that the Manhattan heuristic is only worried about the independent shortest paths of each tile. In this regard, an inversion is seen as ‘doubling’ the shortest paths needed (extra effort) because they ‘become in conflict’.</p>
+<p>For instance, in <a class="reference internal" href="#puzzle-show"><span class="std std-numref">Fig. 3.2</span></a> we have the following cases:</p>
+<ol class="arabic simple">
+<li><p>‘Current State’ (left-image). Concerning rows, only <span class="math notranslate nohighlight">\(r_1\)</span> has an inversion (<span class="math notranslate nohighlight">\(5-4\)</span>) and this results in a penalization of <span class="math notranslate nohighlight">\(2\)</span>. Concerning columns, only <span class="math notranslate nohighlight">\(c_1\)</span> has inversion, but we have <span class="math notranslate nohighlight">\(2\)</span> conflicts per tile  (e.g. <span class="math notranslate nohighlight">\(8-5\)</span> and <span class="math notranslate nohighlight">\(5-2\)</span>). This results in two iterations of the while loop to make all zeros and the resulting penalization is <span class="math notranslate nohighlight">\(4\)</span>. Then</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n}) = 23 + 2 + 4 = 29\;.
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>‘New State’ (center). Regarding the rows, we have a unique conflict (<span class="math notranslate nohighlight">\(5-4\)</span>) as before (note that the space does not count). Actually, due to the presence of the space in the center, we have only a column conflict. As a result</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n}) = 24 + 2 + 2 = 28\;.
+\]</div>
+<section id="admissible-heuristics">
+<h4><span class="section-number">3.2.2.1. </span>Admissible heuristics<a class="headerlink" href="#admissible-heuristics" title="Permalink to this heading">#</a></h4>
+<p>Heuristics <span class="math notranslate nohighlight">\(h(\mathbf{n})\)</span> <span style="color:#f88146"><strong>approximate</strong> the true (but unknown)</span> cost <span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> from <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> to the target <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>. There are formal reasons recommending</p>
+<div class="math notranslate nohighlight">
+\[
+h(\mathbf{n})\le h^{\ast}(\mathbf{n})\;\;\forall \mathbf{n}\in\Omega, 
+\]</div>
+<p>which is <span style="color:#f88146">called the <strong>admissibility</strong></span> of the heuristic. The intuition behind admissibility is that as far as we make ‘optimistic’ approximations we are sure that <span class="math notranslate nohighlight">\(A^{\ast}\)</span> will find the target <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>. Otherwise, i.e. considering a state worse that it really is (being pessimisit), <span class="math notranslate nohighlight">\(A^{\ast}\)</span> may skip it and produce a sub-optimal solution if any.</p>
+<p>Some formal considerations (see Pearl’s book for more details):</p>
+<ol class="arabic simple">
+<li><p><ins>Admissibility ensures</ins> that at any time before termination, there will be <em>at least</em> a node <span class="math notranslate nohighlight">\(\mathbf{n}\in\text{OPEN}\)</span> whose expansion will lead to find <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>.</p></li>
+<li><p>This can be expressed in terms of <span class="math notranslate nohighlight">\(f(\mathbf{n})\le C^{\ast}\)</span>, where <span class="math notranslate nohighlight">\(C^{\ast}\)</span> is the optimal cost from <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> and it is consistent with the <ins>principle of optimality</ins> (all parts of an optimal path are also optimal).</p></li>
+</ol>
+<p><strong>Is Manhattan admissible?</strong> Yes, it is. But why?</p>
+<ol class="arabic simple">
+<li><p>Remember that <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n})\)</span> adds the shortest paths from any tile to its ideal position in the Taxicab geometry (no diagonals), while <em>assuming no obstacles in between</em>.</p></li>
+<li><p>For a particular tile, it is impossible to make less movements since there are frequently other tiles in between.</p></li>
+</ol>
+<p><strong>What about the admissibility of <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n})\)</span>?</strong> Well, this is a bit tricky.</p>
+<ol class="arabic simple">
+<li><p>We know that <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n})\)</span> is admissible. Thus, the above question reduces whether to penalizing LCs as we do is still admissible.</p></li>
+<li><p>The proof is reduced to test whether at each ‘line’ (row or column) we calculate the <ins>minimum number of tiles which must take non-shortest paths</ins>.</p></li>
+<li><p>The algorithm removes conflicting tiles and each removal counts <span class="math notranslate nohighlight">\(2\)</span> moves, which is the minimal number of moves to solve a LC.</p></li>
+<li><p>The big question is whether the LCs in a line are independent of those in another. They really are because removing a tile for solving a conflict will not affect the others. If the tile is not in its ideal solution this is obvious. Otherwise, moving it out of this line will not affect possible conflicts in the perpendicular line since we leave a space.</p></li>
+</ol>
+<p>Thus, <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n})\)</span> is still admissible!</p>
+</section>
+<section id="pruning-power">
+<h4><span class="section-number">3.2.2.2. </span>Pruning power<a class="headerlink" href="#pruning-power" title="Permalink to this heading">#</a></h4>
+<p>Let us start by defining the <span style="color:#f88146"><strong>heuristic power</strong></span> of a given <span class="math notranslate nohighlight">\(h(\mathbf{n})\)</span> as the <span style="color:#f88146"><em>number of nodes expanded</em> for the same problem instance</span>.</p>
+<p>In <a class="reference internal" href="#puzzle-man"><span class="std std-numref">Fig. 3.1</span></a>, we showed that for <span class="math notranslate nohighlight">\(h_{Manhattan}(.)\)</span>, <span class="math notranslate nohighlight">\(A^{\ast}\)</span> generates <span class="math notranslate nohighlight">\(271\)</span> nodes, from which <span class="math notranslate nohighlight">\(164\)</span> are expanded. Remember that ‘expansion’ of <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> implies that this node is ‘selected’ from OPEN according to minimizing <span class="math notranslate nohighlight">\(f(\mathbf{n})\)</span>.</p>
+<p>However, <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n})\)</span> leads to <span class="math notranslate nohighlight">\(198\)</span> nodes, where <span class="math notranslate nohighlight">\(120\)</span> are expanded (see <a class="reference internal" href="#puzzle-lc"><span class="std std-numref">Fig. 3.3</span></a>) for the same initial state which is:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{n}_0 = [2, 3, 0, 1, 8, 6, 5, 7, 4]
+\]</div>
+<p>where we linearize the <span class="math notranslate nohighlight">\(3\times 3\)</span> puzzle by stacking their rows.</p>
+<figure class="align-center" id="puzzle-lc">
+<a class="reference internal image-reference" href="_images/8-puzzle-tree-LC-removebg-preview.png"><img alt="_images/8-puzzle-tree-LC-removebg-preview.png" src="_images/8-puzzle-tree-LC-removebg-preview.png" style="width: 500px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.3 </span><span class="caption-text">8-puzzle with LCs: Nodes: <span class="math notranslate nohighlight">\(198\)</span>, Expanded: <span class="math notranslate nohighlight">\(120\)</span></span><a class="headerlink" href="#puzzle-lc" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Intuitively, we see that <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n})\)</span> is <span style="color:#f88146"><strong>more informed</strong></span> than the plain <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n})\)</span>. More formally, <span class="math notranslate nohighlight">\(h_2(.)\)</span> is more informed than <span class="math notranslate nohighlight">\(h_1(.)\)</span> if both are admissible and</p>
+<div class="math notranslate nohighlight">
+\[
+h_2(\mathbf{n}) &gt; h_1(\mathbf{n})\;\;\forall \mathbf{n}\in\Omega\;. 
+\]</div>
+<p>This results in the fact that the number of nodes expanded by <span class="math notranslate nohighlight">\(A^{\ast}\)</span> with <span class="math notranslate nohighlight">\(h_2(.)\)</span> is <strong>upper-bounded</strong> by those expanded with <span class="math notranslate nohighlight">\(h_1(.)\)</span>. In other words, the <span style="color:#f88146"><strong>pruning power</strong> of more pessimistic admissible heuristic is larger</span>.</p>
+<p>The rationale exposed in Pearl’s book is as follows:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> is a <strong>perfect discriminator</strong>, i.e. it provides the minimal number of expansions.</p></li>
+<li><p>Since <span class="math notranslate nohighlight">\(h_2(\mathbf{n}) \ge h_1(\mathbf{n})\)</span>, we have</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+h_1(\mathbf{n}) \le h_2(\mathbf{n})\le h^{\ast}(\mathbf{n})\;,
+\]</div>
+<p>under admissibility.</p>
+<p>This is a consequence of <span style="color:#f88146"><strong>Nilsson’s theorem</strong>: <em>Any node expanded by <span class="math notranslate nohighlight">\(A^{\ast}\)</span> cannot have an <span class="math notranslate nohighlight">\(f\)</span> value exceeding the optimal cost <span class="math notranslate nohighlight">\(C^{\ast}\)</span></em></span> i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{n})\le C^{\ast}\;\;\text{for all expanded nodes}\;.
+\]</div>
+<p>In other words, <em>every node on OPEN for which <span class="math notranslate nohighlight">\(f(\mathbf{n})&lt;C^{\ast}\)</span> will be eventually expanded by <span class="math notranslate nohighlight">\(A^{\ast}\)</span></em>.</p>
+<p>Remember that we cannot select a non-expanded node to determine whether we have found <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>. This node must be a yet expanded node and this means that is satisifies <span class="math notranslate nohighlight">\(f(\mathbf{n})\le C^{\ast}\)</span>. In other words, the nodes in <span class="math notranslate nohighlight">\({\cal S}=\{\mathbf{n}:f(\mathbf{n})&gt;C^{\ast}\}\)</span> are definitely <strong>excluded from expansion</strong>. This means that better informed heuristics provide better upper bounds and larger <strong>excluded-from-expansion sets</strong> (see a more formal proof in Pearl’s page 81).</p>
+<p><strong>Relaxation</strong>. Since there are configuations where we do not have LCs, what we have is <span class="math notranslate nohighlight">\(h_{Manhattan}(\mathbf{n})\le h_{Manhattan}(\mathbf{n}) + h_{LC}(\mathbf{n})\)</span> instead of a <span class="math notranslate nohighlight">\(&lt;\)</span>. Then, we can relax a bit the requirement of pruning power and admit <span class="math notranslate nohighlight">\(\le\)</span>.</p>
+<p><strong>Computational cost</strong>. It seems a kind of obvious that more informed heuristic require more computational cost, for instance, <span class="math notranslate nohighlight">\(h_{LC}\)</span> takes <span class="math notranslate nohighlight">\(O(N^{1.5})\)</span> whereas <span class="math notranslate nohighlight">\(h_{Manhattan}\)</span> takes <span class="math notranslate nohighlight">\(O(N)\)</span> where <span class="math notranslate nohighlight">\(2\sqrt{N+1}\)</span> is the number of lines (horizontal and vertical) of the puzzle.</p>
+<p>Thus, <span style="color:#f88146">pruning power (spatial complexity) and computational cost (temporal complexity) are tied by a strict trade-off</span>. ‘Ask me for memory or for computer power’, quoted Steve Jobbs.</p>
+</section>
+</section>
+<section id="failure-condition">
+<h3><span class="section-number">3.2.3. </span>Failure condition<a class="headerlink" href="#failure-condition" title="Permalink to this heading">#</a></h3>
+<p>Remember, that the <strong>failure condition</strong> of <span class="math notranslate nohighlight">\(A^{\ast}\)</span> is <span class="math notranslate nohighlight">\(\text{OPEN}=\emptyset\)</span>, i.e. there are no more nodes to expand and <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> was not found. This cannot happen <em>unless</em> the target cannot be found for any reason.</p>
+<p><strong>8-Puzzle and even LCs</strong>. Consider the <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> used in the previous example:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{n}_0 = [2, 3, 0, 1, 8, 6, 5, 7, 4]\;,
+\]</div>
+<p>reformatted properly as a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{n}_0=\begin{bmatrix}
+2 &amp; 3 &amp; 0\\
+1 &amp; 8 &amp; 6\\
+5 &amp; 7 &amp; 4\\
+\end{bmatrix}
+\end{split}\]</div>
+<p>has <span class="math notranslate nohighlight">\(0\)</span> LCs (herein <span class="math notranslate nohighlight">\(0\)</span> is ‘even’).</p>
+<p>However the following initial state:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{n}_0=\begin{bmatrix}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6\\
+0 &amp; 8 &amp; 7\\
+\end{bmatrix}
+\end{split}\]</div>
+<p>has <span class="math notranslate nohighlight">\(1\)</span> LC (the one given by <span class="math notranslate nohighlight">\(8-7\)</span>). Well, <span style="color:#f88146">as <span class="math notranslate nohighlight">\(1\)</span> is <strong>‘odd’</strong>, this 8-puzzle <strong>cannot</strong> be solved!</span> Let us see why.</p>
+<p><strong>Permutations and parity</strong>. Given the sequence <span class="math notranslate nohighlight">\(\pi_1=[1,4,3,2,5]\)</span>, the canonical order <span class="math notranslate nohighlight">\(\pi_0[1,2,3,4,5]\)</span> can be obtained by a single (odd) interchance or <span style="color:#f88146">transposition</span> (simply interchanging <span class="math notranslate nohighlight">\(4\)</span> and <span class="math notranslate nohighlight">\(2\)</span>). However undoing <span class="math notranslate nohighlight">\(\pi_2=[4,1,3,2,5]\)</span>, <strong>sequentialy</strong> requires two (even) moves: (1) first, interchange <span class="math notranslate nohighlight">\(4\)</span> and <span class="math notranslate nohighlight">\(1\)</span>, thus arriving to <span class="math notranslate nohighlight">\(\pi_1=[1,4,3,2,5]\)</span> and then (2) undo <span class="math notranslate nohighlight">\(\pi_1\)</span> by interchanging <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(4\)</span> back to the canonical sequence.</p>
+<p>It can be proved that solving an even (odd) number of transpositions requires and even (odd) number of moves. A given permutation can be solved in, say <span class="math notranslate nohighlight">\(5\)</span> moves even if it has <span class="math notranslate nohighlight">\(3\)</span> transpositions, but what is invariant in the <span style="color:#f88146"><strong>parity</strong> of a permutation (odd or even) is always preserved</span>.</p>
+<p>As a result, it is almost trivial to proof that <span style="color:#f88146">8-puzzles have <strong>even</strong> parity</span>. In other words, if the initial state has an odd parity, the puzzle is unsolvable!</p>
+<p>One may think that we can exploit the ‘space’ to change the parity of the permutations encoded by the 8-puzzle but:</p>
+<ol class="arabic simple">
+<li><p>Look that horizontal moves do not change the permutation at all.</p></li>
+<li><p>Only vertical moves change the permutations and we know that the original parity <strong>must</strong> be perserved.</p></li>
+<li><p>In other words, <span style="color:#f88146"><em>it is impossible to achieve a state with even parity from the target puzzle backwards!</em></span></p></li>
+</ol>
+<p>Therefore, for avoiding the failure condition is convenient to run a parity check before calling to <span class="math notranslate nohighlight">\(A^{\ast}\)</span>.</p>
+</section>
+<section id="pattern-databases">
+<h3><span class="section-number">3.2.4. </span>Pattern Databases<a class="headerlink" href="#pattern-databases" title="Permalink to this heading">#</a></h3>
+<p><strong>Computational cost</strong>. It seems a kind of obvious that more informed heuristic require more computational cost, for instance, <span class="math notranslate nohighlight">\(h_{LC}\)</span> takes <span class="math notranslate nohighlight">\(O(N^{1.5})\)</span> whereas <span class="math notranslate nohighlight">\(h_{Manhattan}\)</span> takes <span class="math notranslate nohighlight">\(O(N)\)</span> where <span class="math notranslate nohighlight">\(2\sqrt{N+1}\)</span> is the number of lines (horizontal and vertical) of the puzzle: <span class="math notranslate nohighlight">\(N=8\)</span> in the 8-Puzzle.</p>
+<p>Thus, <span style="color:#f88146">pruning power (spatial complexity) and computational cost (temporal complexity) are tied by a strict trade-off</span>. ‘Ask me for memory or for computer power’, quoted Steve Jobbs. However, even with this trade-off at hand, the time needed to solve N-Puzzles can be un-practical, since N-Puzzles are NP-hard problems in general due to the their permutational nature.</p>
+<p><strong>Lookup Tables</strong>. Let us try to <ins>pre-compute</ins> the <span style="color:#f88146">perfect discriminator</span> <span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> to keep the number of expanded nodes in <span class="math notranslate nohighlight">\(\mathbf{A}^{\ast}\)</span> at a minimum.</p>
+<p>For problems such as 8-Puzzle or Rubik where the <ins>final state is always the same</ins>, lookup tables become a useful tool. They work as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Start</strong> from the ‘target’ state and its distance to it (zero).</p></li>
+<li><p><strong>Extract</strong> next state to explore from a QUEUE (push/pop FIFO operators).</p></li>
+<li><p><strong>Expand</strong> the search tree using <span style="color:#f88146">BFS (Best-First Search)</span> and register the effective distance to the target.</p></li>
+<li><p>Create an <strong>entry</strong> for each ‘new state’ is found (not seen before). Store the state and its cost to the target: <span class="math notranslate nohighlight">\(T(\mathbf{n},\text{cost})\)</span>.</p></li>
+<li><p><strong>Stop</strong> when not new state can be found.</p></li>
+</ol>
+<p>More algorithmically, we have</p>
+<div class="proof algorithm admonition" id="LU">
+<p class="admonition-title"><span class="caption-number">Algorithm 3.3 </span> (Lookup-Table)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Goal node <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span><br />
+<strong>Output</strong> Lookup table <span class="math notranslate nohighlight">\(T:\Omega\rightarrow \mathbb{N}\)</span></p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\text{OPEN}\leftarrow \{(\mathbf{n}_F,0)\}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(T(\mathbf{n}_F)=0\)</span></p></li>
+<li><p><strong>while</strong> <span class="math notranslate nohighlight">\(\text{OPEN}\neq\emptyset\)</span>:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\((\mathbf{n},d)\leftarrow \text{pop}(\text{OPEN})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\({\cal N}_{\mathbf{n}}\leftarrow \text{EXPAND}(\mathbf{n})\)</span></p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\in {\cal N}_{\mathbf{n}}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\not\in T\)</span>:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(T(\mathbf{n}')=d+1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{OPEN}\leftarrow \text{push}(\text{OPEN},\mathbf{n}')\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(T\)</span></p></li>
+</ol>
+</section>
+</div><p>The since <span class="math notranslate nohighlight">\(T(\mathbf{n})=h^{\ast}(\mathbf{n})\)</span>, lookup tables allow us to characterize the distribution of optimal distances. In <a class="reference internal" href="#puzzle-lut"><span class="std std-numref">Fig. 3.4</span></a> we show that the 8-puzzle can be solve in <span class="math notranslate nohighlight">\(31\)</span> moves. In addition, we see that:</p>
+<ul class="simple">
+<li><p>Most of the states have distances between 20-25 moves.</p></li>
+<li><p>The distribution is asymmetric towards large distances, but it is very far from being equiprobable.</p></li>
+<li><p>If our target state changes (for instance placing the ‘space’ in the center), we should re-compute the table.</p></li>
+</ul>
+<figure class="align-center" id="puzzle-lut">
+<a class="reference internal image-reference" href="_images/8-puzzle-lookup-removebg-preview.png"><img alt="_images/8-puzzle-lookup-removebg-preview.png" src="_images/8-puzzle-lookup-removebg-preview.png" style="width: 600px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.4 </span><span class="caption-text">Distribution of distances for the Lookup table of the 8-Puzzle</span><a class="headerlink" href="#puzzle-lut" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Interestingly, the fact that <span class="math notranslate nohighlight">\(T(\mathbf{n})=h^{\ast}(\mathbf{n})\)</span> minimizes the number of expansions. For the same initial space as before we expand only <span class="math notranslate nohighlight">\(21\)</span> nodes (see <a class="reference internal" href="#puzzle-astar-lookup"><span class="std std-numref">Fig. 3.5</span></a>).</p>
+<figure class="align-center" id="puzzle-astar-lookup">
+<a class="reference internal image-reference" href="_images/8-puzzle-astar-lookup-removebg-preview.png"><img alt="_images/8-puzzle-astar-lookup-removebg-preview.png" src="_images/8-puzzle-astar-lookup-removebg-preview.png" style="width: 500px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.5 </span><span class="caption-text">8-puzzle with Lookup: Nodes: <span class="math notranslate nohighlight">\(39\)</span>, Expanded: <span class="math notranslate nohighlight">\(21\)</span></span><a class="headerlink" href="#puzzle-astar-lookup" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>However, note that the lookup table is huge in larger problems (e.g. Rubik’s Cube) and cannot be applied to problems where the target state changes (e.g. graph matching, TSPs, etc.)</p>
+</section>
+</section>
+<section id="iterative-deepening">
+<h2><span class="section-number">3.3. </span>Iterative Deepening<a class="headerlink" href="#iterative-deepening" title="Permalink to this heading">#</a></h2>
+<p>Iterative Deepening is the practical approach of <span class="math notranslate nohighlight">\(A^{\ast}\)</span>-inspired techiques fueled by a huge lookup table. This has been the <em>de facto</em> standard for thr Rubik’s Cube until very recently!</p>
+<section id="mixed-strategies">
+<h3><span class="section-number">3.3.1. </span>Mixed Strategies<a class="headerlink" href="#mixed-strategies" title="Permalink to this heading">#</a></h3>
+<p>We should see <span class="math notranslate nohighlight">\(A^{\ast}\)</span> as a <strong>mixed strategy</strong> between BFS (Breath-First-Search) and DFS (Deep-First Seatch). Actually:</p>
+<ul class="simple">
+<li><p><ins>BFS results from seting <span class="math notranslate nohighlight">\(h(\mathbf{n})=0\)</span> (only <span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> counts)</ins>. This result in an innaceptable memory requirement.</p></li>
+<li><p><ins>DFS results, however, from setting <span class="math notranslate nohighlight">\(g(\mathbf{n})=0\)</span> instead (only <span class="math notranslate nohighlight">\(h(\mathbf{n})\)</span> counts)</ins>, and expanding the nodes until a given depth cutoff <span class="math notranslate nohighlight">\(d\)</span> is reached. This solves the problem of memory requirement but <span class="math notranslate nohighlight">\(d\)</span> is generally unknown.</p></li>
+</ul>
+</section>
+<section id="df-iterative-deepening">
+<h3><span class="section-number">3.3.2. </span>DF Iterative Deepening<a class="headerlink" href="#df-iterative-deepening" title="Permalink to this heading">#</a></h3>
+<p>This is a <em>brute force</em> algorithm that suffers neither the drawbacks of BFS nor DFS. It works as follows:</p>
+<ol class="arabic simple">
+<li><p>Perform DFS for <span class="math notranslate nohighlight">\(d=1\)</span>.</p></li>
+<li><p><strong>Discard</strong> the nodes generated in the <span class="math notranslate nohighlight">\(d\)</span> search and make a new search for <span class="math notranslate nohighlight">\(d=d+1\)</span></p></li>
+<li><p>Do 2) until the target state is found.</p></li>
+</ol>
+<p>Discarding all the nodes generated for a given <span class="math notranslate nohighlight">\(d\)</span> and start again for <span class="math notranslate nohighlight">\(d+1\)</span> seems to be very inefficient. However, <a class="reference external" href="https://www.cse.sc.edu/~mgv/csce580f09/gradPres/korf_IDAStar_1985.pdf">Richard E. Korf</a> proved that this is not the case. The algorithm is <strong>asymptotically</strong> optimal among brute-force tree searches in terms of space, time and the length of the solution.</p>
+<p>The proof is quite ilustrative of how <strong>branching processes</strong> work in practice.</p>
+<ol class="arabic simple">
+<li><p>Consider a tree starting at the root <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> and a constant branching factor <span class="math notranslate nohighlight">\(b=|{\cal N}_{\mathbf{n}}|\)</span>.</p></li>
+<li><p>Then, the total number of nodes generated at depth <span class="math notranslate nohighlight">\(d\)</span> are:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+S_b = b^0 + b^1 + \ldots b^{d} = \sum_{i=0}^d b^d = b\left(\frac{1-b^{d+1}}{1-b}\right)\;,
+\]</div>
+<p>i.e. the sum of a geometric series with ratio <span class="math notranslate nohighlight">\(r = \frac{b^{d+1}}{b^{d}}=b\)</span>. For instance, is <span class="math notranslate nohighlight">\(b=2\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+S_2=2\frac{(1-2^{d+1})}{-1}=2^d - 1\;.
+\]</div>
+<p>Well, when DF Iterative Deepening (DFID) is applied we have the following for depth <span class="math notranslate nohighlight">\(d\)</span>:</p>
+<ul class="simple">
+<li><p>The root is generated <span class="math notranslate nohighlight">\(d\)</span> times.</p></li>
+<li><p>The first level of successors is generated <span class="math notranslate nohighlight">\(d-1\)</span> times.</p></li>
+<li><p>The <span class="math notranslate nohighlight">\(i-\)</span>th level of successors is generated <span class="math notranslate nohighlight">\(d-i\)</span> times.</p></li>
+<li><p>Level <span class="math notranslate nohighlight">\(d\)</span> is generated only once.</p></li>
+</ul>
+<p>Then the number of nodes generated up to level <span class="math notranslate nohighlight">\(d\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+ (d-0)b^1 + (d-1)b^2 + \ldots (d-i)b^{i+1} + \ldots + 3b^{d-2} + 2b^{d-1}+ b^d
+ \]</div>
+<p>Inverting the order we have</p>
+<div class="math notranslate nohighlight">
+\[
+ b^d + 2b^{d-1} + 3b^{d-2} + \ldots + db\;.
+ \]</div>
+<p>Factoring <span class="math notranslate nohighlight">\(b^d\)</span> yields</p>
+<div class="math notranslate nohighlight">
+\[
+ b^d(1 + 2b^{-1} + 3b^{-2} + \ldots + db^{1-d})\;,
+ \]</div>
+<p>and making <span class="math notranslate nohighlight">\(x=b^{-1}\)</span> unveils an interesting series</p>
+<div class="math notranslate nohighlight">
+\[
+ b^d(1 + 2x + 3x^2 + \ldots dx^{d-1})
+ \]</div>
+<p>which converges for <span class="math notranslate nohighlight">\(d\rightarrow\infty\)</span> as follows</p>
+<div class="math notranslate nohighlight">
+\[
+b^d(1 + 2x + 3x^2 + \ldots )\rightarrow b^d(1-x)^{-2}\;\;\text{for}\; |x|&lt;1\;. 
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\((1-x)^{-2}=(1-1/b)^{-2}\)</span> is a constant that is independent of <span class="math notranslate nohighlight">\(d\)</span>, for <span class="math notranslate nohighlight">\(b&gt;1\)</span> we have that the <strong>temporal complexity</strong> of DFID is <span class="math notranslate nohighlight">\(O(b^d)\)</span>, basically that of BFS. This is because the geometric part of the series dominates the arithmetic part (there are so much nodes generated as depth increases that their number grows faster than their repeats).</p>
+<p>Considering now the <strong>space complexity</strong>, since DFID is engaged in a DFS it only stores the nodes of the branch leading to the maximum depth, wich only takes <span class="math notranslate nohighlight">\(O(d)\)</span>.</p>
+<p>Naturally, the <strong>waste factor</strong> is upper-bounded by <span class="math notranslate nohighlight">\((1-1/b)^{-2}\)</span>, i.e. <span style="color:#f88146">the largest the branching factor <span class="math notranslate nohighlight">\(b\)</span>, the smaller is the maximal waste</span>. Taking derivatives, the rate of such decrease is <span class="math notranslate nohighlight">\(O(1/b^2)\)</span>.</p>
+</section>
+<section id="ida-ast">
+<h3><span class="section-number">3.3.3. </span>ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span><a class="headerlink" href="#ida-ast" title="Permalink to this heading">#</a></h3>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Iterative_deepening_A*">Iterative-Deepening <span class="math notranslate nohighlight">\(A^{\ast}\)</span></a> results from combining DFID with a BFS such as <span class="math notranslate nohighlight">\(A^{\ast}\)</span>. The general idea can be summarized as follows:</p>
+<ol class="arabic simple">
+<li><p>Instead of repeating the search <strong>blindly</strong> as in DFID, ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> expands many deep-first searches from the root <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> until one of them ‘hits’ the target <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> or it discovers that it is much far away.</p></li>
+<li><p>The depth of each of these searches is controled by a <strong>bound</strong> which starts with <span class="math notranslate nohighlight">\(h(\mathbf{n}_0)\)</span> and cuts off a branch ending in <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> when <span class="math notranslate nohighlight">\(f(\mathbf{n})=g(\mathbf{n})+h(\mathbf{n}) &gt; t\)</span> where <span class="math notranslate nohighlight">\(t\)</span> is a threshold. At each iteration, <span class="math notranslate nohighlight">\(t\)</span> is the minimum of all the values that exceeded the current threshold (the less agressive excess).</p></li>
+</ol>
+<p>The algorithm is as follows:</p>
+<div class="proof algorithm admonition" id="IDAstar">
+<p class="admonition-title"><span class="caption-number">Algorithm 3.4 </span> (ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span>)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Root <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span><br />
+<strong>Output</strong> Path <span class="math notranslate nohighlight">\(\Gamma\)</span> to target node <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> and Bound, NOT_FOUND or FAILURE</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\text{bound}\leftarrow h(\mathbf{n}_0)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Gamma\leftarrow [\mathbf{n}_0]\)</span></p></li>
+<li><p><strong>while</strong> True:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(t \leftarrow \text{BoundedSearch}(\Gamma, 0, \text{bound})\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(t=\)</span>FOUND <strong>then</strong> <strong>return</strong> <span class="math notranslate nohighlight">\(\Gamma,\text{bound}\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(t=\infty\)</span> <strong>then</strong> <strong>return</strong> NOT_FOUND</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{bound}\leftarrow t\)</span></p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p>Where <span class="math notranslate nohighlight">\(\text{BoundedSearch}\)</span> is a recursive bounded DFS guided by <span class="math notranslate nohighlight">\(f = g + h\)</span> as follows:</p>
+<div class="proof algorithm admonition" id="IDAstar2">
+<p class="admonition-title"><span class="caption-number">Algorithm 3.5 </span> (<span class="math notranslate nohighlight">\(\text{BoundedSearch}\)</span>)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Path, <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(\text{bound}\)</span><br />
+<strong>Output</strong> <span class="math notranslate nohighlight">\(t\)</span> or FOUND</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{n}\leftarrow \text{last}(\Gamma)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f\leftarrow g + h(\mathbf{n})\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(f&gt;\text{bound}\)</span> <strong>then</strong> <strong>return</strong> <span class="math notranslate nohighlight">\(f\)</span> // Returns <span class="math notranslate nohighlight">\(f\)</span> as <span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathbf{n}=\mathbf{n}_F\)</span> <strong>then</strong> <strong>return</strong> FOUND</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{min}\leftarrow \infty\)</span></p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\in {\cal N}_{\mathbf{n}}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\mathbf{n}'\not\in\Gamma\)</span>:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\Gamma\leftarrow \text{push}(\Gamma,\mathbf{n}')\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(t \leftarrow \text{BoundedSearch}(\Gamma, g + c(\mathbf{n},\mathbf{n}'), \text{bound})\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(t=\)</span>FOUND <strong>then</strong> <strong>return</strong> FOUND</p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(t&lt;\text{min}\)</span> <strong>then</strong> <span class="math notranslate nohighlight">\(\text{min}\leftarrow t\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Gamma\leftarrow \text{pop}(\Gamma)\)</span> // Alternative DFS</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>return</strong> <span class="math notranslate nohighlight">\(\text{min}\)</span></p></li>
+</ol>
+</section>
+</div><p>Some considerations:</p>
+<ol class="arabic simple">
+<li><p>The search <strong>succeeds</strong> (returns FOUND) as soon as one of the paths expanded by the DFS reaches <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span>.</p></li>
+<li><p>If so, there will be other partial expanded paths, because thei <strong>exceeded</strong> the bound and did not find the target.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(h\)</span> is <strong>admissible</strong>, ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> always finds a solution of least cost if it exists!</p></li>
+</ol>
+<p>This results in a even more ‘skeletal’ search (see <a class="reference internal" href="#puzzle-ida-lookup"><span class="std std-numref">Fig. 3.6</span></a>) in comparision with <span class="math notranslate nohighlight">\(A^{\ast}\)</span> with lookup table (see <a class="reference internal" href="#puzzle-astar-lookup"><span class="std std-numref">Fig. 3.5</span></a>).</p>
+<figure class="align-center" id="puzzle-ida-lookup">
+<a class="reference internal image-reference" href="_images/8-puzzle-IDA-lookup-removebg-preview.png"><img alt="_images/8-puzzle-IDA-lookup-removebg-preview.png" src="_images/8-puzzle-IDA-lookup-removebg-preview.png" style="width: 500px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.6 </span><span class="caption-text">8-puzzle with ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> using Lookup: Nodes: <span class="math notranslate nohighlight">\(24\)</span>, Expanded: <span class="math notranslate nohighlight">\(24\)</span></span><a class="headerlink" href="#puzzle-ida-lookup" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="ida-ast-for-rubik">
+<h3><span class="section-number">3.3.4. </span>ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> for Rubik<a class="headerlink" href="#ida-ast-for-rubik" title="Permalink to this heading">#</a></h3>
+<p>ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> with lookup table has been the standard approach to solve Rubik’s Cube (RC) until very recently. Remember that the size of the search space is</p>
+<div class="math notranslate nohighlight">
+\[
+|\Omega| = 43,252,003,274,489,856,000\;,
+\]</div>
+<p>which requires <span class="math notranslate nohighlight">\(128\)</span> GB of memory. <a class="reference external" href="https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf">Richard E. Korf</a> addressed this problem in 1997 by applying ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> making  interesting findings:</p>
+<ol class="arabic simple">
+<li><p>The <ins>3D generalization of the Manhattan</ins> distance (number of moves required to correctly position and oriented each ‘cubie’), again considering the cubies independent. The sum of the moves of all cubies is divided by <span class="math notranslate nohighlight">\(8\)</span> to ensure admissibility.</p></li>
+<li><p><ins>A better heuristic</ins> is to take the maximum of the Manhattan distances of the corner cubies (3 orientations each) and the edge cubies (2 orientations each). The expected distance for the edge cubies is <span class="math notranslate nohighlight">\(5.5\)</span> whereas that of the corner ones is <span class="math notranslate nohighlight">\(3\)</span>.</p></li>
+<li><p>Another solution consists of computing <ins>partial lookup tables storing Manhattan distances</ins> (e.g. for the corner cubies, for the edge cubies, etc) and combine them.</p></li>
+<li><p>However, the <ins>above solutions are not enough to contain the above combinatorial explosion</ins> and ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> is only able to compute some movemens per day!</p></li>
+</ol>
+</section>
+</section>
+<section id="learnable-heuristics">
+<h2><span class="section-number">3.4. </span>Learnable Heuristics<a class="headerlink" href="#learnable-heuristics" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://www.nature.com/articles/s42256-019-0070-z">DeepCubeA</a> is the flagship solution of the current <strong>change of paradigm</strong>, where admissibility becomes only a <span style="color:#f88146"><strong>conceptual guide</strong> for solving large problems such as the Rubik’s Cube (RC) and it is replaced by <strong>performance analysis</strong></span>.</p>
+<section id="deep-oracles">
+<h3><span class="section-number">3.4.1. </span>Deep Oracles<a class="headerlink" href="#deep-oracles" title="Permalink to this heading">#</a></h3>
+<p>Assume that, given <span class="math notranslate nohighlight">\(\mathbf{n}\in\Omega\)</span> the perfect discriminator <span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> cannot be computed but <strong>approximated</strong>. How is such an approximation computed?</p>
+<p>Let us explain this process for the Rubik’s Cube (RC).</p>
+<p><strong>Training set</strong>. Given that the target <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> for RC is fixed and well known, as well as the <strong>God’s Number</strong> for the problem <span class="math notranslate nohighlight">\(N=20\)</span>, let us sample a set of <span class="math notranslate nohighlight">\(p_{train}\)</span> paths <span class="math notranslate nohighlight">\(P=\{\Gamma_i\}\)</span> for <span class="math notranslate nohighlight">\(i=1,2,\ldots,p_{train}\)</span>. These paths start at <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> and go backwards <strong>scrambling</strong> the RC, i.e. the <span class="math notranslate nohighlight">\(i-\)</span>th path has the following structure:</p>
+<div class="math notranslate nohighlight">
+\[
+\Gamma_{i}=\{(\mathbf{n}_F=\mathbf{n}^{i}_{0})\rightarrow \mathbf{n}^{i}_1\rightarrow\mathbf{n}^{i}_2\rightarrow\ldots \rightarrow\mathbf{n}^{i}_{N}\}
+\]</div>
+<p>Each <span class="math notranslate nohighlight">\(\Gamma_{i}\)</span> is a <strong>random walk</strong> through <span class="math notranslate nohighlight">\(\Omega\)</span> in reverse order from <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> backwards using <strong>legal moves</strong> <span class="math notranslate nohighlight">\(\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}\)</span>. These paths <em>are not exclusive</em> and may visit a given state several times. There are, however, some optimizations are done in order to avoid ‘do-undo’ moves or three consecutive moves that are really one, etc.</p>
+<p>We are approximating (or more properly <strong>learning</strong>) a lookup table <span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> instead of <strong>memorizing</strong> it. Then, we need (ideally) a function such that given a state <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> proposes a new state <span class="math notranslate nohighlight">\(\mathbf{n}'\)</span> closer (or at least not far) to/from the objective:</p>
+<div class="math notranslate nohighlight">
+\[
+h_{\theta}(\mathbf{n})=\mathbf{n}':\; h^{\ast}(\mathbf{n}')\le h^{\ast}(\mathbf{n})\;.  
+\]</div>
+<p>This is basically the concept of <strong>admissibility</strong> but remember that such a concept is pointless in very large problems. Keep however the subscript <span class="math notranslate nohighlight">\(\theta\)</span> in mind since it indicates that <span style="color:#f88146">the funcion <span class="math notranslate nohighlight">\(h_{\theta}\)</span> can be <strong>parameterized</strong> by <span class="math notranslate nohighlight">\(\theta\)</span> and these parameters can be learnt</span>.</p>
+<p>is a <strong>legal move</strong> as well as it is <span class="math notranslate nohighlight">\(\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}\)</span></p>
+<p>Once we have the paths, we focus on the individual moves <span class="math notranslate nohighlight">\(\mathbf{n}^{k}_{i+1}\rightarrow \mathbf{n}^{k}\)</span></p>
+<p><a class="reference external" href="https://towardsdatascience.com/understanding-binary-cross-entropy-log-loss-a-visual-explanation-a3ac6025181a">Binary Cross Entropy</a></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="topic2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Simulated and Deterministic Annealing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="practice_intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Introduction to the practical part of TAB2025</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rubik-s-cube">3.1. Rubik’s cube</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.2. Heuristic Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#search-tree">3.2.1. Search Tree</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heuristics">3.2.2. Heuristics</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#admissible-heuristics">3.2.2.1. Admissible heuristics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pruning-power">3.2.2.2. Pruning power</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-condition">3.2.3. Failure condition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pattern-databases">3.2.4. Pattern Databases</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-deepening">3.3. Iterative Deepening</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-strategies">3.3.1. Mixed Strategies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-iterative-deepening">3.3.2. DF Iterative Deepening</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast">3.3.3. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast-for-rubik">3.3.4. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> for Rubik</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learnable-heuristics">3.4. Learnable Heuristics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-oracles">3.4.1. Deep Oracles</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Graph Matching &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'topic2';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="NP-Complete Problems" href="topic1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2024
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic1.html">NP-Complete Problems</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Graph Matching</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Ftopic2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/topic2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Graph Matching</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-common-subgraph">Maximum Common Subgraph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softassign">SoftAssign</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assignments-and-matchings">Assignments and Matchings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rectangle-rule-cost-function">Rectangle rule: Cost Function</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="graph-matching">
+<h1>Graph Matching<a class="headerlink" href="#graph-matching" title="Permalink to this heading">#</a></h1>
+<section id="maximum-common-subgraph">
+<h2>Maximum Common Subgraph<a class="headerlink" href="#maximum-common-subgraph" title="Permalink to this heading">#</a></h2>
+<p><strong>Motivation</strong>. Chemical compounds exhibit structural patters shared between compounds of the same family. One of these patterns is the circular (hexagonal) structure formed by carbon (C) atoms linked by single or double bonds (see <a class="reference internal" href="#aspirin"><span class="std std-numref">Fig. 16</span></a>-Left and Center) where the non-labeled vertices denote C atoms. In this example, the presence of the hexagonal ring in the popular <a class="reference external" href="https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin">Aspirin</a> (<a class="reference internal" href="#aspirin"><span class="std std-numref">Fig. 16</span></a>-Right) is well known.</p>
+<p>The development of AI pattern matching techniques for detetecting substructures has powered the field of Bioinformatics. Nowadays, the analysis of exponentially growing datasets of proteins such as the Protein Data Bank <a class="reference external" href="https://www.wwpdb.org/">PDB</a> or of chemical compounds such as <a class="reference external" href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a> is a must in AI.</p>
+<figure class="align-center" id="aspirin">
+<a class="reference internal image-reference" href="_images/MCS-Aspirin-Photoroom.png"><img alt="_images/MCS-Aspirin-Photoroom.png" src="_images/MCS-Aspirin-Photoroom.png" style="width: 800px; height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Structure of the Aspirin.</span><a class="headerlink" href="#aspirin" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>MCS</strong>. Comparing substructures is not an easy problem. Whereas comparing substrings is polynomial, comparing substrutures is a well-known NP problem called the <span style="color:#f88146">Maximum Common Subgraph</span> or MCS:</p>
+<p><em>Given two graphs <span class="math notranslate nohighlight">\(G_1=(V_1,E_1)\)</span>  and <span class="math notranslate nohighlight">\(G_2=(V_2,E_2)\)</span>, what is the graph <span class="math notranslate nohighlight">\(H=(V,E)\)</span> that is <em>common</em> to <span class="math notranslate nohighlight">\(G_1\)</span> and <span class="math notranslate nohighlight">\(G_2\)</span> with the maximum number of nodes</em>?</p>
+<p>Herein, <em>common</em> means the following: <span class="math notranslate nohighlight">\(V = V\subseteq V_1\)</span> and <span class="math notranslate nohighlight">\(E\subseteq E_1\)</span> and exists an injective (one-to-one) mapping <span class="math notranslate nohighlight">\(f:V\rightarrow V_2\)</span> such that <span class="math notranslate nohighlight">\((i,j)\in E\)</span> iff <span class="math notranslate nohighlight">\((f(i),f(j))\in E_2\)</span>.</p>
+<p>This <span style="color:#f88146"><strong>subsetness flavor</strong></span> clarifies the fact that <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{MCS}\in \text{NP}\)</span></span>. Actually, MCS does not only search for one common subset but for <em>the subset with the maximum number of nodes</em>.</p>
+<p>This is quite clear in the following <em>Breaking Bad</em> problem: <span style="color:#f88146">What is the structural coincidence between Ectasy and Amphetamine?</span>.</p>
+<ul class="simple">
+<li><p>According to PubChem, <a class="reference external" href="https://pubchem.ncbi.nlm.nih.gov/compound/3_4-Methylenedioxymethamphetamine">Ectasy</a> is derived from the <a class="reference external" href="https://pubchem.ncbi.nlm.nih.gov/compound/Amphetamine">Amphetamine</a>.</p></li>
+<li><p>Looking at <a class="reference internal" href="#drugs"><span class="std std-numref">Fig. 17</span></a>-Center (Ectasy)
+comes from removing an Hidrogen atom from Amphetamine (<a class="reference internal" href="#drugs"><span class="std std-numref">Fig. 17</span></a>-Right), adding a carbon and an oxigen-carbon pentagonal cycle.</p></li>
+<li><p>The MCS is in <a class="reference internal" href="#drugs"><span class="std std-numref">Fig. 17</span></a>-Left.</p></li>
+</ul>
+<figure class="align-center" id="drugs">
+<a class="reference internal image-reference" href="_images/Drugs-Photoroom.png"><img alt="_images/Drugs-Photoroom.png" src="_images/Drugs-Photoroom.png" style="width: 800px; height: 200px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Maximal Common Substructure (left) of two design drugs (center and right).</span><a class="headerlink" href="#drugs" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>All the figures have been generated by the <a class="reference external" href="https://www.rdkit.org/">RDKit: Open-Source Cheminformatics Software</a>.</p>
+</section>
+<section id="softassign">
+<h2>SoftAssign<a class="headerlink" href="#softassign" title="Permalink to this heading">#</a></h2>
+<p>Solving MCS via a polynomial approximation requires <em>finding the injective function</em> <span class="math notranslate nohighlight">\(f\)</span> between the vertices <span class="math notranslate nohighlight">\(V\)</span> of small graph <span class="math notranslate nohighlight">\(X=(V,E)\)</span> and those <span class="math notranslate nohighlight">\(V'\)</span> of larger graph <span class="math notranslate nohighlight">\(Y=(V',E')\)</span> in polynomial time.</p>
+<section id="assignments-and-matchings">
+<h3>Assignments and Matchings<a class="headerlink" href="#assignments-and-matchings" title="Permalink to this heading">#</a></h3>
+<p><strong>Node assignments</strong>. Consider the (undirected) graphs:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+&amp;\begin{array}{cll}
+\text{Graph}  &amp; \text{Nodes} &amp; \text{Edges}\\
+X &amp; V=\{a,b,c\} &amp; E=\{(a,b),(b,c)\}\\
+Y &amp; V'=\{1,2,3,4,5\} &amp; E=\{(1,2),(1,3),(1,4),(3,4)\}\\
+\end{array}
+\end{aligned}
+\end{split}\]</div>
+<p>As we have <span class="math notranslate nohighlight">\(n=|V'|=5\)</span> and <span class="math notranslate nohighlight">\(r=|V|=3\)</span> we have <span class="math notranslate nohighlight">\(P(n,r)=n\cdot (n-1)\cdot (n-r + 1)\)</span> <strong>r-permutations</strong> i.e. one-to-one functions <span class="math notranslate nohighlight">\(f\)</span> or <span style="color:#f88146"><strong>node assignments</strong></span> that can be potential solutions to the MCS problem. In this case, we have <span class="math notranslate nohighlight">\(P(5,3)=5\cdot 4\cdot 3=60\)</span> different  assignments. Then, <span style="color:#f88146">what assignments provide the MCS between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span></span>?</p>
+<p>For the graphs <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> the size of the MCS is <span class="math notranslate nohighlight">\(2\)</span>, since <span class="math notranslate nohighlight">\(X\)</span> has only two edges and if it is a subgraph of <span class="math notranslate nohighlight">\(Y\)</span> (as it is really is), the size of the MCS has <span class="math notranslate nohighlight">\(|V|=3\)</span> nodes and |E|=2$ edges.</p>
+<p>However, this depends on how good is the injective function <span class="math notranslate nohighlight">\(f\)</span>. For the one in <a class="reference internal" href="#matching"><span class="std std-numref">Fig. 18</span></a> we have:</p>
+<div class="math notranslate nohighlight">
+\[
+f(a)=1,\; f(b)=2\;\text{and}\; f(c)=3\;.
+\]</div>
+<p>As we can see, <span class="math notranslate nohighlight">\((a,b)\in E\)</span> and <span class="math notranslate nohighlight">\((1=f(a),2=f(b))\in E'\)</span>. However, for the other edge <span class="math notranslate nohighlight">\((b,c)\in E\)</span> we have that <span class="math notranslate nohighlight">\((2=f(b),3=f(c))\not\in E'\)</span>: As a result <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> <span style="color:#f88146"><strong>do only have one common edge for <span class="math notranslate nohighlight">\(f\)</span></strong></span> (in magenta).</p>
+<figure class="align-center" id="matching">
+<a class="reference internal image-reference" href="_images/Matching1-Photoroom.png"><img alt="_images/Matching1-Photoroom.png" src="_images/Matching1-Photoroom.png" style="width: 600px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">non-Maximal Common Substructure.</span><a class="headerlink" href="#matching" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Consider now the assignment:</p>
+<div class="math notranslate nohighlight">
+\[
+f(a)=1,\; f(b)=4\;\text{and}\; f(c)=5\;.
+\]</div>
+<p>which indeed leads to a MCS:</p>
+<figure class="align-center" id="matching2">
+<a class="reference internal image-reference" href="_images/Matching2-Photoroom.png"><img alt="_images/Matching2-Photoroom.png" src="_images/Matching2-Photoroom.png" style="width: 600px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">A Maximal Common Substructure.</span><a class="headerlink" href="#matching2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>However, this MCS assignment <strong>is not unique</strong>. Actually we have <span class="math notranslate nohighlight">\({5 \choose 3}=10\)</span> subgraphs of <span class="math notranslate nohighlight">\(Y\)</span> where we can <em>embed</em> <span class="math notranslate nohighlight">\(X\)</span> but only <span class="math notranslate nohighlight">\(8\)</span> of them lead to MCS assignments. In the above table, we encode each MCS injective function <span class="math notranslate nohighlight">\(f_i\)</span> as a list of <span style="color:#f88146"> <strong>pairwise matchings</strong> <span class="math notranslate nohighlight">\((v\in V, f_i(v)\in V')\)</span></span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+&amp;\begin{array}{cl}
+\text{Injection} &amp; \text{MCS Assignment} \\
+f_1 &amp; [(a, 1), \mathbf{(b, 4)}, (c, 5)]\\
+f_2 &amp; [(a, 2), \mathbf{(b, 1)}, (c, 3)]\\
+f_3 &amp; [(a, 2), \mathbf{(b, 1)}, (c, 4)]\\
+f_4 &amp; [(a, 3), \mathbf{(b, 1)}, (c, 2)]\\
+f_5 &amp; [(a, 3), \mathbf{(b, 1)}, (c, 4)]\\
+f_6 &amp; [(a, 4), \mathbf{(b, 1)}, (c, 2)]\\
+f_7 &amp; [(a, 4), \mathbf{(b, 1)}, (c, 3)]\\
+f_8 &amp; [(a, 5), \mathbf{(b, 4)}, (c, 1)]\\
+\end{array}
+\end{aligned}
+\end{split}\]</div>
+<p><strong>Notable vertices</strong>. In the above table, note that MCS assignments usually contain pairwise matchings between nodes with large degrees (notable vertices) in both graphs, namely <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> or <span class="math notranslate nohighlight">\(\mathbf{4}\)</span> (in bold). These matchings are <span class="math notranslate nohighlight">\(\mathbf{(b,1)}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{(b,4)}\)</span>.</p>
+<p>In the following exercise we emphasize the link between the subgraphs of <span class="math notranslate nohighlight">\(Y\)</span> and the MCS assignments, which is a fundamental concept in this topic.
+<br></br>
+<span style="color:#d94f0b">
+<strong>Exercise</strong>. Identify the <span class="math notranslate nohighlight">\({5 \choose 3}=10\)</span> subgraphs of size <span class="math notranslate nohighlight">\(3\)</span> in <span class="math notranslate nohighlight">\(Y\)</span> (indicating both nodes and edges) and:<br />
+<strong>a)</strong> Detect the ones which do correspond to a complete  embedding of <span class="math notranslate nohighlight">\(X\)</span> in <span class="math notranslate nohighlight">\(Y\)</span>.<strong>b)</strong> Identify these subgraphs in the <span class="math notranslate nohighlight">\(8\)</span> MCS assigmnets of the above table.
+<br></br>
+<strong>NOTE</strong>. Express always the edges in <strong>lexicographical order</strong> i.e. <span class="math notranslate nohighlight">\((i,j)\)</span> if <span class="math notranslate nohighlight">\(i&lt;j\)</span>.
+<br></br>
+Answer. <strong>a)</strong> The subgraphs are the <span class="math notranslate nohighlight">\(10\)</span> combinations of the <span class="math notranslate nohighlight">\(5\)</span> nodes <span class="math notranslate nohighlight">\(V'=\{1,2,3,4,5\}\)</span> in groups of <span class="math notranslate nohighlight">\(3\)</span> nodes (because <span class="math notranslate nohighlight">\(|V|=3\)</span>). However, only those subgraphs wich are connected can lead to a complete embeddding of <span class="math notranslate nohighlight">\(X\)</span> in <span class="math notranslate nohighlight">\(Y\)</span>:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+&amp;\begin{array}{cclc}
+\text{Subgraph} &amp; \text{Nodes} &amp; \text{Edges} &amp; \text{is Connected?}\\
+s_1    &amp; V_1'=(1, 2, 3) &amp; E_1'=\{(1,2),(1,3)\} &amp; \checkmark \\
+s_2    &amp; V_2'=(1, 2, 4) &amp; E_2'=\{(1,2),(1,3)\} &amp; \checkmark \\
+s_3    &amp; V_3'=(1, 2, 5) &amp; E_3'=\{(1,2)\}&amp;\\
+s_4    &amp; V_4'=(1, 3, 4) &amp; E_4'=\{(1,3),(1,4)\}&amp; \checkmark\\
+s_5    &amp; V_5'=(1, 3, 5) &amp; E_5'=\{(1,3)\}&amp;\\
+s_6    &amp; V_6'=(1, 4, 5) &amp; E_6'=\{(1,4),(1,5)\}&amp; \checkmark\\
+s_7    &amp; V_7'=(2, 3, 4) &amp; E_7'=\emptyset &amp;\\
+s_8    &amp; V_8'=(2, 3, 5) &amp; E_8'=\emptyset &amp;\\
+s_9    &amp; V_9'=(2, 4, 5) &amp; E_9'=\{(4,5)\} &amp;\\
+s_{10} &amp; V_{10}'=(3, 4, 5) &amp; E_{10}'=\{(4,5)\} &amp;\\
+\end{array}
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>b)</strong> We have that only subgraphs <span class="math notranslate nohighlight">\(s_1\)</span>, <span class="math notranslate nohighlight">\(s_2\)</span>, <span class="math notranslate nohighlight">\(s_4\)</span> and  <span class="math notranslate nohighlight">\(s_6\)</span> can accomodate the full graph <span class="math notranslate nohighlight">\(X\)</span>. In graph theory we say that these subgraphs are <strong>isomorphic</strong> to <span class="math notranslate nohighlight">\(Y\)</span>. Note that each of these subgraphs leads to <span class="math notranslate nohighlight">\(2\)</span> MCS assignments in the injection table above:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+V_1'&amp;=(1,2,3)\rightarrow f_2=[(a,2),(b,1),(c,3)],\; f_4=[(a,3),(b,1),(c,2)]\\
+V_2'&amp;=(1,2,4)\rightarrow f_3=[(a,2),(b,1),(c,4)],\; f_6=[(a,4),(b,1),(c,2)]\\
+V_4'&amp;=(1,3,4)\rightarrow f_5=[(a,3),(b,1),(c,4)],\; f_7=[(a,4),(b,1),(c,3)]\\
+V_6'&amp;=(1,4,5)\rightarrow f_1=[(a,1),(b,4),(c,5)],\; f_5=[(a,5),(b,4),(c,1)]\\
+\end{aligned}
+\)</span>
+</span>
+<br></br></p>
+</section>
+<section id="rectangle-rule-cost-function">
+<h3>Rectangle rule: Cost Function<a class="headerlink" href="#rectangle-rule-cost-function" title="Permalink to this heading">#</a></h3>
+<p>So far, solving MCS revolves around the idea of <span style="color:#f88146"><strong>maximizing the number of pairwise matchings</strong></span> between graphs <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+<p>For a human, is quite clear to adopt a <em>greedy strategy</em>:</p>
+<ol class="arabic simple">
+<li><p>Identify notable vertices in <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(V'\)</span>.</p></li>
+<li><p>For each matching pair between notable nodes:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Extend the matching pairs to neighbors.</p></li>
+<li><p>Increment the number of rectables accordingly.</p></li>
+</ul>
+<p>Machines need a more precise specification. Maximizing the number of rectangles, however, arises from the following procedure:</p>
+<p><em>Given <span class="math notranslate nohighlight">\(a\in V\)</span> and <span class="math notranslate nohighlight">\(i\in V'\)</span>, a rectangle appears if:</em></p>
+<ol class="arabic simple">
+<li><p><em>We match <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(i\)</span></em></p></li>
+<li><p><em>We match <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, which are respective neighbors of <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(i\)</span>: <span class="math notranslate nohighlight">\(b\in {\cal N}_a\)</span> and <span class="math notranslate nohighlight">\(j\in {\cal N}_i\)</span>.</em></p></li>
+</ol>
+<p>In other words, a rectangle happens when we match two nodes and their respective neighbors do also match. This is exacly why we prefer pairwise matchings between notable vertices: because they are more likely to produce more rectangles.</p>
+<p>This rationale leads to the <span style="color:#f88146"><strong>second-order flavor</strong></span> of MCS, also known as <span style="color:#f88146"><strong>Graph Matching</strong></span> inside the Pattern Recognition community. Indeed, posing the problem in matricial terms, we have:</p>
+<ul class="simple">
+<li><p>The adjacency matrices <span class="math notranslate nohighlight">\(\mathbf{X}\in\{0,1\}^{m\times m}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{Y}\in\{0,1\}^{n\times n}\)</span> of graphs <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+<li><p>The unknown <span style="color:#f88146"><strong>matching matrix</strong></span> <span class="math notranslate nohighlight">\(\mathbf{M}\in\{0,1\}^{n\times m}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{M}_{ia}=1\)</span> means that <span class="math notranslate nohighlight">\(i\in V\)</span> matches <span class="math notranslate nohighlight">\(a\in V'\)</span>.</p></li>
+</ul>
+<p>Therefore, a rectagle exists if <em>its four sides do exist</em>, i.e. if</p>
+<div class="math notranslate nohighlight">
+\[
+\exists a,b\in V, \exists i,j\in V':\; \mathbf{M}_{ai}\mathbf{M}_{bj}\mathbf{X}_{ab}\mathbf{Y}_{ij}&gt;0\;,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{X}_{ab}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{Y}_{ij}\)</span> encode the respective neighboring rules (sides of the rectangle) as we show in <a class="reference internal" href="#rectangle"><span class="std std-numref">Fig. 20</span></a>.</p>
+<figure class="align-center" id="rectangle">
+<a class="reference internal image-reference" href="_images/Rectangle-Photoroom.png"><img alt="_images/Rectangle-Photoroom.png" src="_images/Rectangle-Photoroom.png" style="width: 600px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">The Rectangle Rule in Graph Matching.</span><a class="headerlink" href="#rectangle" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Quadratic Cost function</strong>. A function that counts the number of rectangles given by a matching matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is simply:</p>
+<div class="math notranslate nohighlight">
+\[
+F(\mathbf{M}) = \frac{1}{2}\sum_{a\in V}\sum_{i\in V'}\sum_{b\in V}\sum_{j\in V'}\mathbf{M}_{ai}\mathbf{M}_{bj}\mathbf{X}_{ab}\mathbf{Y}_{ij}\;,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(1/2\)</span> factor removes rectangles counted twice.</p>
+<p>Consider for instance the graphs in <a class="reference internal" href="#rectangle"><span class="std std-numref">Fig. 20</span></a>. They are directed (i.e. <em>digraphs</em>). Let us found the MCS using the matricial formulation and the above function.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\mathbf{X} = 
+\begin{array}{l}
+a\\
+b\\
+c\\
+d\\
+\end{array}
+\begin{bmatrix}
+0 &amp; 1 &amp; 1 &amp; 1 &amp; 1\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+\end{bmatrix}
+\;\; 
+\mathbf{Y} = 
+\begin{array}{l}
+i\\
+j\\
+k\\
+l\\
+\end{array}
+\begin{bmatrix}
+0 &amp; 1 &amp; 1 &amp; 1 &amp; 1\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+\end{bmatrix}
+\end{align}
+\end{split}\]</div>
+<p>The matching in <a class="reference internal" href="#rectangle"><span class="std std-numref">Fig. 20</span></a> is given by</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="topic1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NP-Complete Problems</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-common-subgraph">Maximum Common Subgraph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softassign">SoftAssign</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assignments-and-matchings">Assignments and Matchings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rectangle-rule-cost-function">Rectangle rule: Cost Function</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
