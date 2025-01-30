@@ -1,0 +1,653 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>&lt;no title&gt; &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'kk';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2024
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">NP-Hardness and Graph Matching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Heuristic Search</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_intro.html">4. Introduction to the practical part of TAB2025</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fkk.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/kk.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><no title></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># numpy backend</span>
+<span class="kn">import</span> <span class="nn">pygmtools</span> <span class="k">as</span> <span class="nn">pygm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>  <span class="c1"># for plotting</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">sio</span>  <span class="c1"># for loading .mat file</span>
+<span class="kn">import</span> <span class="nn">scipy.spatial</span> <span class="k">as</span> <span class="nn">spa</span>  <span class="c1"># for Delaunay triangulation</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">ConnectionPatch</span> <span class="c1"># for plotting matching result</span>
+
+<span class="n">pygm</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;numpy&#39;</span><span class="p">)</span>  <span class="c1"># set default backend for pygmtools</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obj_resize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+<span class="n">n_images</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">n_outlier</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">img_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">kpts_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">n_kpts_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">perm_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">bm</span> <span class="o">=</span> <span class="n">pygm</span><span class="o">.</span><span class="n">benchmark</span><span class="o">.</span><span class="n">Benchmark</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WillowObject&#39;</span><span class="p">,</span>
+                              <span class="n">sets</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
+                              <span class="n">obj_resize</span><span class="o">=</span><span class="n">obj_resize</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">img_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_images</span><span class="p">:</span>
+    <span class="n">data_list</span><span class="p">,</span> <span class="n">gt_dict</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">rand_get_data</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="s1">&#39;Duck&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;img&#39;</span><span class="p">])</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;kpts&#39;</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">])</span>
+        <span class="n">kpts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">kpt</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">kpt</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">]])</span>
+        <span class="n">perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">kpts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">img_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="n">kpts_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span>
+        <span class="n">n_kpts_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kpts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">perm_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>          <span class="c1"># Import NumPy for numerical operations and array handling</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>      <span class="c1"># Import PIL (Python Imaging Library) for image processing</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">sio</span>     <span class="c1"># Import SciPy&#39;s IO module for reading .mat files</span>
+
+<span class="c1"># Define target size for image resizing (256x256 pixels)</span>
+<span class="n">obj_resize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+
+<span class="c1"># Load duck images from the Willow Object Dataset</span>
+<span class="c1"># These images will be used for feature matching</span>
+<span class="n">img1</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;./data/WillowObject/WILLOW-ObjectClass/Duck/060_0000.png&#39;</span><span class="p">)</span>  <span class="c1"># Load first duck image</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;./data/WillowObject/WILLOW-ObjectClass/Duck/060_0010.png&#39;</span><span class="p">)</span>  <span class="c1"># Load second duck image</span>
+
+<span class="c1"># Load keypoint annotations from corresponding .mat files</span>
+<span class="c1"># &#39;pts_coord&#39; contains the coordinates of manually annotated keypoints for each image</span>
+<span class="c1"># Convert the MATLAB format to NumPy arrays for easier processing</span>
+<span class="n">kpts1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;./data/WillowObject/WILLOW-ObjectClass/Duck/060_0000.mat&#39;</span><span class="p">)[</span><span class="s1">&#39;pts_coord&#39;</span><span class="p">])</span>  <span class="c1"># Keypoints for first image</span>
+<span class="n">kpts2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;./data/WillowObject/WILLOW-ObjectClass/Duck/060_0010.mat&#39;</span><span class="p">)[</span><span class="s1">&#39;pts_coord&#39;</span><span class="p">])</span>  <span class="c1"># Keypoints for second image</span>
+
+<span class="c1"># Scale keypoint coordinates to match the new image dimensions</span>
+<span class="c1"># This ensures keypoints remain aligned when images are resized</span>
+<span class="n">kpts1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpts1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">obj_resize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">img1</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Scale x-coordinates of first image keypoints</span>
+<span class="n">kpts1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpts1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">obj_resize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">img1</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Scale y-coordinates of first image keypoints</span>
+<span class="n">kpts2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpts2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">obj_resize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">img2</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Scale x-coordinates of second image keypoints</span>
+<span class="n">kpts2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpts2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">obj_resize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">img2</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Scale y-coordinates of second image keypoints</span>
+
+<span class="c1"># Resize both images to the target size (256x256)</span>
+<span class="c1"># Using BILINEAR interpolation for smooth resizing</span>
+<span class="n">img1</span> <span class="o">=</span> <span class="n">img1</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">obj_resize</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>  <span class="c1"># Resize first image</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">img2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">obj_resize</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>  <span class="c1"># Resize second image</span>
+
+<span class="k">def</span> <span class="nf">plot_image_with_graph</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">   Function to visualize an image with keypoints and optional graph connections</span>
+<span class="sd">   </span>
+<span class="sd">   Parameters:</span>
+<span class="sd">   - img: Input image to be displayed</span>
+<span class="sd">   - kpt: Keypoints array with shape (2, N) where N is number of keypoints</span>
+<span class="sd">   - A: Optional adjacency matrix for drawing connections between keypoints</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+   <span class="c1"># Display the input image</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+   
+   <span class="c1"># Plot keypoints as white dots with black edges</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kpt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kpt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+   
+   <span class="c1"># If an adjacency matrix is provided, draw connections between keypoints</span>
+   <span class="k">if</span> <span class="n">A</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="c1"># Iterate through non-zero elements in adjacency matrix</span>
+       <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">as_tuple</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+           <span class="c1"># Draw black lines between connected keypoints</span>
+           <span class="c1"># idx[0] is start point index, idx[1] is end point index</span>
+           <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">kpt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">kpt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="c1"># x-coordinates of line</span>
+                   <span class="p">(</span><span class="n">kpt</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">kpt</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span>  <span class="c1"># y-coordinates of line</span>
+                   <span class="s1">&#39;k-&#39;</span><span class="p">)</span>                               <span class="c1"># black solid line style</span>
+
+<span class="c1"># Create a figure with specific size (8 inches width, 4 inches height)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Create first subplot for Image 1</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>          <span class="c1"># 1 row, 2 columns, first position</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Image 1&#39;</span><span class="p">)</span>          <span class="c1"># Set title for first subplot</span>
+<span class="n">plot_image_with_graph</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">kpts1</span><span class="p">)</span>  <span class="c1"># Plot first image with its keypoints</span>
+
+<span class="c1"># Create second subplot for Image 2</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>          <span class="c1"># 1 row, 2 columns, second position</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Image 2&#39;</span><span class="p">)</span>          <span class="c1"># Set title for second subplot</span>
+<span class="n">plot_image_with_graph</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">kpts2</span><span class="p">)</span>  <span class="c1"># Plot second image with its keypoints</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./images/duck_matching.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6b66f0aa342fc9c62efd1c76b2649608d8c0932f93060f4f482bc34152b72e54.png" src="_images/6b66f0aa342fc9c62efd1c76b2649608d8c0932f93060f4f482bc34152b72e54.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_image_with_graph</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kpt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kpt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">A</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">kpt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">kpt</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="p">(</span><span class="n">kpt</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">kpt</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_images</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_images</span> <span class="o">//</span> <span class="mi">5</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Image </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">plot_image_with_graph</span><span class="p">(</span><span class="n">img_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpts_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="c1"># plt.savefig(&#39;image&#39;)</span>
+<span class="c1"># plt.close()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/26b5253f8b9336e96bee2bab6fd79687ca4c54afbcdde533bf4f3bf8b2629f61.png" src="_images/26b5253f8b9336e96bee2bab6fd79687ca4c54afbcdde533bf4f3bf8b2629f61.png" />
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

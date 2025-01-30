@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>NP-Complete Problems &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'topic1';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="TAB2024" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2024
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">NP-Complete Problems</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Ftopic1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/topic1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NP-Complete Problems</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems-and-intractability">Problems and Intractability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sat-problem">The SAT problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-clique-problem">The Clique problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-sat3-to-clique">From SAT3 to Clique</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-clique-to-sat3">From Clique to SAT3</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recognizing-np-problems">Recognizing NP problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#independent-sets">Independent sets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vertex-cover">Vertex cover</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="np-complete-problems">
+<h1>NP-Complete Problems<a class="headerlink" href="#np-complete-problems" title="Permalink to this heading">#</a></h1>
+<section id="problems-and-intractability">
+<h2>Problems and Intractability<a class="headerlink" href="#problems-and-intractability" title="Permalink to this heading">#</a></h2>
+<p>Not all computing problems are born equal. <span style="color:#f88146">Some problems are <strong>more difficult</strong> than others</span>. The difficulty of a problem is part of its description. Following, Garey &amp; Johnson’s <em>Computers and Intractability</em> to describe properly a problem we need:</p>
+<ul class="simple">
+<li><p>A general description of all its <span style="color:#f88146">parameters</span>, and</p></li>
+<li><p>A <span style="color:#f88146">statement </span> of what properties the answer, or solution, is required to satisfy.</p></li>
+</ul>
+<p>An <span style="color:#f88146">instance of a problem</span> is obtained by specifying particular values for all
+the problem parameters.</p>
+<p><strong>Graphs</strong>. Since almost all combinatorial problems can be mapped to a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, the <em>parameters</em> of the problem are typically the <em>number of nodes</em> <span class="math notranslate nohighlight">\(n=|V|\)</span> and the <em>statement</em> is the <em>desired property</em> satisfied by the nodes, paths, cycles and subgraphs of <span class="math notranslate nohighlight">\(G\)</span> in the solution. <span style="color:#f88146">It is the fulfillment of this property what makes them <strong>tractable</strong> or <strong>intractable</strong>!</span></p>
+</section>
+<section id="the-sat-problem">
+<h2>The SAT problem<a class="headerlink" href="#the-sat-problem" title="Permalink to this heading">#</a></h2>
+<p><strong>Satisfiability</strong>. Consider the following problem that is not (apparently) is not related to graphs: <em>Given well-formed formula (wff) in first-order logic, determine whether it is satisfiable</em>.</p>
+<ul class="simple">
+<li><p>We have a set of <span class="math notranslate nohighlight">\(n\)</span> Boolean variables <span class="math notranslate nohighlight">\(X=\{x_1,x_2,\ldots,x_n\}\)</span>, where <span class="math notranslate nohighlight">\(x_i\in\{0,1\}\;\forall i\)</span>.</p></li>
+<li><p>In the wff, we may have variables <span class="math notranslate nohighlight">\(x_i\)</span> and their negations <span class="math notranslate nohighlight">\(\neg x_i\)</span>.</p></li>
+<li><p>The wff is in Conjunctive Normal Form (CNF) i.e. a collection of disjunctions <span class="math notranslate nohighlight">\(\lor\)</span> joined by <span class="math notranslate nohighlight">\(\land\)</span> connectors.</p></li>
+</ul>
+<p>For instance, the wff</p>
+<div class="math notranslate nohighlight">
+\[
+(x_1\lor x_2\lor \neg x_3)\land (\neg x_1\lor x_3\lor x_4)\land (x_2\lor x_3\lor \neg x_4)
+\]</div>
+<p>is in CNF: it has 3 <em>clauses</em> with three <em>literals</em> each. Then, determining if it is <span style="color:#f88146">satisfiable</span> means determining whether there is a Boolean assignment for the variables so that the wff is true (evaluated to <span class="math notranslate nohighlight">\(1\)</span>).</p>
+<ul class="simple">
+<li><p>Since the wff is in CNF, <strong>all</strong> the clauses must be evaluated to <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p>Inside each clause, <strong>at least one</strong> literal must be evaluated to <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+</ul>
+<p>A <strong>brute force</strong> algorithm should evaluate all the <span class="math notranslate nohighlight">\(2^n\)</span> possible Boolean assignments <span class="math notranslate nohighlight">\(\{0,1\}\)</span> for the <span class="math notranslate nohighlight">\(n\)</span> variables. Is there any way of solving the so called
+<span style="color:#f88146">SAT problem</span> in <em>polynomial time</em> (not exponential)? Unfortunately, only if each clause has less than <span class="math notranslate nohighlight">\(3\)</span> literals!</p>
+<p><strong>SAT2</strong>. In the SAT2 problem, all clauses have 2 literals. Consider, for instance, the wff</p>
+<div class="math notranslate nohighlight">
+\[
+(x_1\lor x_5)\land 
+(x_2\lor x_3)\land
+(x_1\lor x_6)\land
+(x_4\lor x_4)\land
+(\neg x_6\lor \neg x_3)\land
+(\neg x_2\lor x_3)\land 
+(\neg x_4\lor x_2)\;.
+\]</div>
+<p>where all the clauses have two literals and <span class="math notranslate nohighlight">\(x_4\equiv(x_4\lor x_4)\)</span> so that clauses with one literal end up having two of them. Then,</p>
+<ul class="simple">
+<li><p>We map the logic variables in <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(2n\)</span> nodes in <span class="math notranslate nohighlight">\(V\)</span>: one node for the non-negated variable <span class="math notranslate nohighlight">\(x_i\)</span> and another one for <span class="math notranslate nohighlight">\(\neg x_i\)</span>.</p></li>
+<li><p>Exploiting here the equivalences <span class="math notranslate nohighlight">\((\neg a\lor b)\equiv (a\Rightarrow b)\equiv (\neg b\Rightarrow \neg a)\)</span>, we have two edges per clause, except for the ones with <span class="math notranslate nohighlight">\((x_i\lor x_i)\)</span> where we have only one edge.</p></li>
+</ul>
+<p>This result in the digraph (directed graph) <span class="math notranslate nohighlight">\(G=(V,E)\)</span> as the one in <a class="reference internal" href="#sat2"><span class="std std-numref">Fig. 1</span></a>:</p>
+<figure class="align-center" id="sat2">
+<a class="reference internal image-reference" href="_images/SAT2-Photoroom.png"><img alt="_images/SAT2-Photoroom.png" src="_images/SAT2-Photoroom.png" style="width: 600px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">An instance of SAT2 for <span class="math notranslate nohighlight">\(n=5\)</span> variables.</span><a class="headerlink" href="#sat2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Then, the SAT2 problem is <strong>reformulated as follows</strong> <a class="reference external" href="https://www.sciencedirect.com/sdfe/pdf/download/eid/1-s2.0-0020019079900024/first-page-pdf">(Aspvall, Plass and Tarjan, 1979)</a>:</p>
+<p><em>Given a CNF-digraph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, the CNF encoded by it is satisfiable if and only if there is no strongly-connected component <span class="math notranslate nohighlight">\(C_k\)</span> where <span class="math notranslate nohighlight">\(x_i\in C_k\)</span> and  <span class="math notranslate nohighlight">\(\neg x_i\in C_k\)</span></em>.</p>
+<p>Firstly, two nodes <span class="math notranslate nohighlight">\(i,j\in V\)</span> are <span style="color:#f88146">strongly connected</span> if there exists a directed path <span class="math notranslate nohighlight">\(\Gamma_{ij}\)</span> connecting them. For instance, in <a class="reference internal" href="#sat2"><span class="std std-numref">Fig. 1</span></a>, <span class="math notranslate nohighlight">\(i=x_2\)</span> and <span class="math notranslate nohighlight">\(j=x_1\)</span> are strongly connected since we have <span class="math notranslate nohighlight">\(\Gamma_{ij}=\{i=x_2\rightarrow x_3\rightarrow \neg x_6\rightarrow x_1=j\}
+\)</span>. Actually all the nodes in dark orange belong to the same <strong>strongly-connected component</strong> <span class="math notranslate nohighlight">\(C_8=\{x_1,x_2,x_3, 
+x_4,\neg x_6\}\)</span>. In short, we can visit all the nodes in <span class="math notranslate nohighlight">\(C_8\)</span> starting from any of them.</p>
+<p>In addition, the connected component <span class="math notranslate nohighlight">\(C_8\)</span> does not include simultaneously an <span class="math notranslate nohighlight">\(x_i\)</span> and its negation <span class="math notranslate nohighlight">\(\neg x_i\)</span>. If this also happens in the remaining strongly-connected components, then the wff is satifiable. Actually this is the case since the remaining components of the above graph are</p>
+<div class="math notranslate nohighlight">
+\[
+C_1=\{\neg x_1\}, C_2=\{\neg x_2\}, C_3=\{\neg x_3\}, C_4=\{\neg x_4\}, C_5=\{x_5\}, C_6=\{x_6\}, C_7=\{\neg x_5\}
+\]</div>
+<p>which all are <em>atomic</em> and there is no possibility of containing both a variable and its negation. Therefore, the above wff is satisfiable. Why? Basically because starting at any node is it impossible to reach a contradiction, i.e. to have <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(\neg x_i\)</span> in the same component. This is so simple that we do not need to make the two-directional proof (necessary and sufficient condition).</p>
+<p><strong>Is SAT2 polynomial?</strong> Well, the question reduces now to determine whether the strongly connected components of a digraph can be found in polynomial time. Actually, each component can be found by launching paths and annotating they return, if it happens, or declaring an atomic component otherwise. This is the strategy of the <a class="reference external" href="https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm">Tarjan’s Algorithm</a> which takes <span class="math notranslate nohighlight">\(O(|V| + |E|)\)</span>.
+Herein, we use the <a class="reference external" href="https://web.mit.edu/16.070/www/lecture/big_o.pdfwhere">Big-O notation</a></p>
+<div class="math notranslate nohighlight">
+\[
+f(n):=O(g(n))\;\text{means}\;\exists c: |f(n)
+|\le c \cdot |g(n)|\; \forall n\ge 0. 
+\]</div>
+<p>Therefore, <strong>SAT2 is polynomial</strong> and therefore it is <strong>not intractable</strong>. We express that, saying <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{SAT2}\not\in\text{NP}\)</span></span>.</p>
+</section>
+<section id="the-clique-problem">
+<h2>The Clique problem<a class="headerlink" href="#the-clique-problem" title="Permalink to this heading">#</a></h2>
+<p>Although we could reduce SAT2 to a polynomial problem (find strongly-connected components), this is not the case for the <em>general Satisfiability problem</em> where clauses have <em>any</em> <span class="math notranslate nohighlight">\(n&gt;2\)</span> number of literals . <a class="reference external" href="https://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem">Cook and Levin</a> proved that in a theorem described in the second chapter of Garey &amp; Johnson. The theorem is beautiful and it relies on Turing Machines to show that the CNF solving the SAT problem may have an exponential number of terms! However, this proof is out of the scope of this subject.</p>
+<p>Herein, however, we are interested in showing <em>why</em> SAT is intractable (we say <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{SAT}\in\text{NP}\)</span></span>) by <em>reducing other problems to it</em>. The first of this prolems is the <span style="color:#f88146">Clique problem</span>.</p>
+<section id="from-sat3-to-clique">
+<h3>From SAT3 to Clique<a class="headerlink" href="#from-sat3-to-clique" title="Permalink to this heading">#</a></h3>
+<p>The link between SAT and Clique is given by first transforming a SAT problem to a SAT3 problem where all clauses have <span class="math notranslate nohighlight">\(3\)</span> literals. This is done as follows:</p>
+<p>Given a clause <span class="math notranslate nohighlight">\((x_1\lor x_2\lor\ldots\lor x_m)\)</span>, we transform it into <span class="math notranslate nohighlight">\(m-2\)</span> clauses with <span class="math notranslate nohighlight">\(3\)</span> literals:</p>
+<div class="math notranslate nohighlight">
+\[
+(x_1\lor x_2\lor \alpha_2)\land (\neg \alpha_2\lor x_3\lor \alpha_3)\land (\neg \alpha_3\lor x_4\lor \alpha_4)\land \ldots\land (\neg \alpha_{m-2}\lor x_{m-1}\lor x_m)\;,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha_2,\ldots,\alpha_{n-2}\)</span> are <em>fresh variables</em> which do not modify the satisfiability of the original clause. Why? Note that if <span class="math notranslate nohighlight">\(\alpha_i\)</span> appears in one sub-clause <span class="math notranslate nohighlight">\(i-1\)</span>, its negation <span class="math notranslate nohighlight">\(\neg\alpha_i\)</span> appears in the sub-clause <span class="math notranslate nohighlight">\(i\)</span>. As a result this variable does not interfere in the satisfiability of the clause.</p>
+<p>Now, if we have originally <span class="math notranslate nohighlight">\(c\)</span> clauses, each one with <span class="math notranslate nohighlight">\(n\ge m&gt;3\)</span> literals, then we have <span class="math notranslate nohighlight">\(O(m\cdot c)\)</span> clauses which is linear in the number of terms.</p>
+<p><strong>Maximal cliques</strong>. The purpose of the above transformation is to build a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> where we have <span class="math notranslate nohighlight">\(3\cdot c\)</span> nodes (<span class="math notranslate nohighlight">\(3\)</span> nodes per clause, because each clause has <span class="math notranslate nohighlight">\(3\)</span> literals). The graph <span class="math notranslate nohighlight">\(G\)</span> is non-directed and there is an edge <span class="math notranslate nohighlight">\((i,j)\in E\)</span> if:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> belong to different clauses: <span class="math notranslate nohighlight">\(c(i)\neq c(j)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(l_i\)</span> and <span class="math notranslate nohighlight">\(l_j\)</span>, the respective literals, do not induce a contradiction: <span class="math notranslate nohighlight">\(l_i\neq \neg l_j\)</span>.</p></li>
+</ul>
+<p>For example, in <a class="reference internal" href="#sat2-clique"><span class="std std-numref">Fig. 2</span></a> we show the nodes for the wff</p>
+<div class="math notranslate nohighlight">
+\[
+(x_1\lor x_2\lor \neg x_3)\land (\neg x_1\lor x_3\lor x_4)\land (x_2\lor x_3\lor \neg x_4)
+\]</div>
+<p>which does not need any transformations since all the clauses have <span class="math notranslate nohighlight">\(3\)</span> literals yet. The
+nodes corresponding to the same clause are have the same color. Note that the literal <span class="math notranslate nohighlight">\(x_3\)</span> leads to
+<span class="math notranslate nohighlight">\(2\)</span> diferent nodes (orange and yellow clauses) and it appears negated in the red clause. Overall, <span style="color:#f88146">the wff is satisfiable if and only if there is a group of <span class="math notranslate nohighlight">\(c=3\)</span> nodes mutually inter-connected</span>, such as <span class="math notranslate nohighlight">\(\neg x_3\)</span>, <span class="math notranslate nohighlight">\(x_4\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span>. Such a group of nodes forms a complete subgraph <span class="math notranslate nohighlight">\(K_c\)</span> or <span style="color:#f88146">clique</span> whose <em>order</em> is <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>Actually, all the cliques of order <span class="math notranslate nohighlight">\(c\)</span> lead to a valid interpretation of the wff: <span class="math notranslate nohighlight">\(\neg x_3=1\)</span>, <span class="math notranslate nohighlight">\(x_4=1\)</span> and <span class="math notranslate nohighlight">\(x_2=1\)</span>, i.e. <span class="math notranslate nohighlight">\(x_3=0\)</span>, <span class="math notranslate nohighlight">\(x_4=1\)</span> and <span class="math notranslate nohighlight">\(x_2=1\)</span>, makes the above wff True. Can you find other cliques (groups of <span class="math notranslate nohighlight">\(c\)</span> nodes completely inter-connected) in the graph? Of course they are. For instance: <span class="math notranslate nohighlight">\(\neg x_3\)</span>, <span class="math notranslate nohighlight">\(\neg x_1\)</span> and <span class="math notranslate nohighlight">\(\neg x_4\)</span> lead to <span class="math notranslate nohighlight">\(x_3=0\)</span>, <span class="math notranslate nohighlight">\(x_1=0\)</span> and <span class="math notranslate nohighlight">\(x_4=0\)</span> which makes the wff True as well.</p>
+<figure class="align-center" id="sat2-clique">
+<a class="reference internal image-reference" href="_images/SAT2-clique-Photoroom.png"><img alt="_images/SAT2-clique-Photoroom.png" src="_images/SAT2-clique-Photoroom.png" style="width: 600px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Finding maximal cliques in SAT3 for <span class="math notranslate nohighlight">\(c=3\)</span> clauses.</span><a class="headerlink" href="#sat2-clique" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Not-maximal cliques</strong>. Given the above graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, its construction ensures that <span style="color:#f88146">the maximum size any of its cliques is <span class="math notranslate nohighlight">\(c\)</span></span> and this occurs, at least for one clique, only when the wff encoded by the graph is satisfiable. For instance, it is well known that a wff is not satisfiable <em>if and only if (iff) the wff is a contradiction</em>.</p>
+<p>The most basic contradiction in CNF is</p>
+<div class="math notranslate nohighlight">
+\[
+x\land \neg x\;.
+\]</div>
+<p>However, this is not in SAT3 form. To do so we proceed as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+x \equiv (x\lor \alpha_1\lor \alpha_2)\land (x\lor \alpha_1\lor \neg\alpha_2)\land (x\lor \neg\alpha_1\lor \alpha_2)\land (x\lor \neg\alpha_1\lor\neg\alpha_2)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\neg x \equiv (\neg x\lor \beta_1\lor \beta_2)\land (\neg x\lor \beta_1\lor \neg\beta_2)\land (\neg x\lor \beta_1\lor \neg\beta_2)\land (\neg x\lor \neg\beta_1\lor\neg\beta_2)\;,
+\]</div>
+<p>i.e. each atomic clause is replaced by the conjunction of <span class="math notranslate nohighlight">\(4\)</span> clauses and this conjunction is satisfiable iff the atomic clause is satisfiable.</p>
+<p>Well, all we have to do is to build now the graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> with <span class="math notranslate nohighlight">\(c=8\)</span> clauses with <span class="math notranslate nohighlight">\(3\)</span> nodes each (<span class="math notranslate nohighlight">\(24\)</span> nodes overall). The new formula equivalent to <span class="math notranslate nohighlight">\(x\land\neg x\)</span> will be satisfiable if we can find any clique of size <span class="math notranslate nohighlight">\(8\)</span> in this graph. Do we really need to build the graph to verify this point? In other words, can we have a complete subgraph <span class="math notranslate nohighlight">\(K_8\)</span> inside the graph of <span class="math notranslate nohighlight">\(24\)</span> nodes if:</p>
+<ul class="simple">
+<li><p>The variables in the same clause cannot be connected.</p></li>
+<li><p>No variable can be connected with its negation?</p></li>
+</ul>
+<p>In order to build a clique of size <span class="math notranslate nohighlight">\(c=8\)</span> we need <span class="math notranslate nohighlight">\(8\)</span> literals where we cannot include both a literal and its negation. One option is to get the set <span class="math notranslate nohighlight">\(C=\{x^1,x^2,x^3,x^4,\alpha^1_1,\alpha^3_2,\beta^1_1,\beta^3_2\}\)</span> where the super-indexes refer to the clause’s number.</p>
+<ul class="simple">
+<li><p>It is clear that we can form a <span class="math notranslate nohighlight">\(4-\)</span>clique with the <span class="math notranslate nohighlight">\(x\)</span>s.</p></li>
+<li><p>No problem to extend it to a <span class="math notranslate nohighlight">\(6\)</span>-clique by including the <span class="math notranslate nohighlight">\(\beta\)</span>s.</p></li>
+<li><p>We can go further and form a <span class="math notranslate nohighlight">\(7\)</span>-clique by including <span class="math notranslate nohighlight">\(\alpha^3_2\)</span>.</p></li>
+</ul>
+<p>However, to extend the <span class="math notranslate nohighlight">\(7\)</span>-clique we need to include <span class="math notranslate nohighlight">\(\alpha^1_1\)</span> (there is no other possibility). But this cannot be done since <span class="math notranslate nohighlight">\(\alpha^1_1\)</span> and <span class="math notranslate nohighlight">\(x^1\)</span> (yet included) belong to the same clause and there is no edge between them! As a result, the wff is not satisfiable.</p>
+<p><span style="color:#f88146"> <strong>An important lesson of this proof</strong> is that: cliques are full-connected subsets. If you can create them it means that their members form an equivalence class</span>.</p>
+<p>In addition, adding clauses only leads to make things more complicated since the order needed for satisfiability gets larger.
+<br></br>
+<span style="color:#d94f0b">
+<strong>Exercise</strong>. Consider now the following clause: <span class="math notranslate nohighlight">\(x\lor \neg x\)</span>
+which is a tautology, i.e. it is <em>fully satisfiable</em> (all assignments lead to True).
+<br></br>
+In this case, the equivalent SAT3 problem has two clauses, i.e. <span class="math notranslate nohighlight">\(c=2\)</span> (see Garey &amp; Johnson, page <span class="math notranslate nohighlight">\(48\)</span>):
+<br></br>
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+(x\lor \neg x)\equiv (x\lor \neg x\lor \alpha_1)\land (x\lor \neg x\lor \neg\alpha_1)
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Build the associated graph and determine the maximal clique.
+</spah>
+<br></br>
+<span style="color:#d94f0b">
+Answer: <span class="math notranslate nohighlight">\(G=(V,E)\)</span> will have <span class="math notranslate nohighlight">\(V=\{x^1,\neg x^1,\alpha_1, x^2,\neg x^2,\neg\alpha_1\}\)</span>, i.e. <span class="math notranslate nohighlight">\(n=6\)</span> nodes.
+The (undirected) edges are
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+E &amp;=\{(x^1,x^2),(x^1,\neg x^2),(x^1,\neg\alpha_1)\}\cup \{(\neg x^1,x^2),(\neg x^1,\neg x^2),(\neg x^1,\neg\alpha_1)\} \cup \{(\alpha_1,x^2),(\alpha_1,\neg x^2)\}\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+All the possible maximal subsets of <span class="math notranslate nohighlight">\(V\)</span> have size <span class="math notranslate nohighlight">\(3\)</span>: <span class="math notranslate nohighlight">\(\{x^1,x^2,\alpha_1\}\)</span>, <span class="math notranslate nohighlight">\((x^1,\neg x^2,\alpha_1)\)</span> etc. However, it is impossible to form any clique of size <span class="math notranslate nohighlight">\(3\)</span>. Why? Because in all of these subsets we must include either two literals of the same clause or two contradictory literals, which does not match the edge set <span class="math notranslate nohighlight">\(E\)</span>. As a result, the largest cliques have size <span class="math notranslate nohighlight">\(c=2\)</span> (actually, each edge in an undirected graph is a <span class="math notranslate nohighlight">\(2\)</span>-clique) and the formula is satisfiable as expected (see <a class="reference internal" href="#sat2-clique-ex"><span class="std std-numref">Fig. 3</span></a>).
+</span></p>
+<figure class="align-center" id="sat2-clique-ex">
+<a class="reference internal image-reference" href="_images/SAT2-clique-ex-Photoroom.png"><img alt="_images/SAT2-clique-ex-Photoroom.png" src="_images/SAT2-clique-ex-Photoroom.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Finding trivial maximal cliques in SAT3 for <span class="math notranslate nohighlight">\(c=2\)</span> clauses.</span><a class="headerlink" href="#sat2-clique-ex" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="from-clique-to-sat3">
+<h3>From Clique to SAT3<a class="headerlink" href="#from-clique-to-sat3" title="Permalink to this heading">#</a></h3>
+<p>So far, we know that SAT3 can be always reduced to an equivalent (maximal) Clique problem. As we know that <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{SAT3}\in\text{NP}\)</span></span>, then <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{Clique}\in\text{NP}\)</span></span>. Actually, this is all we have to do to prove whether a problem <span style="color:#f88146"><span class="math notranslate nohighlight">\(\Pi\in \text{NP}\)</span></span>:</p>
+<ol class="arabic simple">
+<li><p>Select a know problem <span style="color:#f88146"><span class="math notranslate nohighlight">\(\Pi'\in\text{NP}\)</span></span>.</p></li>
+<li><p>Reduce <span style="color:#f88146"><span class="math notranslate nohighlight">\(\Pi\)</span></span> to <span style="color:#f88146"><span class="math notranslate nohighlight">\(\Pi'\)</span></span>.</p></li>
+<li><p>Test whether the reduction is polynomial.</p></li>
+</ol>
+<p>In the previous section, we have worked on the <em>if</em> part of the reduction, i.e. a SAT3 can be formulated as a clique problem. Now, we are working in the <em>iff</em> part: any clique problem can be mapped to an equivalent SAT3 one. Let’s go!</p>
+<p>In Garey &amp; Johnson, the Clique problem is <strong>formulated as follows</strong> (page <span class="math notranslate nohighlight">\(47\)</span>):</p>
+<p><em>Given a (non-directed) graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> and a positive integer <span class="math notranslate nohighlight">\(J\le|V|\)</span>, does the graph contains a
+clique of size of size <span class="math notranslate nohighlight">\(J\)</span> or more, that is a subset <span class="math notranslate nohighlight">\(V'\subseteq V\)</span> such that <span class="math notranslate nohighlight">\(|V'|\ge J\)</span>
+and every two nodes in <span class="math notranslate nohighlight">\(V'\)</span> are joined by an edge in <span class="math notranslate nohighlight">\(E\)</span></em>?</p>
+<p>Obviuously, the concept of a clique only makes sense in undirected graphs. Moving on, in Garey &amp; Johnson  the formulation of this problem results from reducing SAT3 to Vertex Cover (VC), another NP problem, and then this to clique. Herein, we go straight from SAT3 to clique as follows:</p>
+<ol class="arabic simple">
+<li><p>Given an integer constant <span class="math notranslate nohighlight">\(c&gt;0\)</span>, suppose that <span class="math notranslate nohighlight">\(G=(V,E)\)</span> has <span class="math notranslate nohighlight">\(|V|=3c\)</span> and it has a clique of size <span class="math notranslate nohighlight">\(J\ge c\)</span>. Since we have <span class="math notranslate nohighlight">\(3c\)</span> nodes, we denote each group <span class="math notranslate nohighlight">\(C_r\)</span> of <span class="math notranslate nohighlight">\(3\)</span> nodes as <span class="math notranslate nohighlight">\(C_r=\{l_1^r,l_2^r, l^3_r\}\)</span>. Without loss of generality (wlog) we may assume that <span class="math notranslate nohighlight">\((l^{r}_i,l^{r}_j)\not\in E\;\forall i,j\)</span>.</p></li>
+<li><p>Then, if a <span class="math notranslate nohighlight">\(J\)</span>-clique <span class="math notranslate nohighlight">\(V'\)</span> exists <em>only a node per group</em> <span class="math notranslate nohighlight">\(C_r\)</span> with <span class="math notranslate nohighlight">\(r=1\ldots c\)</span> can be in it since we need full-connection of range <span class="math notranslate nohighlight">\(J\)</span> and the nodes inside a group are not connected. If we denote this node as <span class="math notranslate nohighlight">\(v_i^r\in V'\)</span>, we set <span class="math notranslate nohighlight">\(l_i^r=1\)</span> indicating that the literal associated with this node is True.</p></li>
+<li><p>Actually <span class="math notranslate nohighlight">\(c\)</span> denotes the number of clauses. But remember that <span class="math notranslate nohighlight">\(J\le c\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(J=c\)</span> then as there is one True literal per clause, then the wff associated with the and of all clauses is satisfiable.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(J&lt;c\)</span> then, having a <span class="math notranslate nohighlight">\(J\)</span>-clique means that only <span class="math notranslate nohighlight">\(J\)</span> clauses can be <em>simultaneously</em> true. This it all we can guarantee, so the wff associated to the graph, whatever it is, it not satisfiable!</p></li>
+</ol>
+<p>Note that the size of the size of the maximal clique is critical to the satisfiability. The more clauses we have the larger must be the clique.</p>
+<p>In addition, the <span class="math notranslate nohighlight">\(J-\)</span>clique may not be unique it it exist. All the <span class="math notranslate nohighlight">\(J\)</span>-cliques you find correspond to a form of satisfying the wff (what it is called in Logic as an <em>interpretation</em>).</p>
+</section>
+</section>
+<section id="recognizing-np-problems">
+<h2>Recognizing NP problems<a class="headerlink" href="#recognizing-np-problems" title="Permalink to this heading">#</a></h2>
+<p>The clique problem is a paradigmatic NP problem. Its <strong>nature is non-polynomial</strong> because, <span style="color:#f88146">in the worst case, we are forced to enumerate all the subsets of <span class="math notranslate nohighlight">\(V\subseteq 'V\)</span></span>. Remember that if <span class="math notranslate nohighlight">\(n=|V|\)</span> there are <span class="math notranslate nohighlight">\(O(2^n)\)</span> subsets to verify whether they form a clique or not.</p>
+<p>This enlights our interpretation of SAT3: safisfying a wff in CNF (all wff can be transformed to this form) means finding a subset of literals (at least one per clause) simultaneously True.</p>
+<p>This <span style="color:#f88146"><strong>subsetness flavor</strong></span> is shared by many NP problems. Let’s review some of the most important for an AIer.</p>
+<section id="independent-sets">
+<h3>Independent sets<a class="headerlink" href="#independent-sets" title="Permalink to this heading">#</a></h3>
+<p>An <span style="color:#f88146">independent set</span> in a graph G=(V,E) is a subset <span class="math notranslate nohighlight">\(V'\subseteq V\)</span> such that for all pairs <span class="math notranslate nohighlight">\(i,j\)</span> in <span class="math notranslate nohighlight">\(V'\)</span> the edge <span class="math notranslate nohighlight">\((i,j)\not\in V'\)</span>, i.e.<em>the nodes of <span class="math notranslate nohighlight">\(V'\)</span> are not mutually adjacent</em>.</p>
+<p>The independent set problem is:</p>
+<p><em>Given a (non-directed) graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> and a positive integer <span class="math notranslate nohighlight">\(J\le|V|\)</span>, does the graph contains an independent set having <span class="math notranslate nohighlight">\(|V'|\ge J\)</span></em>?</p>
+<p>This problem is automatically reduced to the clique problem by defining  the <em>complement  graph</em> <span class="math notranslate nohighlight">\(\bar{G}=(V,\bar{E})\)</span> of <span class="math notranslate nohighlight">\(G\)</span> with <span class="math notranslate nohighlight">\(\bar{E}=\{(i,j)\in E\times E, (i,j)\not\in E\}\)</span>:</p>
+<p><em>An independent set <span class="math notranslate nohighlight">\(V'\subset V\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is a clique in <span class="math notranslate nohighlight">\(\bar{G}\)</span></em>. Actually an indendent set is called an <span style="color:#f88146">anti-clique</span>. In the previous SAT3-exercise illustrated in <a class="reference internal" href="#sat2-clique-ex"><span class="std std-numref">Fig. 3</span></a>, independent sets create cliques between the literals of the same clause and links between contradictory literals of different clauses. See <a class="reference internal" href="#sat3-independent-ex"><span class="std std-numref">Fig. 4</span></a></p>
+<figure class="align-center" id="sat3-independent-ex">
+<a class="reference internal image-reference" href="_images/SAT3-independent-ex-Photoroom.png"><img alt="_images/SAT3-independent-ex-Photoroom.png" src="_images/SAT3-independent-ex-Photoroom.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Maximal independent set for a trivial SAT3.</span><a class="headerlink" href="#sat3-independent-ex" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Applied to SAT3, maximal independent sets report groups of literals coming from the same clause. The linkage of negated literals is binary since every other linkage is allowed in SAT3.</p>
+<p>However, independent sets are very interesting <em>per se</em>. They are key to characterize the <span style="color:#f88146">graph coloring problem</span>. This problem consists in <em>assigning the maximum number of different colors to non-adjacent vertices</em>. See the following article in <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_coloring">Wikipedia</a>.</p>
+<p>See <a class="reference internal" href="#color-ex"><span class="std std-numref">Fig. 5</span></a> where we color the SAT3 graph in<a class="reference internal" href="#sat2-clique-ex"><span class="std std-numref">Fig. 3</span></a>. This coloring comes from finding the independent sets in <a class="reference internal" href="#sat3-independent-ex"><span class="std std-numref">Fig. 4</span></a> and then linking only nodes with different colors!</p>
+<figure class="align-center" id="color-ex">
+<a class="reference internal image-reference" href="_images/Color-ex-Photoroom.png"><img alt="_images/Color-ex-Photoroom.png" src="_images/Color-ex-Photoroom.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Coloring a trivial SAT3.</span><a class="headerlink" href="#color-ex" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The problem of <span class="math notranslate nohighlight">\(k-\)</span>coloring (decide whether a graph accepts <span class="math notranslate nohighlight">\(k\)</span> colors) is NP except for <span class="math notranslate nohighlight">\(k\in\{0,1,2\}\)</span>. Artificial Intelligence (AI) applications of this problem include the <span style="color:#f88146"><em>Sudoku</em> game</span> where the colors are the <span class="math notranslate nohighlight">\(1-9\)</span> digits (see <a class="reference internal" href="#sudoku"><span class="std std-numref">Fig. 6</span></a>).</p>
+<figure class="align-center" id="sudoku">
+<a class="reference internal image-reference" href="_images/Sudoku-Photoroom.png"><img alt="_images/Sudoku-Photoroom.png" src="_images/Sudoku-Photoroom.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">A solution to the <span class="math notranslate nohighlight">\(3\times 3\)</span> Sudoku game <a class="reference external" href="https://networkx.org/nx-guides/content/generators/sudoku.html">Source</a>.</span><a class="headerlink" href="#sudoku" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note that in a Sudoku of order <span class="math notranslate nohighlight">\(n=3\)</span> we have:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n=3\times 3\)</span> colors.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n^2\times n^2 = n^4 = 81\)</span> nodes arranged in a grid.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> rows of size <span class="math notranslate nohighlight">\(n\)</span> in which each color appears exactly once.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> columns of size <span class="math notranslate nohighlight">\(n\)</span> in which each color appears exactly once.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\times n\)</span> <em>sub-grids</em> where each color must apperar exactly once.</p></li>
+</ul>
+<p>Two distinct vertices will be adjacent <em>iff
+corresponding cells in the grid are either in the same row, or same column, or the same sub-grid</em>. This is important since some edges are hidden in <a class="reference internal" href="#sudoku"><span class="std std-numref">Fig. 6</span></a>.</p>
+<p>Therefore, If we label the vertices as <span class="math notranslate nohighlight">\((i,j)\)</span> with <span class="math notranslate nohighlight">\(1\le i,j\le n^2\)</span>, there is an edge between <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\((i',j')\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+(i=i'\lor j=j')\lor (\lceil i/n\rceil = \lceil i'/n\rceil \land \lceil j/n\rceil = \lceil j'/n\rceil)\;,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lceil x \rceil\)</span> denotes the <em>ceil</em> operation, i.e. the largest integer to which <span class="math notranslate nohighlight">\(x\)</span> is rounded. For instance <span class="math notranslate nohighlight">\(\lceil 1/2 \rceil = \lceil 3/4 \rceil = 1\)</span>. Actually, this second part of the formula is to determine whether <span class="math notranslate nohighlight">\((i,i)\)</span> and <span class="math notranslate nohighlight">\((i',j')\)</span> belong to the same sub-grid.</p>
+<p>The above formula ensures that each row, column and subgrid has a clique of size <span class="math notranslate nohighlight">\(n^2\)</span>, i.e we have <span class="math notranslate nohighlight">\(3n^2\)</span> complete subgraphs <span class="math notranslate nohighlight">\(K_{n^2}\)</span>.</p>
+<p>In other words, two nodes belong to the same clique if they are in the same row, or in the same column or in the same sub-grid.</p>
+<p>Does this means that all the maximal independent sets found are valid solutions of the Sudoku game?</p>
+<p>Let’s explore this question in the following exercise.
+<br></br>
+<span style="color:#d94f0b">
+<strong>Exercise</strong>. Some questions on the <span class="math notranslate nohighlight">\(2\times 2\)</span> Sudoku (<a class="reference internal" href="#sudoku-4"><span class="std std-numref">Fig. 7</span></a>): <strong>a)</strong> Caracterize the problem : number of colors, nodes, node degree, edges and cliques. <strong>b)</strong> Characterize the complement graph and <strong>c)</strong> Map the coloring solution to finding independent sets through the maximal cliques of the complement  graph (<a class="reference internal" href="#sudoku-4c"><span class="std std-numref">Fig. 8</span></a>).  Do all the maximal independent sets found are valid solutions of the Sudoku game?<br />
+</span></p>
+<figure class="align-center" id="sudoku-4">
+<a class="reference internal image-reference" href="_images/Sudoku-4-ex-Photoroom.png"><img alt="_images/Sudoku-4-ex-Photoroom.png" src="_images/Sudoku-4-ex-Photoroom.png" style="width: 400px; height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">A solution to the <span class="math notranslate nohighlight">\(2\times 2\)</span> Sudoku game, i.e. with <span class="math notranslate nohighlight">\(4\)</span> colors.</span><a class="headerlink" href="#sudoku-4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="sudoku-4c">
+<a class="reference internal image-reference" href="_images/Sudoku-4c-ex-Photoroom.png"><img alt="_images/Sudoku-4c-ex-Photoroom.png" src="_images/Sudoku-4c-ex-Photoroom.png" style="width: 400px; height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Complement graph of the <span class="math notranslate nohighlight">\(2\times 2\)</span> Sudoku.</span><a class="headerlink" href="#sudoku-4c" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+Answer:<br />
+<strong>a)</strong> The <span class="math notranslate nohighlight">\(2\times 2\)</span> Sudoku corresponds to <span class="math notranslate nohighlight">\(4\)</span> colors <span class="math notranslate nohighlight">\(1-4\)</span> (e.g. orange, red, green and blue). This means that <span class="math notranslate nohighlight">\(V=\{(i,j),1\le i,j\le 4\}\)</span> (see the labels of the nodes in (col,row) coordinates used by NetworkX in <a class="reference internal" href="#sudoku-4"><span class="std std-numref">Fig. 7</span></a>). Then, we have <span class="math notranslate nohighlight">\(16\)</span> nodes arranged in a <span class="math notranslate nohighlight">\(4\times 4\)</span> grid.
+<br></br>
+There is a clique per row, column and sub-grid. Some of these cliques (the ones corresponding to rows and columns) are not visible in <a class="reference internal" href="#sudoku-4"><span class="std std-numref">Fig. 7</span></a> but you must consider them. For instance nodes <span class="math notranslate nohighlight">\((1,4),(2,4),(3,4)\)</span> and <span class="math notranslate nohighlight">\((4,4)\)</span> form a clique. Also do nodes <span class="math notranslate nohighlight">\((1,4),(1,2),(1,3)\)</span> and <span class="math notranslate nohighlight">\((1,4)\)</span>. The <span class="math notranslate nohighlight">\(4\)</span> cliques in the sub-grids are obvious: one of them is <span class="math notranslate nohighlight">\(\{(1,4),(2,4),(1,3),(2,3)\}\)</span>. Overall, since <span class="math notranslate nohighlight">\(n=2\)</span> we have <span class="math notranslate nohighlight">\(3n^2=12\)</span> cliques, all of them of size <span class="math notranslate nohighlight">\(4\)</span>.
+<br></br>
+Number of edges: There is an edge between <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\((i',j')\)</span> when <span class="math notranslate nohighlight">\(
+(i=i'\lor j=j')\)</span> or <span class="math notranslate nohighlight">\((\lceil i/2\rceil = \lceil i'/2\rceil \land \lceil j/2\rceil = \lceil j'/2\rceil)\)</span>.
+However, instead of counting the edges manually it its better to compute the degree of each node. Consider for instance the top-left vertex <span class="math notranslate nohighlight">\((1,4)\)</span>. It <strong>participates in <span class="math notranslate nohighlight">\(3\)</span> cliques</strong> (row, col and sub-grid), each one with <span class="math notranslate nohighlight">\(3\)</span> other different nodes. Then it has degree <span class="math notranslate nohighlight">\(d=(3n + 1)(n - 1)=3\cdot 2 + 1=7\)</span>. Why? Well, if a node participates in <span class="math notranslate nohighlight">\(3\)</span> cliques of <span class="math notranslate nohighlight">\(n^2-1\)</span> nodes we have <span class="math notranslate nohighlight">\(3(n^2-1)\)</span>. However, note that some edges in its corresponding row and column are shared with the sub-grid. Actually, after discounting them, the edges in the sub-grid become <span class="math notranslate nohighlight">\((n-1)^2=n^2 + 1 - 2n\)</span> instead of <span class="math notranslate nohighlight">\(n^2 - 1\)</span>. Then we count the edges of this clique separately:
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+2(n^2-1) + (n-1)^2 = 2n^2 - 2 + n^2 + 1 - 2n = 3n^2 - 2n - 1 = (3n + 1)(n-1).
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>b)</strong> The complement graph has the same nodes as the original, and the edges are those which are not in the original (and they are not loops). Now, we connect nodes which are not in the same row, same column and sub-grid. How many cliques do we have here and what is their size? Looking at <a class="reference internal" href="#sudoku-4c"><span class="std std-numref">Fig. 8</span></a> is helpful. Take node <span class="math notranslate nohighlight">\((1,4)\)</span> again. It is connected with <span class="math notranslate nohighlight">\(8\)</span> nodes:
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(4\)</span> of them correspond to the sub-grid not sharing any row or column with it.
+The other <span class="math notranslate nohighlight">\(4\)</span> come from the <span class="math notranslate nohighlight">\(2\)</span> sub-grids sharing row or col.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+We have <span class="math notranslate nohighlight">\(n^2\)</span> sub-grids: <span class="math notranslate nohighlight">\(1\)</span> shares row and column with a given node, <span class="math notranslate nohighlight">\((n-1)^2\)</span> do not share neither row or col with that node. Then
+<span class="math notranslate nohighlight">\(n^2 - (n-1)^2 - 1=n^2 - [n^2+1-2n] - 1 = 2n -2\)</span> share either a row or column with that vertex.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Since each sub-grid has <span class="math notranslate nohighlight">\(n^2\)</span> nodes, a given node in the complementary graph is linked with <span class="math notranslate nohighlight">\([(n^2-n)\cdot (2n -2)]=4\)</span> nodes concerning the some-sharing sub-grids and with <span class="math notranslate nohighlight">\([n^2\cdot (n-1)^2]=4\)</span> nodes concerning no-sharing sub-grids.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>c)</strong> A node in this example can have <span class="math notranslate nohighlight">\(8\)</span> neighbors in the complement graph, but note that the purpose of Sudoku is to obtain <span class="math notranslate nohighlight">\(n^2\)</span> independent set of size <span class="math notranslate nohighlight">\(n^2\)</span> each. Looking again at the complement graph in <a class="reference internal" href="#sudoku-4c"><span class="std std-numref">Fig. 8</span></a>, all the nodes with the same color are in the same cliques. However, there are additional edges leading to form cliques with nodes of different colors. Actually, we have <span class="math notranslate nohighlight">\(n^4\)</span> cliques on <span class="math notranslate nohighlight">\(n^2\)</span> nodes each in the complement graph. Why?
+<br></br>
+Note that when we link a node with other sub-grids <em>only one node in this sub-grids may have the same color, so the remaining ones have different colors</em>. Therefore, <strong>only half the cliques in the complement graph are independent sets compatible with Sudoku solutions</strong>. Just filter the cliques whose colors are not equal!
+</span></p>
+</section>
+<section id="vertex-cover">
+<h3>Vertex cover<a class="headerlink" href="#vertex-cover" title="Permalink to this heading">#</a></h3>
+<p><em>Given a (non-directed) graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> and a positive integer <span class="math notranslate nohighlight">\(J\le|V|\)</span>, does the graph contains a
+vertex cover of size <span class="math notranslate nohighlight">\(J\)</span> or less, that is a subset <span class="math notranslate nohighlight">\(V'\subseteq V\)</span> such that <span class="math notranslate nohighlight">\(|V'|\ge J\)</span>
+and for each edge <span class="math notranslate nohighlight">\((i,j)\in E\)</span>, at least one of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> belongs to <span class="math notranslate nohighlight">\(V'\)</span></em>?</p>
+<p>This means that a vertex (node) cover <span class="math notranslate nohighlight">\(V'\subseteq V\)</span> is a subset of nodes so that any node <span class="math notranslate nohighlight">\(k\not\in V'\)</span> is connected to a node in <span class="math notranslate nohighlight">\(V'\)</span>.</p>
+<p>It is obvious that now, the <em>trivial cover</em> is <span class="math notranslate nohighlight">\(V\)</span> itself. Therefore, we are usually interested in <span style="color:#f88146">minimal covers</span>, since a minimal cover <em>captures the essence or the core of the graph</em>.</p>
+<!--
+**A simple problem**. For instance, given a directed graph $G=(V,E)$ (a **digraph**) consider its adjacency matrix $\mathbf{A}\in\{0,1\}^{n\times n}$ 
+where $n=|V|$ is the number of nodes. A simple problem involving $\mathbf{A}$ is to *compute in how many way a node is reachable from some other in two hops*. Then
+- Since the problem involves nodes, the graph can be parameterized by $n$. 
+- The adjacency matrix tell us how to reach one node $i$ from another one $j$ *in one hop*. Simply, if $\mathbf{A}_{ij}=1$ then $j$ is reachable from $j$ *in one hop*.
+
+Let $\mathbf{a}_{i:}$ and $\mathbf{a}_{:j}$ denote respectively, the row of node $i$ and the column of node $j$ in $\mathbf{A}$. The $1$s in $\mathbf{a}_{i:}$ are the neighboring nodes of $i$. Similarly, the $1$s in $\mathbf{a}_{:j}$ are the neighboring nodes of $j$. Then, *$j$ is reachable from $i$ in two hops* if they have (at least) a common neighbor $k$, called **the pivot** so that $\mathbf{A}_{ik}=1$ and $\mathbf{A}_{kj}=1$. Therefore $\mathbf{a}_{ik}=\mathbf{a}_{kj}=1$ (there is a $1$ at position $k$) both in $\mathbf{a}_{i:}$ and $\mathbf{a}_{:j}$. Therefore, the number of ways for reaching $j$ from $i$ is 
+
+$$
+\left<\mathbf{a}_{i:},\mathbf{a}_{j:}\right>:=\sum_k \mathbf{a}_{ik}\mathbf{a}_{kj}\;, 
+$$
+
+where $\left<,\right>$ is the dot product. This can be done in $O(n)$ (linear time). Herein, we use the [Big-O notation](https://web.mit.edu/16.070/www/lecture/big_o.pdfwhere) 
+
+$$
+f(n):=O(g(n))\;\text{means}\;\exists c: |f(n)
+|\le c \cdot |g(n)|\; \forall n\ge 0. 
+$$
+
+If we want to compute the two-hop accesibility between $any$ pair of nodes, we have to compute $n^2$ dot products per pair $(i,j)\in V\times V$. Now the complexity is $O(n^3)$ (cubic). Essentially, what we are doing is to compute $\mathbf{A}^2$. The worst-case complexity of matrix mutiplication is actually $O(n^3)$ although it can be done in $O(n^{2.371552})$ from last year. Check up the complexities of matricial operations in [Wikipedia](https://en.wikipedia.org/wiki/Computational_complexity_of_matrix_multiplication). 
+
+[//]: https://cs.stackexchange.com/questions/1147/complexity-of-computing-matrix-powers
+
+What if we are now asked to **compute $k$-hop accessibilities** with $k>2$? Of course, this can be done by computing $\mathbf{A}^k$ which takes $O(n^3\cdot\log k)$. However, computing the eigenvalues (stored in the diagonal matrix $\Lambda$) and its eigenvetors (stored in the matrix $\Phi$) takes $O(n^3)$. Then, the *spectal theorem* leads to  $\mathbf{A}^k=\Phi\Lambda^k\Phi^T$. Since computing $\Lambda^k$ (the power of a diagonal matrix) takes $O(n\log k)$, we have an overall complexity of $O(n^3 + n\log k)$. 
+
+**Intractable problems**. A vertex $j$ is accessible from $i$ in $k$-hops if $\mathbf{A}^{k}_{ij}=1$. Thus, a *path* $\Gamma=\{i=i_{1},i_{2},\ldots,i_k=j\}$ of length $k$ does exist between $i$ and $j$. Actually if $i=j$ then we have a *circuit* or *cycle* of lenth $k$ over $i$. However, such a circuit/cycle does not have any special meaning beyond its length. In real life, however, we are interested in finding circuits with special properties, namely *covering all the nodes once*. This is extremely useful in designing rounds for robots, planning fair tournaments and DNA sequencing among other applications. We are then looking for a <span style="color:#f88146">Hamiltonian</span> cycle. However, answering the question *"is there any hamiltonial cycle"* is an <span style="color:#f88146">intractable problem</span>. Why? Some considerations:
+- Hamiltonian cycles, if they exist, have all length $n+1$. Therefore, we could investigate the diagonal of $\mathbf{A}^{n+1}$ and check up the elements $\mathbf{A}^{n+1}_{ii}\neq 0$. If all of them are zero, we are lucky! However this is not the case, in many <span style="color:#f88146">instances</span> of the problem:  **all** of them are not zero (for instance if the graph is non-directed and complete)!
+- For each $\mathbf{A}^{n+1}_{ii}\neq 0$ we should investigate all the paths $\Gamma=\{i=i_{1},i_{2},\ldots,i_k=j\}$ of length $n$ starting at $i$ and ending at every $j$ where $\mathbf{A}_{ji}=1$. If any of them *visit all the nodes once*, the answer is given. If none of them does, the answer is also given. 
+- Mathematically, *visit all the nodes once* means that  $\Gamma = \text{sort}(V)$, i.e. $\Gamma$ is given by reordering $V$ in a particular way to be determined. 
+
+
+Reaching nodes *in two hops* requires computing $\mathbf{A}^2 = \mathbf{A}\mathbf{A}$, i.e, requires a matricial product. How difficult is to  
+--></section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">TAB2024</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems-and-intractability">Problems and Intractability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sat-problem">The SAT problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-clique-problem">The Clique problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-sat3-to-clique">From SAT3 to Clique</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-clique-to-sat3">From Clique to SAT3</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recognizing-np-problems">Recognizing NP problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#independent-sets">Independent sets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vertex-cover">Vertex cover</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+# # Table of contents
+# # Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+defaults:
+  numbered: true
+parts: 
+- caption: NP-Hardness and Graph Matching 
+  chapters:
+  - file: topic1
+  - file: topic2
+- caption: Practice 1
+  chapters:
+  - file: practice_intro

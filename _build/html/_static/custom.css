@@ -1,0 +1,100 @@
+:root {
+    --pst-color-primary: #e8caa6;
+    --pst-color-secondary: #f7ce82;
+    --pst-color-link: #ff7300;
+  }
+  
+  .navbar-brand {
+    color: var(--pst-color-primary) !important;
+  }
+  
+  .bd-sidebar {
+    background: linear-gradient(to bottom, #ffffff, #ffe8cb);
+  }
+  
+  .bd-toc {
+    background: linear-gradient(to bottom, #ffffff, #ffe8cb);
+  }
+
+    .bd-content {
+        background: linear-gradient(to bottom, #ffffff, #ffe8cb);
+    }
+
+    .bd-sidebar {
+        background: linear-gradient(to bottom,#ffffff, #ffe8cb);
+    }
+    .footer.bd-footer {
+        background: linear-gradient(to bottom, #ffffff, #ffe8cb);
+    }
+/* toda la pagina con un mismo fondo */
+body {
+    background: linear-gradient(to bottom, #ffffff, #ffe8cb);
+}
+body a, .content a, #main-content a {
+    color: #ff7300;
+  }
+/* Cambiamos el a para un especifico div, bd-container__inner bd-page-width */
+.bd-container__inner.bd-page-width a {
+    color: #ff7300;
+  }
+.bd-container__inner.bd-page-width a:hover {
+    color: #ff7300;
+  }
+  .bd-container__inner.bd-page-width a.reference.internal {
+    color: #ff7300;
+  }
+    .bd-container__inner.bd-page-width a.reference.internal:hover {
+        color: #ff7300;
+    }
+
+footer a {
+    color: #ff7300;
+  }
+  footer a:hover {
+    color: #ff7300;
+  }
+  footer a.reference.internal {
+    color: #ff7300;
+  }
+    footer a.reference.internal:hover {
+        color: #ff7300;
+    }
+    footer a.reference.external {
+        color: #ff7300;
+    }
+      footer a.reference.external:hover {
+          color: #ff7300;
+      }
+.prev-next-info p {
+    color: #ff7300;
+  }
+  .prev-next-info a {
+    color: #ff7300;
+  }
+    .prev-next-info a:hover {
+        color: #ff7300;
+    }
+    .prev-next-info a.reference.internal {
+        color: #ff7300;
+    }
+      .prev-next-info a.reference.internal:hover {
+          color: #ff7300;
+      }
+      .prev-next-info a.reference.external {
+        color: #ff7300;
+    }
+      .prev-next-info a.reference.external:hover {
+          color: #ff7300;
+      }
+
+/* dentro del div .prev-next-info, hay un p con una clase prev-next-title, le cambiamos el color */
+.prev-next-info p.prev-next-title {
+    color: #ff7300;
+  }
+
+  .prev-next-info a.prev-next-title {
+    color: #ff7300;
+  }
+  .prev-next-title p {
+    color: #ff7300;
+  }
