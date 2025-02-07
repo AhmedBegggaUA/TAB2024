@@ -37,7 +37,7 @@ The Willow-Object-Class Dataset is a comprehensive image collection specifically
 - Includes challenging scenarios like occlusion and varying lighting conditions
 ###### Download the dataset from [here](https://huggingface.co/heatingma/pygmtools/resolve/main/WILLOW-ObjectClass_dataset.zip)
 
-# Grid of Feature Matching Examples
+## Grid of Feature Matching Examples
 
 | ![Example 1](./images/matching_Example.png) | ![Example 2](./images/matching_Example_2.png) |
 |:--:|:--:|

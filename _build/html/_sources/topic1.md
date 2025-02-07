@@ -390,7 +390,7 @@ Note that when we link a node with other sub-grids *only one node in this sub-gr
 </span>
 
 ### Vertex covers 
-A <span style="color:#f88146">vertex cover</span> $V'\subseteq V$  in $G=(V,E)$ is a subset of nodes so that any node $k\not\in V'$ is connected to a node in $V'$. Then, we have the following NP problem: 
+A <span style="color:#f88146">vertex cover</span> $V'\subseteq V$  in $G=(V,E)$ is a subset of nodes so that $(i,j)\in E\Leftrightarrow (i\in V'\lor j\in V')$. Then, we have the following NP problem: 
 
 *Given a graph $G=(V,E)$ and a positive integer $J\le|V|$, does the graph contains a 
 vertex cover of size $J$ or less, that is a subset $V'\subseteq V$ such that $|V'|\ge J$ 
@@ -570,19 +570,110 @@ The following problem is a classic NP problem in AI:
 
 *Given a graph $G=(V,E)$, does $G$ a Hamiltonian cycle, that is an ordering $<v_1,v_2,\ldots,v_n>$ of the vertices of $G$ where $n=|V|$ such that $(v_n,v_1)\in E$ and $(v_{i},v_{i+1})\in E$, $\forall i,1\le i<n$*? 
 
-This is the well-known <span style="color:#f88146">Hamiltonian-cycle</span> (NC) problem: we must find a cycle or tour that visits *all* nodes *once*. The problem is NP because instead of looking for subsets (<span style="color:#f88146">**subsetness flavor**</span>) we look for *all the orderings of a set* $<v_1,v_2,\ldots,v_n>$. Given a permutation $\pi:V\rightarrow V$, the solution has the form $<v_{\pi(1)},v_{\pi(2)},\ldots,v_{\pi(n)}>$. Remember that there are $n!$ possible orderings and looking if any of them is a Hamiltonian cycle is not polinomial at all. 
+This is the well-known <span style="color:#f88146">Hamiltonian-cycle</span> (HC) problem: we must find a cycle or tour that visits *all* nodes *once*. The problem is NP because instead of looking for subsets (<span style="color:#f88146">**subsetness flavor**</span>) we look for *all the orderings of a set* $<v_1,v_2,\ldots,v_n>$. Given a permutation $\pi:V\rightarrow V$, the solution has the form $<v_{\pi(1)},v_{\pi(2)},\ldots,v_{\pi(n)}>$. Remember that there are $n!$ possible orderings and looking if any of them is a Hamiltonian cycle is not polinomial at all. 
 
 However, proving that <span style="color:#f88146">$\text{HC}\in \text{NP}$</span> deserves a reduction to any of the NP problems. Both Independent Sets (IS) and Vertex Cover (VC) are NP, i.e. <span style="color:#f88146">$\text{IS}\in \text{NP}$</span> and <span style="color:#f88146">$\text{VC}\in\text{NP}$</span> because they can be reduced to the Clique problem which is NP. 
 
-Remember that a reduction is an **necessary and sufficient condition** i.e. iff. Try for instance to reduce VC to Clique. Then, given a graph $G=(V,E)$ with a clique of order $J\le |V|$ we have to contruct a new graph $G'=(V',E')$ such that: 
-- If $G'=(V',E')$ has a Hamiltonian cycle then $G=(V,E)$ has a clique of order $J$ and 
-- If $G=(V,E)$ clique or order $J$ then $G'=(V',E')$ it has Hamiltonian cycle. 
+However, the reduction of HC to the Clique problem is quite complex and difficult to understand. Even in the Garey & Johnson's text, they reduce HC to the VC. Herein, we even use a simpler and yet more intuitive approach: <span style="color:#f88146">we reduce HC to the SAT3 problem!</span>
 
-How do we make a construction with these iff requirements? It is not straightforward, isn't it? 
+Remember that a reduction is an **necessary and sufficient condition** i.e. an iff. Let us design a construction where a solution to the HC is encoded in a graph.
 
-- Well, if $J=n$ we are done since any complete graph $K_n$ has at least one Hamiltonian cycle (actually there are $\frac{1}{2}(n-1)!$ distinct cycles). This is the fact used for solving the <span style="color:#f88146">Travelling Salesman Problem (TSP)</span>, the iconic IA problem where we must *find a Hamiltonian cycle of minimum cost* over a $K_n$ whose edges are weighted by Euclidean distances. 
+We commence by mapping the <span style="color:#f88146">Hamiltonian Path</span> (HP), instead, to SAT3: 
 
-- What if $J<n$? 
+*Given a graph $G=(V,E)$, does $G$ a Hamiltonian path, that is an ordering $<v_1,v_2,\ldots,v_n>$ of the vertices of $G$ where $n=|V|$ such that $(v_{i},v_{i+1})\in E$, $\forall i,1\le i<n$*? 
+
+
+```{figure} ./images/Topic1/Hamiltonian-gadget-removebg-preview.png
+---
+name: HPtoSAT3
+width: 700px
+align: center
+height: 600px
+---
+Digraph mapping HP to SAT3. Yellow nodes encode the variables (plus one extra variable). 
+```
+
+The core of the construction, shown in {numref}`HPtoSAT3`, is called a <span style="color:#f88146">**variable gadget**</span> where:
+
+1. For each vertex $v_i\in V$ of $G$ we have a couple of variables: $x_i$ and $x_{i+1}$. Actually, we have $n+1$ variables where $n=|V|$. These variables are shown in yellow. 
+
+2. It is a **digraph** (directed graph), starting from the top vertex $x_1$ and going down to the bottom vertex $x_{n+1}$. Then, in the figure we $n=3$ variables in the 'yet to map' SAT3 and $x_4$ is an 'extra' variable. 
+
+3. Note that, descending from $x_1$ to $x_4$ we may follow the **left** path (in blue) and the **right** path (in red). At each $x_i$ we are able to change from color (blue-to-red or read-to-blue). As a result, <span style="color:#f88146">**we may have $2^n$ different paths from $x_1$ to $x_4$**</span>. 
+
+4. Below each $x_i$, $i=1,2,\ldots,n$ we have a bidirectional **path graph** with nodes $x_i$\_$p_1$ to $x_i$\_$p_{3\cdot c}$ where where $c$ is the **number of clauses**: $c=3$ in this case. 
+
+5. These path graphs enable to keep going left-to-right, right-to-left or change of sense to reach the following **level** $x_{i+1}$. However, *if we want to visit all nodes $x_1$ to $x_4$ passing through the path graphs <span style="color:#f88146">**once**</span> we must <span style="color:#f88146">**choose one of the senses**</span> in each path graph*. 
+
+6. We associate a <span style="color:#f88146">**truth value**</span> to each path. In the figure, 'True' paths have all their edges 'blue' and 'False' paths have all their edges 'red'. Black edges are interpreted as 'blue' (True) if they go left-to-right and 'red' (False) otherwise. This **construction trick** is key to force a Hamiltonian path from $x_1$ to $x_4$ visiting all the nodes in the constructed graph. 
+
+7. However, we still must <span style="color:#f88146">**match a 'True' hamiltonian path** with a SAT solution, if there is one</span>. Otherwise, the Hamiltonian path will be false.
+
+8. In orther to do that we use $c$ **additional modes** $c_i$ (one per clause). How do we use them?
+
+Well, in {numref}`HPtoSAT3` we assume the following CNF: 
+
+$$
+\underbrace{(x_1\lor x_2\lor \neg x_3)}_{c_1}\land \underbrace{(x_1\lor x_2\lor x_3)}_{c_2}\land \underbrace{(x_1\lor x_2\lor \neg x_3)}_{c_3}
+$$
+
+We **proceed** as following: 
+
+1. Since $x_1$ is 'positive' (True) in $c_1$, we must make  $x_1\rightarrow x_1\_p_1$, then go to $c_1$ using a 'green' **edge clause** and then come back to this path through $c_1\rightarrow x_1\_p_2$. This way, we may proceed towards the right through $x_1\_p_3$. 
+
+2. Next, we are $x_1\_p_4$ (the first of a group of $3$ nodes coding the role of variable $x_1$ in clause $c_2$). Note that, as $x_1$ is also 'positive' in $c_2$, we go to $c_2$ and back as before and then return to $x_1\_p_5$. Next, we repeat the same coding for the role of $x_1$ in $c_3$. 
+
+3. At this point, we have yet visited $c_1$, $c_2$ and $c_3$ because $x_1$ is positive in all of them. We <span style="color:#f88146">**yet know that the CNF is safistifable**, but we have still to progress to visiting all the nodes of the digraph once (Hamiltonian path)</span>. Can we do it?
+
+4. Of course. Since $x_1$ is 'True' in all the clauses, we only need to go down $x_2$ and proceed from left to right again from $x_2\_p_1,\ldots,x_2\_p_9$ without visiting any clause node. Then go down $x_3$ and do the same until we end-up in $x_4$ where we have completed the following Hamiltonian path:
+
+$$
+\begin{align}
+x_1, & x_1\_p_1, \mathbf{c_1}, x_1\_p_2, x_1\_p_3,x_1\_p_4, \mathbf{c_2}, x_1\_p_5, x_1\_p_6, x_1\_p_7, \mathbf{c_3}, x_1\_p_8, x_1\_p_9\\
+x_2, & x_2\_p1,\ldots,x_2\_p_9\\
+x_3, & x_3\_p1,\ldots,x_3\_p_9\\
+x_4.  & \\
+\end{align}
+$$
+
+5. Since, $x_2$ is 'True' in all clauses, we may proceed similarly, thus leading to the following path
+
+$$
+\begin{align}
+x_1, & x_1\_p1,\ldots,x_1\_p_9\\
+x_2, & x_2\_p_1, \mathbf{c_1}, x_2\_p_2, x_2\_p_3,x_2\_p_4, \mathbf{c_2}, x_2\_p_5, x_2\_p_6, x_2\_p_7, \mathbf{c_3}, x_2\_p_8, x_2\_p_9\\
+x_3, & x_3\_p1,\ldots,x_3\_p_9\\
+x_4.  & \\
+\end{align}
+$$
+
+6. However, $x_3$ is 'negative' both in $c_1$ and $c_3$, and 'positive' in $c_2$. This fact *implies that $x_3$ is contributing to make the CNF unsatisfiable*. In other words, <span style="color:#f88146">waiting to visit the clause nodes until level $3$ **does not lead to a Hamiltonian path** since we have to go both right-to-left and left-to-right there</span>. The clause nodes should be visited before level $3$. 
+
+Therefore, the above construction shows that HP is reducible to SAT3, i.e.: *there is a HP in the above graph iff the CNF is satisfiable*.
+
+Extending this result to the **Hamiltonian Cycle** (HC) is straightforward: just create a back link between $x_4$ and $x_1$.
+<br></br>
+<span style="color:#d94f0b"> 
+**Exercise**. Given the SAT3 $(x_1\lor x_2\lor \neg x_3 )\land (\neg x_1\lor\neg x_2\lor x_3)$ which is clearly unsatisfiable (a variable and its negation is present in all clauses). We ask the following: **a)** Build the HC-construction and **b)** Show that it has no Hamiltonian cycles.
+</span>
+<br></br>
+<span style="color:#d94f0b"> 
+Answer. We show thre HC-construction in {numref}`HPtoSAT3Ex`. Note that we have  $3\cdot 2 = 6$ nodes per path graph, since there are $c=2$ clauses. 
+<br></br>
+```{figure} ./images/Topic1/Hamiltonian-gadget-Excercise-removebg-preview.png
+---
+name: HPtoSAT3Ex
+width: 700px
+align: center
+height: 600px
+---
+Digraph mapping HP to SAT3. Yellow nodes encode the variables (plus one extra variable). 
+```
+<br></br>
+</span> 
+<span style="color:#d94f0b">
+Note that the two first path graphs go first to $c_1$ in left-to-right order, stating that respectively $x_1$ and $x_2$ must be 'True', but access in the reverse order to $c_2$, where they have to be 'False'. With the third path graph, we have the opposite since $x_3$ must be false in $c_1$ and true in $c_2$. As a result, it is impossible to draw a Hamiltonian cycle in the graph of {numref}`HPtoSAT3Ex`. 
+</span> 
 
 
 
