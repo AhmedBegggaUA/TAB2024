@@ -185,8 +185,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_intro.html">3. Introduction to the practical part of TAB2025</a></li>
-
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">3. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">4. Graph Construction for Matching</a></li>
 </ul>
 
     </div>
@@ -730,7 +730,7 @@ Note that when we link a node with other sub-grids <em>only one node in this sub
 </section>
 <section id="vertex-covers">
 <h3><span class="section-number">1.4.3. </span>Vertex covers<a class="headerlink" href="#vertex-covers" title="Permalink to this heading">#</a></h3>
-<p>A <span style="color:#f88146">vertex cover</span> <span class="math notranslate nohighlight">\(V'\subseteq V\)</span>  in <span class="math notranslate nohighlight">\(G=(V,E)\)</span> is a subset of nodes so that any node <span class="math notranslate nohighlight">\(k\not\in V'\)</span> is connected to a node in <span class="math notranslate nohighlight">\(V'\)</span>. Then, we have the following NP problem:</p>
+<p>A <span style="color:#f88146">vertex cover</span> <span class="math notranslate nohighlight">\(V'\subseteq V\)</span>  in <span class="math notranslate nohighlight">\(G=(V,E)\)</span> is a subset of nodes so that <span class="math notranslate nohighlight">\((i,j)\in E\Leftrightarrow (i\in V'\lor j\in V')\)</span>. Then, we have the following NP problem:</p>
 <p><em>Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> and a positive integer <span class="math notranslate nohighlight">\(J\le|V|\)</span>, does the graph contains a
 vertex cover of size <span class="math notranslate nohighlight">\(J\)</span> or less, that is a subset <span class="math notranslate nohighlight">\(V'\subseteq V\)</span> such that <span class="math notranslate nohighlight">\(|V'|\ge J\)</span>
 and for each edge <span class="math notranslate nohighlight">\((i,j)\in E\)</span>, at least one of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> belongs to <span class="math notranslate nohighlight">\(V'\)</span></em>?</p>
@@ -875,18 +875,86 @@ Only a couple of interpretations are <em>counter-model</em>.
 <h2><span class="section-number">1.5. </span>Hamiltonian cycle<a class="headerlink" href="#hamiltonian-cycle" title="Permalink to this heading">#</a></h2>
 <p>The following problem is a classic NP problem in AI:</p>
 <p><em>Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, does <span class="math notranslate nohighlight">\(G\)</span> a Hamiltonian cycle, that is an ordering <span class="math notranslate nohighlight">\(&lt;v_1,v_2,\ldots,v_n&gt;\)</span> of the vertices of <span class="math notranslate nohighlight">\(G\)</span> where <span class="math notranslate nohighlight">\(n=|V|\)</span> such that <span class="math notranslate nohighlight">\((v_n,v_1)\in E\)</span> and <span class="math notranslate nohighlight">\((v_{i},v_{i+1})\in E\)</span>, <span class="math notranslate nohighlight">\(\forall i,1\le i&lt;n\)</span></em>?</p>
-<p>This is the well-known <span style="color:#f88146">Hamiltonian-cycle</span> (NC) problem: we must find a cycle or tour that visits <em>all</em> nodes <em>once</em>. The problem is NP because instead of looking for subsets (<span style="color:#f88146"><strong>subsetness flavor</strong></span>) we look for <em>all the orderings of a set</em> <span class="math notranslate nohighlight">\(&lt;v_1,v_2,\ldots,v_n&gt;\)</span>. Given a permutation <span class="math notranslate nohighlight">\(\pi:V\rightarrow V\)</span>, the solution has the form <span class="math notranslate nohighlight">\(&lt;v_{\pi(1)},v_{\pi(2)},\ldots,v_{\pi(n)}&gt;\)</span>. Remember that there are <span class="math notranslate nohighlight">\(n!\)</span> possible orderings and looking if any of them is a Hamiltonian cycle is not polinomial at all.</p>
+<p>This is the well-known <span style="color:#f88146">Hamiltonian-cycle</span> (HC) problem: we must find a cycle or tour that visits <em>all</em> nodes <em>once</em>. The problem is NP because instead of looking for subsets (<span style="color:#f88146"><strong>subsetness flavor</strong></span>) we look for <em>all the orderings of a set</em> <span class="math notranslate nohighlight">\(&lt;v_1,v_2,\ldots,v_n&gt;\)</span>. Given a permutation <span class="math notranslate nohighlight">\(\pi:V\rightarrow V\)</span>, the solution has the form <span class="math notranslate nohighlight">\(&lt;v_{\pi(1)},v_{\pi(2)},\ldots,v_{\pi(n)}&gt;\)</span>. Remember that there are <span class="math notranslate nohighlight">\(n!\)</span> possible orderings and looking if any of them is a Hamiltonian cycle is not polinomial at all.</p>
 <p>However, proving that <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{HC}\in \text{NP}\)</span></span> deserves a reduction to any of the NP problems. Both Independent Sets (IS) and Vertex Cover (VC) are NP, i.e. <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{IS}\in \text{NP}\)</span></span> and <span style="color:#f88146"><span class="math notranslate nohighlight">\(\text{VC}\in\text{NP}\)</span></span> because they can be reduced to the Clique problem which is NP.</p>
-<p>Remember that a reduction is an <strong>necessary and sufficient condition</strong> i.e. iff. Try for instance to reduce VC to Clique. Then, given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span> with a clique of order <span class="math notranslate nohighlight">\(J\le |V|\)</span> we have to contruct a new graph <span class="math notranslate nohighlight">\(G'=(V',E')\)</span> such that:</p>
-<ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(G'=(V',E')\)</span> has a Hamiltonian cycle then <span class="math notranslate nohighlight">\(G=(V,E)\)</span> has a clique of order <span class="math notranslate nohighlight">\(J\)</span> and</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(G=(V,E)\)</span> clique or order <span class="math notranslate nohighlight">\(J\)</span> then <span class="math notranslate nohighlight">\(G'=(V',E')\)</span> it has Hamiltonian cycle.</p></li>
-</ul>
-<p>How do we make a construction with these iff requirements? It is not straightforward, isn’t it?</p>
-<ul class="simple">
-<li><p>Well, if <span class="math notranslate nohighlight">\(J=n\)</span> we are done since any complete graph <span class="math notranslate nohighlight">\(K_n\)</span> has at least one Hamiltonian cycle (actually there are <span class="math notranslate nohighlight">\(\frac{1}{2}(n-1)!\)</span> distinct cycles). This is the fact used for solving the <span style="color:#f88146">Travelling Salesman Problem (TSP)</span>, the iconic IA problem where we must <em>find a Hamiltonian cycle of minimum cost</em> over a <span class="math notranslate nohighlight">\(K_n\)</span> whose edges are weighted by Euclidean distances.</p></li>
-<li><p>What if <span class="math notranslate nohighlight">\(J&lt;n\)</span>?</p></li>
-</ul>
+<p>However, the reduction of HC to the Clique problem is quite complex and difficult to understand. Even in the Garey &amp; Johnson’s text, they reduce HC to the VC. Herein, we even use a simpler and yet more intuitive approach: <span style="color:#f88146">we reduce HC to the SAT3 problem!</span></p>
+<p>Remember that a reduction is an <strong>necessary and sufficient condition</strong> i.e. an iff. Let us design a construction where a solution to the HC is encoded in a graph.</p>
+<p>We commence by mapping the <span style="color:#f88146">Hamiltonian Path</span> (HP), instead, to SAT3:</p>
+<p><em>Given a graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>, does <span class="math notranslate nohighlight">\(G\)</span> a Hamiltonian path, that is an ordering <span class="math notranslate nohighlight">\(&lt;v_1,v_2,\ldots,v_n&gt;\)</span> of the vertices of <span class="math notranslate nohighlight">\(G\)</span> where <span class="math notranslate nohighlight">\(n=|V|\)</span> such that <span class="math notranslate nohighlight">\((v_{i},v_{i+1})\in E\)</span>, <span class="math notranslate nohighlight">\(\forall i,1\le i&lt;n\)</span></em>?</p>
+<figure class="align-center" id="hptosat3">
+<a class="reference internal image-reference" href="_images/Hamiltonian-gadget-removebg-preview.png"><img alt="_images/Hamiltonian-gadget-removebg-preview.png" src="_images/Hamiltonian-gadget-removebg-preview.png" style="width: 700px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.16 </span><span class="caption-text">Digraph mapping HP to SAT3. Yellow nodes encode the variables (plus one extra variable).</span><a class="headerlink" href="#hptosat3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The core of the construction, shown in <a class="reference internal" href="#hptosat3"><span class="std std-numref">Fig. 1.16</span></a>, is called a <span style="color:#f88146"><strong>variable gadget</strong></span> where:</p>
+<ol class="arabic simple">
+<li><p>For each vertex <span class="math notranslate nohighlight">\(v_i\in V\)</span> of <span class="math notranslate nohighlight">\(G\)</span> we have a couple of variables: <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_{i+1}\)</span>. Actually, we have <span class="math notranslate nohighlight">\(n+1\)</span> variables where <span class="math notranslate nohighlight">\(n=|V|\)</span>. These variables are shown in yellow.</p></li>
+<li><p>It is a <strong>digraph</strong> (directed graph), starting from the top vertex <span class="math notranslate nohighlight">\(x_1\)</span> and going down to the bottom vertex <span class="math notranslate nohighlight">\(x_{n+1}\)</span>. Then, in the figure we <span class="math notranslate nohighlight">\(n=3\)</span> variables in the ‘yet to map’ SAT3 and <span class="math notranslate nohighlight">\(x_4\)</span> is an ‘extra’ variable.</p></li>
+<li><p>Note that, descending from <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_4\)</span> we may follow the <strong>left</strong> path (in blue) and the <strong>right</strong> path (in red). At each <span class="math notranslate nohighlight">\(x_i\)</span> we are able to change from color (blue-to-red or read-to-blue). As a result, <span style="color:#f88146"><strong>we may have <span class="math notranslate nohighlight">\(2^n\)</span> different paths from <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_4\)</span></strong></span>.</p></li>
+<li><p>Below each <span class="math notranslate nohighlight">\(x_i\)</span>, <span class="math notranslate nohighlight">\(i=1,2,\ldots,n\)</span> we have a bidirectional <strong>path graph</strong> with nodes <span class="math notranslate nohighlight">\(x_i\)</span>_<span class="math notranslate nohighlight">\(p_1\)</span> to <span class="math notranslate nohighlight">\(x_i\)</span>_<span class="math notranslate nohighlight">\(p_{3\cdot c}\)</span> where where <span class="math notranslate nohighlight">\(c\)</span> is the <strong>number of clauses</strong>: <span class="math notranslate nohighlight">\(c=3\)</span> in this case.</p></li>
+<li><p>These path graphs enable to keep going left-to-right, right-to-left or change of sense to reach the following <strong>level</strong> <span class="math notranslate nohighlight">\(x_{i+1}\)</span>. However, <em>if we want to visit all nodes <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_4\)</span> passing through the path graphs <span style="color:#f88146"><strong>once</strong></span> we must <span style="color:#f88146"><strong>choose one of the senses</strong></span> in each path graph</em>.</p></li>
+<li><p>We associate a <span style="color:#f88146"><strong>truth value</strong></span> to each path. In the figure, ‘True’ paths have all their edges ‘blue’ and ‘False’ paths have all their edges ‘red’. Black edges are interpreted as ‘blue’ (True) if they go left-to-right and ‘red’ (False) otherwise. This <strong>construction trick</strong> is key to force a Hamiltonian path from <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_4\)</span> visiting all the nodes in the constructed graph.</p></li>
+<li><p>However, we still must <span style="color:#f88146"><strong>match a ‘True’ hamiltonian path</strong> with a SAT solution, if there is one</span>. Otherwise, the Hamiltonian path will be false.</p></li>
+<li><p>In orther to do that we use <span class="math notranslate nohighlight">\(c\)</span> <strong>additional modes</strong> <span class="math notranslate nohighlight">\(c_i\)</span> (one per clause). How do we use them?</p></li>
+</ol>
+<p>Well, in <a class="reference internal" href="#hptosat3"><span class="std std-numref">Fig. 1.16</span></a> we assume the following CNF:</p>
+<div class="math notranslate nohighlight">
+\[
+\underbrace{(x_1\lor x_2\lor \neg x_3)}_{c_1}\land \underbrace{(x_1\lor x_2\lor x_3)}_{c_2}\land \underbrace{(x_1\lor x_2\lor \neg x_3)}_{c_3}
+\]</div>
+<p>We <strong>proceed</strong> as following:</p>
+<ol class="arabic simple">
+<li><p>Since <span class="math notranslate nohighlight">\(x_1\)</span> is ‘positive’ (True) in <span class="math notranslate nohighlight">\(c_1\)</span>, we must make  <span class="math notranslate nohighlight">\(x_1\rightarrow x_1\_p_1\)</span>, then go to <span class="math notranslate nohighlight">\(c_1\)</span> using a ‘green’ <strong>edge clause</strong> and then come back to this path through <span class="math notranslate nohighlight">\(c_1\rightarrow x_1\_p_2\)</span>. This way, we may proceed towards the right through <span class="math notranslate nohighlight">\(x_1\_p_3\)</span>.</p></li>
+<li><p>Next, we are <span class="math notranslate nohighlight">\(x_1\_p_4\)</span> (the first of a group of <span class="math notranslate nohighlight">\(3\)</span> nodes coding the role of variable <span class="math notranslate nohighlight">\(x_1\)</span> in clause <span class="math notranslate nohighlight">\(c_2\)</span>). Note that, as <span class="math notranslate nohighlight">\(x_1\)</span> is also ‘positive’ in <span class="math notranslate nohighlight">\(c_2\)</span>, we go to <span class="math notranslate nohighlight">\(c_2\)</span> and back as before and then return to <span class="math notranslate nohighlight">\(x_1\_p_5\)</span>. Next, we repeat the same coding for the role of <span class="math notranslate nohighlight">\(x_1\)</span> in <span class="math notranslate nohighlight">\(c_3\)</span>.</p></li>
+<li><p>At this point, we have yet visited <span class="math notranslate nohighlight">\(c_1\)</span>, <span class="math notranslate nohighlight">\(c_2\)</span> and <span class="math notranslate nohighlight">\(c_3\)</span> because <span class="math notranslate nohighlight">\(x_1\)</span> is positive in all of them. We <span style="color:#f88146"><strong>yet know that the CNF is safistifable</strong>, but we have still to progress to visiting all the nodes of the digraph once (Hamiltonian path)</span>. Can we do it?</p></li>
+<li><p>Of course. Since <span class="math notranslate nohighlight">\(x_1\)</span> is ‘True’ in all the clauses, we only need to go down <span class="math notranslate nohighlight">\(x_2\)</span> and proceed from left to right again from <span class="math notranslate nohighlight">\(x_2\_p_1,\ldots,x_2\_p_9\)</span> without visiting any clause node. Then go down <span class="math notranslate nohighlight">\(x_3\)</span> and do the same until we end-up in <span class="math notranslate nohighlight">\(x_4\)</span> where we have completed the following Hamiltonian path:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+x_1, &amp; x_1\_p_1, \mathbf{c_1}, x_1\_p_2, x_1\_p_3,x_1\_p_4, \mathbf{c_2}, x_1\_p_5, x_1\_p_6, x_1\_p_7, \mathbf{c_3}, x_1\_p_8, x_1\_p_9\\
+x_2, &amp; x_2\_p1,\ldots,x_2\_p_9\\
+x_3, &amp; x_3\_p1,\ldots,x_3\_p_9\\
+x_4.  &amp; \\
+\end{align}
+\end{split}\]</div>
+<ol class="arabic simple" start="5">
+<li><p>Since, <span class="math notranslate nohighlight">\(x_2\)</span> is ‘True’ in all clauses, we may proceed similarly, thus leading to the following path</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+x_1, &amp; x_1\_p1,\ldots,x_1\_p_9\\
+x_2, &amp; x_2\_p_1, \mathbf{c_1}, x_2\_p_2, x_2\_p_3,x_2\_p_4, \mathbf{c_2}, x_2\_p_5, x_2\_p_6, x_2\_p_7, \mathbf{c_3}, x_2\_p_8, x_2\_p_9\\
+x_3, &amp; x_3\_p1,\ldots,x_3\_p_9\\
+x_4.  &amp; \\
+\end{align}
+\end{split}\]</div>
+<ol class="arabic simple" start="6">
+<li><p>However, <span class="math notranslate nohighlight">\(x_3\)</span> is ‘negative’ both in <span class="math notranslate nohighlight">\(c_1\)</span> and <span class="math notranslate nohighlight">\(c_3\)</span>, and ‘positive’ in <span class="math notranslate nohighlight">\(c_2\)</span>. This fact <em>implies that <span class="math notranslate nohighlight">\(x_3\)</span> is contributing to make the CNF unsatisfiable</em>. In other words, <span style="color:#f88146">waiting to visit the clause nodes until level <span class="math notranslate nohighlight">\(3\)</span> <strong>does not lead to a Hamiltonian path</strong> since we have to go both right-to-left and left-to-right there</span>. The clause nodes should be visited before level <span class="math notranslate nohighlight">\(3\)</span>.</p></li>
+</ol>
+<p>Therefore, the above construction shows that HP is reducible to SAT3, i.e.: <em>there is a HP in the above graph iff the CNF is satisfiable</em>.</p>
+<p>Extending this result to the <strong>Hamiltonian Cycle</strong> (HC) is straightforward: just create a back link between <span class="math notranslate nohighlight">\(x_4\)</span> and <span class="math notranslate nohighlight">\(x_1\)</span>.
+<br></br>
+<span style="color:#d94f0b">
+<strong>Exercise</strong>. Given the SAT3 <span class="math notranslate nohighlight">\((x_1\lor x_2\lor \neg x_3 )\land (\neg x_1\lor\neg x_2\lor x_3)\)</span> which is clearly unsatisfiable (a variable and its negation is present in all clauses). We ask the following: <strong>a)</strong> Build the HC-construction and <strong>b)</strong> Show that it has no Hamiltonian cycles.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Answer. We show thre HC-construction in <a class="reference internal" href="#hptosat3ex"><span class="std std-numref">Fig. 1.17</span></a>. Note that we have  <span class="math notranslate nohighlight">\(3\cdot 2 = 6\)</span> nodes per path graph, since there are <span class="math notranslate nohighlight">\(c=2\)</span> clauses.
+<br></br></p>
+<figure class="align-center" id="hptosat3ex">
+<a class="reference internal image-reference" href="_images/Hamiltonian-gadget-Excercise-removebg-preview.png"><img alt="_images/Hamiltonian-gadget-Excercise-removebg-preview.png" src="_images/Hamiltonian-gadget-Excercise-removebg-preview.png" style="width: 700px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.17 </span><span class="caption-text">Digraph mapping HP to SAT3. Yellow nodes encode the variables (plus one extra variable).</span><a class="headerlink" href="#hptosat3ex" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+</span>
+<span style="color:#d94f0b">
+Note that the two first path graphs go first to <span class="math notranslate nohighlight">\(c_1\)</span> in left-to-right order, stating that respectively <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> must be ‘True’, but access in the reverse order to <span class="math notranslate nohighlight">\(c_2\)</span>, where they have to be ‘False’. With the third path graph, we have the opposite since <span class="math notranslate nohighlight">\(x_3\)</span> must be false in <span class="math notranslate nohighlight">\(c_1\)</span> and true in <span class="math notranslate nohighlight">\(c_2\)</span>. As a result, it is impossible to draw a Hamiltonian cycle in the graph of <a class="reference internal" href="#hptosat3ex"><span class="std std-numref">Fig. 1.17</span></a>.
+</span></p>
 <!--
 Vertex covers have two main applications in AI: 
 - Firstly, given their relationship with independent sets, their size characterizes de <span style="color:#f88146">colorability of a graph</span> (how many different colors can we allocate). 
