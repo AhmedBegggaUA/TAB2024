@@ -36,10 +36,6 @@ k-NN connects each keypoint to its `k` closest neighbors based on Euclidean dist
 ```{code-block} python
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.spatial import Delaunay
-from sklearn.neighbors import NearestNeighbors
-from PIL import Image
-import scipy.io as sio
 
 def plot_image_with_graph(img, kpt, edges):
     """
