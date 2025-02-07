@@ -36,10 +36,6 @@ k-NN connects each keypoint to its `k` closest neighbors based on Euclidean dist
 ```{code-block} python
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.spatial import Delaunay
-from sklearn.neighbors import NearestNeighbors
-from PIL import Image
-import scipy.io as sio
 
 def plot_image_with_graph(img, kpt, edges):
     """
@@ -124,3 +120,7 @@ In the end, you should have 5 images, each with the Delaunay triangulation graph
 In the end, you should have 15 images (3 per category), each with k-NN graphs overlayed for different k values.
 
 
+
+### Summary
+
+In this session, you learned about graph construction methods for matching keypoints in images. You implemented Delaunay triangulation and k-NN graph construction algorithms and visualized the graphs overlayed on images from the Willow-Object-Class Dataset. These graph representations will be used in the next session to perform graph matching and alignment tasks.
