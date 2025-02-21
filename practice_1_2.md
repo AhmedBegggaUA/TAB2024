@@ -107,7 +107,7 @@ This modular approach will make your code more maintainable and easier to debug.
 2. Implement the `delaunay_graph` function to construct a Delaunay triangulation graph.
 3. Visualize the image with the Delaunay triangulation graph overlay, in a 2x4 grid.
 
-In the end, you should have 5 images, each with the Delaunay triangulation graph overlayed.
+In the end, you should have 8 images, each with the Delaunay triangulation graph overlayed.
 
 #### Exercise 2: k-Nearest Neighbors (k-NN)
 
@@ -116,8 +116,6 @@ In the end, you should have 5 images, each with the Delaunay triangulation graph
 2. Implement the `knn_graph` function to construct k-NN graphs with varying k values (e.g., k=3, k=5, k=7).
 
 3. Visualize the images with the k-NN graphs overlayed, in a 2x4 grid for each k value.
-
-In the end, you should have 15 images (3 per category), each with k-NN graphs overlayed for different k values.
 
 
 
