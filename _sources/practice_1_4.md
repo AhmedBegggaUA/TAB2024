@@ -43,7 +43,9 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 from scipy.spatial import Delaunay 
 from scipy.optimize import linear_sum_assignment
-
+import os # Para leer todos los ficheros de la misma carpeta y no hacerlo a mano
+import networkx as nx
+from gensim.models import Word2Vec # Para hacer el node2vec
 def load_and_preprocess_images(img_path1, img_path2, mat_path1, mat_path2):
     """
     Carga y preprocesa pares de imágenes y sus keypoints
@@ -140,7 +142,14 @@ def visualize_matching_full(img1, img2, kpts1, kpts2, adj_matrix1, adj_matrix2, 
     """
     Visualiza el matching completo entre dos grafos
     """
-
+    # Crear imagen compuesta
+    width = max(img1.size[0], img2.size[0])
+    height = max(img1.size[1], img2.size[1])
+    composite = Image.new('RGB', (width*2, height))
+    composite.paste(img1, (0, 0))
+    composite.paste(img2, (width, 0))
+    
+    plt.imshow(composite)
 ```
 ### Exercise 2: Visualize the Optimal Assignment
 
@@ -161,11 +170,13 @@ Visualizing the Duck Images with Keypoints,**Without** Graph embeddings, Delauna
 ```
 ### Exercise 3: Evaluate the Matching Results and Report
 
-Finally, we ask you to extract the accuracy of the matching results. The accuracy is defined as the number of correctly matched keypoints divided by the total number of keypoints. As you know, you have 5 categories of images, so you should evaluate the accuracy for each category, and create a csv file with the results of each category, reporting the mean accuracy for each category and the standard deviation.
+Finally, we ask you to extract the accuracy of the matching results. The accuracy is defined as the number of correctly matched keypoints divided by the total number of keypoints. As you know, you have 5 categories of images, so you should evaluate the accuracy for each category, and create a csv file with the results of each category, reporting the mean accuracy for each category and the standard deviation. If you need to perform any other experiment, this is the time to do it.
 
-## Part 1: Accuracy Analysis Across Categories
+### Exercise 4: Comparative Analysis
 
-### Task Requirements
+### Part 1: Accuracy Analysis Across Categories
+
+#### Task Requirements
 1. Calculate matching accuracy for each image category:
    - Accuracy = (Number of correctly matched keypoints) / (Total number of keypoints)
    - Process all images in each of the 5 categories
@@ -175,7 +186,7 @@ Finally, we ask you to extract the accuracy of the matching results. The accurac
      * Standard deviation
      * Number of images processed
 
-### Expected CSV Format
+#### Expected CSV Format
 ```
 Category,Mean_Accuracy,Std_Deviation,Number_of_Images
 Category1,0.XX,0.XX,XX
@@ -183,9 +194,9 @@ Category2,0.XX,0.XX,XX
 ...
 ```
 
-## Part 2: Comparative Analysis
+### Part 2: Comparative Analysis
 
-### Required Experiments
+#### Required Experiments
 
 1. **Baseline Analysis**
    - Implement spatial-only matching with Delaunay triangulation
@@ -217,7 +228,7 @@ Category2,0.XX,0.XX,XX
 ### Format
 - Include visualizations (graphs, charts)
 - Use tables for numerical comparisons
-
+- No code needed in the report
 ### Submission format
 ```bash
 name_surname.zip
