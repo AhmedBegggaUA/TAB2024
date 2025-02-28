@@ -65,6 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'practice_1_4';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="7. Clustering" href="practice_2.html" />
     <link rel="prev" title="5. Graph Matching" href="practice_1_3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -186,6 +187,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">4. Graph Construction for Matching</a></li>
 <li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">5. Graph Matching</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Graph Matching with Topological Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">7. Clustering</a></li>
 </ul>
 
     </div>
@@ -393,21 +398,22 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-enhanced-graph-matching-using-graph-embeddings">6.5.1. Exercise 1: Enhanced Graph Matching Using Graph Embeddings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-visualize-the-optimal-assignment">6.5.2. Exercise 2: Visualize the Optimal Assignment</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-evaluate-the-matching-results-and-report">6.5.3. Exercise 3: Evaluate the Matching Results and Report</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-comparative-analysis">6.5.4. Exercise 4: Comparative Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-accuracy-analysis-across-categories">6.5.5. Part 1: Accuracy Analysis Across Categories</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#task-requirements">6.5.5.1. Task Requirements</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-csv-format">6.5.5.2. Expected CSV Format</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-accuracy-analysis-across-categories">6.6. Part 1: Accuracy Analysis Across Categories</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-requirements">6.6.1. Task Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-csv-format">6.6.2. Expected CSV Format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-comparative-analysis">6.5.6. Part 2: Comparative Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#required-experiments">6.5.6.1. Required Experiments</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-comparative-analysis">6.7. Part 2: Comparative Analysis</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#required-experiments">6.7.1. Required Experiments</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-report-requirements">6.7.2. Final Report Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#format">6.7.3. Format</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submission-format">6.7.4. Submission format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-report-requirements">6.5.7. Final Report Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#format">6.5.8. Format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submission-format">6.5.9. Submission format</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-criteria">6.8. Evaluation Criteria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-criteria">6.6. Evaluation Criteria</a></li>
 </ul>
             </nav>
         </div>
@@ -471,7 +477,9 @@ document.write(`
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">Delaunay</span> 
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linear_sum_assignment</span>
-
+<span class="kn">import</span> <span class="nn">os</span> <span class="c1"># Para leer todos los ficheros de la misma carpeta y no hacerlo a mano</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">Word2Vec</span> <span class="c1"># Para hacer el node2vec</span>
 <span class="k">def</span> <span class="nf">load_and_preprocess_images</span><span class="p">(</span><span class="n">img_path1</span><span class="p">,</span> <span class="n">img_path2</span><span class="p">,</span> <span class="n">mat_path1</span><span class="p">,</span> <span class="n">mat_path2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Carga y preprocesa pares de imágenes y sus keypoints</span>
@@ -568,6 +576,14 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Visualiza</span> <span class="n">el</span> <span class="n">matching</span> <span class="n">completo</span> <span class="n">entre</span> <span class="n">dos</span> <span class="n">grafos</span>
     <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    # Crear imagen compuesta</span>
+<span class="s2">    width = max(img1.size[0], img2.size[0])</span>
+<span class="s2">    height = max(img1.size[1], img2.size[1])</span>
+<span class="s2">    composite = Image.new(&#39;RGB&#39;, (width*2, height))</span>
+<span class="s2">    composite.paste(img1, (0, 0))</span>
+<span class="s2">    composite.paste(img2, (width, 0))</span>
+<span class="s2">    </span>
+<span class="s2">    plt.imshow(composite)</span>
 </pre></div>
 </div>
 </section>
@@ -589,13 +605,15 @@ document.write(`
 </section>
 <section id="exercise-3-evaluate-the-matching-results-and-report">
 <h3><span class="section-number">6.5.3. </span>Exercise 3: Evaluate the Matching Results and Report<a class="headerlink" href="#exercise-3-evaluate-the-matching-results-and-report" title="Permalink to this heading">#</a></h3>
-<p>Finally, we ask you to extract the accuracy of the matching results. The accuracy is defined as the number of correctly matched keypoints divided by the total number of keypoints. As you know, you have 5 categories of images, so you should evaluate the accuracy for each category, and create a csv file with the results of each category, reporting the mean accuracy for each category and the standard deviation.</p>
+<p>Finally, we ask you to extract the accuracy of the matching results. The accuracy is defined as the number of correctly matched keypoints divided by the total number of keypoints. As you know, you have 5 categories of images, so you should evaluate the accuracy for each category, and create a csv file with the results of each category, reporting the mean accuracy for each category and the standard deviation. If you need to perform any other experiment, this is the time to do it.</p>
 </section>
+<section id="exercise-4-comparative-analysis">
+<h3><span class="section-number">6.5.4. </span>Exercise 4: Comparative Analysis<a class="headerlink" href="#exercise-4-comparative-analysis" title="Permalink to this heading">#</a></h3>
 </section>
 <section id="part-1-accuracy-analysis-across-categories">
-<h2><span class="section-number">6.6. </span>Part 1: Accuracy Analysis Across Categories<a class="headerlink" href="#part-1-accuracy-analysis-across-categories" title="Permalink to this heading">#</a></h2>
+<h3><span class="section-number">6.5.5. </span>Part 1: Accuracy Analysis Across Categories<a class="headerlink" href="#part-1-accuracy-analysis-across-categories" title="Permalink to this heading">#</a></h3>
 <section id="task-requirements">
-<h3><span class="section-number">6.6.1. </span>Task Requirements<a class="headerlink" href="#task-requirements" title="Permalink to this heading">#</a></h3>
+<h4><span class="section-number">6.5.5.1. </span>Task Requirements<a class="headerlink" href="#task-requirements" title="Permalink to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>Calculate matching accuracy for each image category:</p>
 <ul class="simple">
@@ -614,7 +632,7 @@ document.write(`
 </ol>
 </section>
 <section id="expected-csv-format">
-<h3><span class="section-number">6.6.2. </span>Expected CSV Format<a class="headerlink" href="#expected-csv-format" title="Permalink to this heading">#</a></h3>
+<h4><span class="section-number">6.5.5.2. </span>Expected CSV Format<a class="headerlink" href="#expected-csv-format" title="Permalink to this heading">#</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Category</span><span class="p">,</span><span class="n">Mean_Accuracy</span><span class="p">,</span><span class="n">Std_Deviation</span><span class="p">,</span><span class="n">Number_of_Images</span>
 <span class="n">Category1</span><span class="p">,</span><span class="mf">0.</span><span class="n">XX</span><span class="p">,</span><span class="mf">0.</span><span class="n">XX</span><span class="p">,</span><span class="n">XX</span>
 <span class="n">Category2</span><span class="p">,</span><span class="mf">0.</span><span class="n">XX</span><span class="p">,</span><span class="mf">0.</span><span class="n">XX</span><span class="p">,</span><span class="n">XX</span>
@@ -624,9 +642,9 @@ document.write(`
 </section>
 </section>
 <section id="part-2-comparative-analysis">
-<h2><span class="section-number">6.7. </span>Part 2: Comparative Analysis<a class="headerlink" href="#part-2-comparative-analysis" title="Permalink to this heading">#</a></h2>
+<h3><span class="section-number">6.5.6. </span>Part 2: Comparative Analysis<a class="headerlink" href="#part-2-comparative-analysis" title="Permalink to this heading">#</a></h3>
 <section id="required-experiments">
-<h3><span class="section-number">6.7.1. </span>Required Experiments<a class="headerlink" href="#required-experiments" title="Permalink to this heading">#</a></h3>
+<h4><span class="section-number">6.5.6.1. </span>Required Experiments<a class="headerlink" href="#required-experiments" title="Permalink to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p><strong>Baseline Analysis</strong></p>
 <ul class="simple">
@@ -669,18 +687,20 @@ document.write(`
 </li>
 </ol>
 </section>
+</section>
 <section id="final-report-requirements">
-<h3><span class="section-number">6.7.2. </span>Final Report Requirements<a class="headerlink" href="#final-report-requirements" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.5.7. </span>Final Report Requirements<a class="headerlink" href="#final-report-requirements" title="Permalink to this heading">#</a></h3>
 </section>
 <section id="format">
-<h3><span class="section-number">6.7.3. </span>Format<a class="headerlink" href="#format" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.5.8. </span>Format<a class="headerlink" href="#format" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Include visualizations (graphs, charts)</p></li>
 <li><p>Use tables for numerical comparisons</p></li>
+<li><p>No code needed in the report</p></li>
 </ul>
 </section>
 <section id="submission-format">
-<h3><span class="section-number">6.7.4. </span>Submission format<a class="headerlink" href="#submission-format" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.5.9. </span>Submission format<a class="headerlink" href="#submission-format" title="Permalink to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name_surname.zip
 ├──<span class="w"> </span>visualization_part_1.ipynb
 <span class="w">    </span>└──<span class="w"> </span>car.png
@@ -721,7 +741,7 @@ document.write(`
 </section>
 </section>
 <section id="evaluation-criteria">
-<h2><span class="section-number">6.8. </span>Evaluation Criteria<a class="headerlink" href="#evaluation-criteria" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.6. </span>Evaluation Criteria<a class="headerlink" href="#evaluation-criteria" title="Permalink to this heading">#</a></h2>
 <p>Your work will be evaluated based on:</p>
 <ul class="simple">
 <li><p>Thoroughness of analysis</p></li>
@@ -770,6 +790,15 @@ document.write(`
         <p class="prev-next-title"><span class="section-number">5. </span>Graph Matching</p>
       </div>
     </a>
+    <a class="right-next"
+       href="practice_2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Clustering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -798,21 +827,22 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-enhanced-graph-matching-using-graph-embeddings">6.5.1. Exercise 1: Enhanced Graph Matching Using Graph Embeddings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-visualize-the-optimal-assignment">6.5.2. Exercise 2: Visualize the Optimal Assignment</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-evaluate-the-matching-results-and-report">6.5.3. Exercise 3: Evaluate the Matching Results and Report</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-comparative-analysis">6.5.4. Exercise 4: Comparative Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-accuracy-analysis-across-categories">6.5.5. Part 1: Accuracy Analysis Across Categories</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#task-requirements">6.5.5.1. Task Requirements</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-csv-format">6.5.5.2. Expected CSV Format</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-accuracy-analysis-across-categories">6.6. Part 1: Accuracy Analysis Across Categories</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-requirements">6.6.1. Task Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-csv-format">6.6.2. Expected CSV Format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-comparative-analysis">6.5.6. Part 2: Comparative Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#required-experiments">6.5.6.1. Required Experiments</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-comparative-analysis">6.7. Part 2: Comparative Analysis</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#required-experiments">6.7.1. Required Experiments</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-report-requirements">6.7.2. Final Report Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#format">6.7.3. Format</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submission-format">6.7.4. Submission format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-report-requirements">6.5.7. Final Report Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#format">6.5.8. Format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submission-format">6.5.9. Submission format</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-criteria">6.8. Evaluation Criteria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-criteria">6.6. Evaluation Criteria</a></li>
 </ul>
   </nav></div>
 

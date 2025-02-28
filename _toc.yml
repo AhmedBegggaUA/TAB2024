@@ -16,3 +16,6 @@ parts:
   - file: practice_1_2
   - file: practice_1_3
   - file: practice_1_4
+- caption: Practice 2
+  chapters:
+  - file: practice_2
