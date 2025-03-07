@@ -1813,7 +1813,7 @@ width: 800px
 align: center
 height: 600px
 ---
-DA as entropy minimization the motivating example (K=3). 
+DA as entropy minimization the motivating example (K=2). 
 ```
 
 Actually, the new centers are $\mathbf{c}_1=[0,-1]^T$ and $\mathbf{c}_2=[0,2]^T$ (see {numref}`KM-clusters-K2`). 
@@ -2543,6 +2543,186 @@ height: 600px
 ---
 Entropy of Bernouilli wrt $p$. 
 ```
+
+#### Entropy and Coding 
+The relationship between entropy and codelength is key to understand why <span style="color:#f88146">entropy measures information content</span>. 
+
+The [Morse code](https://en.wikipedia.org/wiki/Morse_code) follows the principle of *assigning less number of bits to more frequent letters than to less frequent ones*. Herein, the bits are clear: $0$ for the dits "." and $1$ for the 
+dash ".". For instance, following the frequencies of letters in English, the shorter "codewords" are those for $E=.$ and $T=-$. The longer ones are those for the digits $0-9$ (five bits all of them). The table below shows those lengths and probabilities. 
+
+
+$$
+\begin{aligned}
+&\begin{array}{|c|c|c|c|}
+\hline
+\text{Letter} & \text{Morse code} & \text{codelength} & \text{Probability} \\
+\hline
+A & .- & 2 & 0.06381 \\
+B & -... & 4 & 0.01166 \\
+C & -.-. & 4 & 0.02173 \\
+D & -.. & 3 & 0.03323 \\
+E & . & 1 & 0.09924 \\
+F & ..-. & 4 & 0.01741 \\
+G & --. & 3 & 0.01574 \\
+H & .... & 4 & 0.04761 \\
+I & .. & 2 & 0.05442 \\
+J & .--- & 4 & 0.00120 \\
+K & -.- & 3 & 0.00603 \\
+L & .-.. & 4 & 0.03145 \\
+M & -- & 2 & 0.01880 \\
+N & -. & 2 & 0.05273 \\
+O & --- & 3 & 0.05865 \\
+P & .--. & 4 & 0.01507 \\
+Q & --.- & 4 & 0.00074 \\
+R & .-. & 3 & 0.04677 \\
+S & ... & 3 & 0.04943 \\
+T & - & 1 & 0.07075 \\
+U & ..- & 3 & 0.02155 \\
+V & ...- & 4 & 0.00764 \\
+W & .-- & 3 & 0.01844 \\
+X & -..- & 4 & 0.00117 \\
+Y & -.-- & 4 & 0.01542 \\
+Z & --.. & 4 & 0.00058 \\
+0 & ----- & 5 & 0.01563 \\
+1 & .---- & 5 & 0.05469 \\
+2 & ..--- & 5 & 0.02344 \\
+3 & ...-- & 5 & 0.02344 \\
+4 & ....- & 5 & 0.02344 \\
+5 & ..... & 5 & 0.01563 \\
+6 & -.... & 5 & 0.01563 \\
+7 & --... & 5 & 0.01563 \\
+8 & ---.. & 5 & 0.01563 \\
+9 & ----. & 5 & 0.01563 \\
+\hline
+\end{array}
+\end{aligned}
+$$
+
+Note that, due to traditional reasons it is not always happening that shorter codes correspond to highest frequencies (probabilities) but this is the global trend.  
+
+Of course, each message should have a space ' ' between letters in order to be decoded properly. For instance: ".... . .-.. .-.. ---   .-- --- .-. .-.. -.." means H E L L O W O R L D in Morse.
+
+
+[//]: https://courses.grainger.illinois.edu/cs573/fa2012/lec/lec/25_entropy.pdf
+
+**Codes and Trees**. One interesting way of characterizing codes (binary codes in particular) is to try to put the symbols to code in a tree. See for instance {numref}`Morse-tree`, where the root is marked as "\#'. We point out the following: 
+- <span style="color:#f88146">**Decoding means**</span> navigating through the tree top-to-bottom, making decisions (dit or slash for binary codes), i.e. building a "path", until the desired symbol is reached. Such a path is the "codeword". 
+- <span style="color:#f88146">**The codeword length**</span> $l_i$ is the number of decision taken to decode it, i.e. the depth of the symbol in the tree. 
+- <span style="color:#f88146">**A code is comma-like**</span> if all the symbols are placed at the leaves of the tree. This is clearly not the case of Morse. 
+- <span style="color:#f88146">**A code is prefix-like**</span> if any symbol is preceeded by a unique sequence of other codes (the prefix). For instace, to decode "O" in Morse, we should decode "T" and "M". Thus, the prefix of "O" is "TM". 
+
+
+In the Morse code few letters are placed at the leaves of tree. Notably, they are the ones with the largest codeword lengths. Herein, we follow the recipe that assigning less frequent letters to deeper levels of the tree. The purpose of such strategy is twofold: (a) saving storage space, and (b) fast decoding. 
+
+**Expected codelength**. Suppose that we have $n$ letters, each one with frequency $p_i$ and codelenth $l_i$, $i=1,\ldots,n$. Then, the expected codelength is 
+
+$$
+E(l) = \sum_{i}l_i p_i = l_1p_1 + l_2p_2 + \ldots + l_np_n\;.
+$$
+
+For the Morse code, $E_{Morse}(l)=3.0794539323542267$. Now, the tree in {numref}`Morse-tree` is built under the constraint of placing more probable letters in the top of the (binary) tree. In other words, we may assume that 
+
+$$
+p_i \approx \frac{1}{2^{l_i}}\;. 
+$$
+
+If so, $E(l)\approx H(p_1,p_2,\ldots,p_n)$ since
+
+$$
+\log_2 p_i \approx \log_2 \frac{1}{2^{l_i}} = \log_2 1 - \log_2 2^{l_i} = - \log_2 2^{l_i} = - l_i\;.
+$$
+
+Then
+
+$$
+-p_i\log_2 p_i \approx \frac{1}{2^{l_i}}l_i = \frac{l_i}{2^{l_i}}\;.
+$$
+
+Roughly speaking, <span style="color:#f88146">**the expected codelegth matches entropy**</span>! 
+
+More precisely, for comma-like codes we have $E(l)\le H(p_1,p_2,\ldots,p_n)$. Although Morse is not comma-like it satisfies this bound since $E_{Morse}(l) = 3.0794539323542267\le H_{Morse} = 4.713102340698242$. 
+
+```{figure} ./images/Topic2/Morse-Photoroom.png
+---
+name: Morse-tree
+width: 800px
+align: center
+height: 600px
+---
+Decoding tree for the Morse code. 
+```
+
+[//]: https://stackoverflow.com/questions/21853101/why-huffman-coding-is-good
+
+**Huffman Codes**. As an alternative code, herein we highlight a <span style="color:#f88146">**prefix code**</span> (no code is the prefix of another). Prefix codes are easily decodable and, in addition, they allow us (by definition) to suppress the space " " between words (see the Table below). 
+
+$$
+\begin{aligned}
+\begin{array}{|c|c|c|c|}
+\hline
+\text{Letter} & \text{Huffman Code} & \text{Length} & \text{Probability} \\
+\hline
+A & 1010 & 4 & 0.06381 \\
+B & 001110 & 6 & 0.01166 \\
+C & 111001 & 6 & 0.02173 \\
+D & 10111 & 5 & 0.03323 \\
+E & 000 & 3 & 0.09924 \\
+F & 110101 & 6 & 0.01741 \\
+G & 100111 & 6 & 0.01574 \\
+H & 11111 & 5 & 0.04761 \\
+I & 0101 & 4 & 0.05442 \\
+J & 1101001011 & 10 & 0.00120 \\
+K & 11010011 & 8 & 0.00603 \\
+L & 10110 & 5 & 0.03145 \\
+M & 110111 & 6 & 0.01880 \\
+N & 0100 & 4 & 0.05273 \\
+O & 0111 & 4 & 0.05865 \\
+P & 001111 & 6 & 0.01507 \\
+Q & 1101001001 & 10 & 0.00074 \\
+R & 11101 & 5 & 0.04677 \\
+S & 0010 & 4 & 0.04943 \\
+T & 1100 & 4 & 0.07075 \\
+U & 111000 & 6 & 0.02155 \\
+V & 1101000 & 7 & 0.00764 \\
+W & 110110 & 6 & 0.01844 \\
+X & 1101001010 & 10 & 0.00117 \\
+Y & 100000 & 6 & 0.01542 \\
+Z & 1101001000 & 10 & 0.00058 \\
+0 & 100001 & 6 & 0.01563 \\
+1 & 0110 & 4 & 0.05469 \\
+2 & 111100 & 6 & 0.02344 \\
+3 & 111101 & 6 & 0.02344 \\
+4 & 00110 & 5 & 0.02344 \\
+5 & 100011 & 6 & 0.01563 \\
+6 & 100010 & 6 & 0.01563 \\
+7 & 100110 & 6 & 0.01563 \\
+8 & 100100 & 6 & 0.01563 \\
+9 & 100101 & 6 & 0.01563 \\
+\hline
+\end{array}
+\end{aligned}
+$$
+
+For instance, the Huffman code for HELLOW WORLD is 
+
+$$
+1111100010110101100111\;1101100111111011011010111
+$$
+
+Concerning $E_{Huffman}(l)$ and $H_{Huffman}=$, they are identical: $4.7$. See the encoding tree in {numref}`Huffman-tree`
+
+```{figure} ./images/Topic2/Huffman-Photoroom.png
+---
+name: Huffman-tree
+width: 800px
+align: center
+height: 600px
+---
+Decoding tree for the Huffman code of the Morse frequencies. 
+```
+
+Finally, this code is not only useful for English but for any laguage such as Chinese. 
+
 
 #### Joint vs Conditional entropy
 Entropy is defined for any (discrete) probability function, and in particular for the **joint probability**. Thus, if $A$ and $B$ are two discrete variables with respective values $a_1,\ldots, a_m$ and $b_1,\ldots,b_n$ and does exists the probability $p(A,B)$, the <span style="color:#f88146">**joint entropy**</span> $H(A,B)$ is defined as follows: 

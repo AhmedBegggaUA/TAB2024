@@ -435,7 +435,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.6.1. Independence</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy">2.6.2. Entropy</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-and-properties">2.6.2.1. Definition and properties</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-vs-conditional-entropy">2.6.2.2. Joint vs Conditional entropy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-and-coding">2.6.2.2. Entropy and Coding</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-vs-conditional-entropy">2.6.2.3. Joint vs Conditional entropy</a></li>
 </ul>
 </li>
 </ul>
@@ -2067,7 +2068,7 @@ H(X|C=i) &amp;= -\sum_{\mathbf{x}_a}p(X=a|C=i)\log p(X=a|C=i)\\
 <figure class="align-center" id="km-entropy-example-k2">
 <a class="reference internal image-reference" href="_images/KM-entropy-example-K2-removebg-preview.png"><img alt="_images/KM-entropy-example-K2-removebg-preview.png" src="_images/KM-entropy-example-K2-removebg-preview.png" style="width: 800px; height: 600px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 2.23 </span><span class="caption-text">DA as entropy minimization the motivating example (K=3).</span><a class="headerlink" href="#km-entropy-example-k2" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 2.23 </span><span class="caption-text">DA as entropy minimization the motivating example (K=2).</span><a class="headerlink" href="#km-entropy-example-k2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Actually, the new centers are <span class="math notranslate nohighlight">\(\mathbf{c}_1=[0,-1]^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{c}_2=[0,2]^T\)</span> (see <a class="reference internal" href="#km-clusters-k2"><span class="std std-numref">Fig. 2.24</span></a>).</p>
@@ -2736,8 +2737,160 @@ H(X) = -p\log p -p\log p = -2p\log p = -\log\frac{1}{2} = -(\log 1 - \log 2) = \
 </figcaption>
 </figure>
 </section>
+<section id="entropy-and-coding">
+<h4><span class="section-number">2.6.2.2. </span>Entropy and Coding<a class="headerlink" href="#entropy-and-coding" title="Permalink to this heading">#</a></h4>
+<p>The relationship between entropy and codelength is key to understand why <span style="color:#f88146">entropy measures information content</span>.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Morse_code">Morse code</a> follows the principle of <em>assigning less number of bits to more frequent letters than to less frequent ones</em>. Herein, the bits are clear: <span class="math notranslate nohighlight">\(0\)</span> for the dits “.” and <span class="math notranslate nohighlight">\(1\)</span> for the
+dash “.”. For instance, following the frequencies of letters in English, the shorter “codewords” are those for <span class="math notranslate nohighlight">\(E=.\)</span> and <span class="math notranslate nohighlight">\(T=-\)</span>. The longer ones are those for the digits <span class="math notranslate nohighlight">\(0-9\)</span> (five bits all of them). The table below shows those lengths and probabilities.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+&amp;\begin{array}{|c|c|c|c|}
+\hline
+\text{Letter} &amp; \text{Morse code} &amp; \text{codelength} &amp; \text{Probability} \\
+\hline
+A &amp; .- &amp; 2 &amp; 0.06381 \\
+B &amp; -... &amp; 4 &amp; 0.01166 \\
+C &amp; -.-. &amp; 4 &amp; 0.02173 \\
+D &amp; -.. &amp; 3 &amp; 0.03323 \\
+E &amp; . &amp; 1 &amp; 0.09924 \\
+F &amp; ..-. &amp; 4 &amp; 0.01741 \\
+G &amp; --. &amp; 3 &amp; 0.01574 \\
+H &amp; .... &amp; 4 &amp; 0.04761 \\
+I &amp; .. &amp; 2 &amp; 0.05442 \\
+J &amp; .--- &amp; 4 &amp; 0.00120 \\
+K &amp; -.- &amp; 3 &amp; 0.00603 \\
+L &amp; .-.. &amp; 4 &amp; 0.03145 \\
+M &amp; -- &amp; 2 &amp; 0.01880 \\
+N &amp; -. &amp; 2 &amp; 0.05273 \\
+O &amp; --- &amp; 3 &amp; 0.05865 \\
+P &amp; .--. &amp; 4 &amp; 0.01507 \\
+Q &amp; --.- &amp; 4 &amp; 0.00074 \\
+R &amp; .-. &amp; 3 &amp; 0.04677 \\
+S &amp; ... &amp; 3 &amp; 0.04943 \\
+T &amp; - &amp; 1 &amp; 0.07075 \\
+U &amp; ..- &amp; 3 &amp; 0.02155 \\
+V &amp; ...- &amp; 4 &amp; 0.00764 \\
+W &amp; .-- &amp; 3 &amp; 0.01844 \\
+X &amp; -..- &amp; 4 &amp; 0.00117 \\
+Y &amp; -.-- &amp; 4 &amp; 0.01542 \\
+Z &amp; --.. &amp; 4 &amp; 0.00058 \\
+0 &amp; ----- &amp; 5 &amp; 0.01563 \\
+1 &amp; .---- &amp; 5 &amp; 0.05469 \\
+2 &amp; ..--- &amp; 5 &amp; 0.02344 \\
+3 &amp; ...-- &amp; 5 &amp; 0.02344 \\
+4 &amp; ....- &amp; 5 &amp; 0.02344 \\
+5 &amp; ..... &amp; 5 &amp; 0.01563 \\
+6 &amp; -.... &amp; 5 &amp; 0.01563 \\
+7 &amp; --... &amp; 5 &amp; 0.01563 \\
+8 &amp; ---.. &amp; 5 &amp; 0.01563 \\
+9 &amp; ----. &amp; 5 &amp; 0.01563 \\
+\hline
+\end{array}
+\end{aligned}
+\end{split}\]</div>
+<p>Note that, due to traditional reasons it is not always happening that shorter codes correspond to highest frequencies (probabilities) but this is the global trend.</p>
+<p>Of course, each message should have a space ‘ ‘ between letters in order to be decoded properly. For instance: “……-.. .-.. —   .– — .-. .-.. -..” means H E L L O W O R L D in Morse.</p>
+<p><strong>Codes and Trees</strong>. One interesting way of characterizing codes (binary codes in particular) is to try to put the symbols to code in a tree. See for instance <a class="reference internal" href="#morse-tree"><span class="std std-numref">Fig. 2.29</span></a>, where the root is marked as “#’. We point out the following:</p>
+<ul class="simple">
+<li><p><span style="color:#f88146"><strong>Decoding means</strong></span> navigating through the tree top-to-bottom, making decisions (dit or slash for binary codes), i.e. building a “path”, until the desired symbol is reached. Such a path is the “codeword”.</p></li>
+<li><p><span style="color:#f88146"><strong>The codeword length</strong></span> <span class="math notranslate nohighlight">\(l_i\)</span> is the number of decision taken to decode it, i.e. the depth of the symbol in the tree.</p></li>
+<li><p><span style="color:#f88146"><strong>A code is comma-like</strong></span> if all the symbols are placed at the leaves of the tree. This is clearly not the case of Morse.</p></li>
+<li><p><span style="color:#f88146"><strong>A code is prefix-like</strong></span> if any symbol is preceeded by a unique sequence of other codes (the prefix). For instace, to decode “O” in Morse, we should decode “T” and “M”. Thus, the prefix of “O” is “TM”.</p></li>
+</ul>
+<p>In the Morse code few letters are placed at the leaves of tree. Notably, they are the ones with the largest codeword lengths. Herein, we follow the recipe that assigning less frequent letters to deeper levels of the tree. The purpose of such strategy is twofold: (a) saving storage space, and (b) fast decoding.</p>
+<p><strong>Expected codelength</strong>. Suppose that we have <span class="math notranslate nohighlight">\(n\)</span> letters, each one with frequency <span class="math notranslate nohighlight">\(p_i\)</span> and codelenth <span class="math notranslate nohighlight">\(l_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. Then, the expected codelength is</p>
+<div class="math notranslate nohighlight">
+\[
+E(l) = \sum_{i}l_i p_i = l_1p_1 + l_2p_2 + \ldots + l_np_n\;.
+\]</div>
+<p>For the Morse code, <span class="math notranslate nohighlight">\(E_{Morse}(l)=3.0794539323542267\)</span>. Now, the tree in <a class="reference internal" href="#morse-tree"><span class="std std-numref">Fig. 2.29</span></a> is built under the constraint of placing more probable letters in the top of the (binary) tree. In other words, we may assume that</p>
+<div class="math notranslate nohighlight">
+\[
+p_i \approx \frac{1}{2^{l_i}}\;. 
+\]</div>
+<p>If so, <span class="math notranslate nohighlight">\(E(l)\approx H(p_1,p_2,\ldots,p_n)\)</span> since</p>
+<div class="math notranslate nohighlight">
+\[
+\log_2 p_i \approx \log_2 \frac{1}{2^{l_i}} = \log_2 1 - \log_2 2^{l_i} = - \log_2 2^{l_i} = - l_i\;.
+\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[
+-p_i\log_2 p_i \approx \frac{1}{2^{l_i}}l_i = \frac{l_i}{2^{l_i}}\;.
+\]</div>
+<p>Roughly speaking, <span style="color:#f88146"><strong>the expected codelegth matches entropy</strong></span>!</p>
+<p>More precisely, for comma-like codes we have <span class="math notranslate nohighlight">\(E(l)\le H(p_1,p_2,\ldots,p_n)\)</span>. Although Morse is not comma-like it satisfies this bound since <span class="math notranslate nohighlight">\(E_{Morse}(l) = 3.0794539323542267\le H_{Morse} = 4.713102340698242\)</span>.</p>
+<figure class="align-center" id="morse-tree">
+<a class="reference internal image-reference" href="_images/Morse-Photoroom.png"><img alt="_images/Morse-Photoroom.png" src="_images/Morse-Photoroom.png" style="width: 800px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.29 </span><span class="caption-text">Decoding tree for the Morse code.</span><a class="headerlink" href="#morse-tree" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Huffman Codes</strong>. As an alternative code, herein we highlight a <span style="color:#f88146"><strong>prefix code</strong></span> (no code is the prefix of another). Prefix codes are easily decodable and, in addition, they allow us (by definition) to suppress the space “ “ between words (see the Table below).</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\begin{array}{|c|c|c|c|}
+\hline
+\text{Letter} &amp; \text{Huffman Code} &amp; \text{Length} &amp; \text{Probability} \\
+\hline
+A &amp; 1010 &amp; 4 &amp; 0.06381 \\
+B &amp; 001110 &amp; 6 &amp; 0.01166 \\
+C &amp; 111001 &amp; 6 &amp; 0.02173 \\
+D &amp; 10111 &amp; 5 &amp; 0.03323 \\
+E &amp; 000 &amp; 3 &amp; 0.09924 \\
+F &amp; 110101 &amp; 6 &amp; 0.01741 \\
+G &amp; 100111 &amp; 6 &amp; 0.01574 \\
+H &amp; 11111 &amp; 5 &amp; 0.04761 \\
+I &amp; 0101 &amp; 4 &amp; 0.05442 \\
+J &amp; 1101001011 &amp; 10 &amp; 0.00120 \\
+K &amp; 11010011 &amp; 8 &amp; 0.00603 \\
+L &amp; 10110 &amp; 5 &amp; 0.03145 \\
+M &amp; 110111 &amp; 6 &amp; 0.01880 \\
+N &amp; 0100 &amp; 4 &amp; 0.05273 \\
+O &amp; 0111 &amp; 4 &amp; 0.05865 \\
+P &amp; 001111 &amp; 6 &amp; 0.01507 \\
+Q &amp; 1101001001 &amp; 10 &amp; 0.00074 \\
+R &amp; 11101 &amp; 5 &amp; 0.04677 \\
+S &amp; 0010 &amp; 4 &amp; 0.04943 \\
+T &amp; 1100 &amp; 4 &amp; 0.07075 \\
+U &amp; 111000 &amp; 6 &amp; 0.02155 \\
+V &amp; 1101000 &amp; 7 &amp; 0.00764 \\
+W &amp; 110110 &amp; 6 &amp; 0.01844 \\
+X &amp; 1101001010 &amp; 10 &amp; 0.00117 \\
+Y &amp; 100000 &amp; 6 &amp; 0.01542 \\
+Z &amp; 1101001000 &amp; 10 &amp; 0.00058 \\
+0 &amp; 100001 &amp; 6 &amp; 0.01563 \\
+1 &amp; 0110 &amp; 4 &amp; 0.05469 \\
+2 &amp; 111100 &amp; 6 &amp; 0.02344 \\
+3 &amp; 111101 &amp; 6 &amp; 0.02344 \\
+4 &amp; 00110 &amp; 5 &amp; 0.02344 \\
+5 &amp; 100011 &amp; 6 &amp; 0.01563 \\
+6 &amp; 100010 &amp; 6 &amp; 0.01563 \\
+7 &amp; 100110 &amp; 6 &amp; 0.01563 \\
+8 &amp; 100100 &amp; 6 &amp; 0.01563 \\
+9 &amp; 100101 &amp; 6 &amp; 0.01563 \\
+\hline
+\end{array}
+\end{aligned}
+\end{split}\]</div>
+<p>For instance, the Huffman code for HELLOW WORLD is</p>
+<div class="math notranslate nohighlight">
+\[
+1111100010110101100111\;1101100111111011011010111
+\]</div>
+<p>Concerning <span class="math notranslate nohighlight">\(E_{Huffman}(l)\)</span> and <span class="math notranslate nohighlight">\(H_{Huffman}=\)</span>, they are identical: <span class="math notranslate nohighlight">\(4.7\)</span>. See the encoding tree in <a class="reference internal" href="#huffman-tree"><span class="std std-numref">Fig. 2.30</span></a></p>
+<figure class="align-center" id="huffman-tree">
+<a class="reference internal image-reference" href="_images/Huffman-Photoroom.png"><img alt="_images/Huffman-Photoroom.png" src="_images/Huffman-Photoroom.png" style="width: 800px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.30 </span><span class="caption-text">Decoding tree for the Huffman code of the Morse frequencies.</span><a class="headerlink" href="#huffman-tree" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Finally, this code is not only useful for English but for any laguage such as Chinese.</p>
+</section>
 <section id="joint-vs-conditional-entropy">
-<h4><span class="section-number">2.6.2.2. </span>Joint vs Conditional entropy<a class="headerlink" href="#joint-vs-conditional-entropy" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">2.6.2.3. </span>Joint vs Conditional entropy<a class="headerlink" href="#joint-vs-conditional-entropy" title="Permalink to this heading">#</a></h4>
 <p>Entropy is defined for any (discrete) probability function, and in particular for the <strong>joint probability</strong>. Thus, if <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are two discrete variables with respective values <span class="math notranslate nohighlight">\(a_1,\ldots, a_m\)</span> and <span class="math notranslate nohighlight">\(b_1,\ldots,b_n\)</span> and does exists the probability <span class="math notranslate nohighlight">\(p(A,B)\)</span>, the <span style="color:#f88146"><strong>joint entropy</strong></span> <span class="math notranslate nohighlight">\(H(A,B)\)</span> is defined as follows:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -3070,7 +3223,8 @@ Then, in this exercise we have illustrated how to compute the conditional entrop
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.6.1. Independence</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy">2.6.2. Entropy</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-and-properties">2.6.2.1. Definition and properties</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-vs-conditional-entropy">2.6.2.2. Joint vs Conditional entropy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-and-coding">2.6.2.2. Entropy and Coding</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-vs-conditional-entropy">2.6.2.3. Joint vs Conditional entropy</a></li>
 </ul>
 </li>
 </ul>
