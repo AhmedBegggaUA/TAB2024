@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>5. Graph Matching &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+    <title>6. Graph Matching &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
   
   
   
@@ -67,8 +67,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'practice_1_3';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Graph Matching with Topological Features" href="practice_1_4.html" />
-    <link rel="prev" title="4. Graph Construction for Matching" href="practice_1_2.html" />
+    <link rel="next" title="7. Graph Matching with Topological Features" href="practice_1_4.html" />
+    <link rel="prev" title="5. Graph Construction for Matching" href="practice_1_2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,16 +183,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Puzzles and Rubik</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">3. Introduction to the practical part of TAB2025</a></li>
-<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">4. Graph Construction for Matching</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Graph Matching</a></li>
-<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">6. Graph Matching with Topological Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">4. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">5. Graph Construction for Matching</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">7. Graph Matching with Topological Features</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_2.html">7. Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">8. Clustering</a></li>
 </ul>
 
     </div>
@@ -388,17 +392,17 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-3-graph-matching-hungarian-algorithm-or-munkres-algorithm">5.1. Practical Session 1.3: Graph Matching: Hungarian Algorithm or Munkres Algorithm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">5.2. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-definition">5.3. Problem Definition</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-principles">5.4. Basic Principles</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">5.5. Pseudocode</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-steps-in-detail">5.6. Algorithm Steps in Detail</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-complexity">5.7. Time Complexity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">5.8. Exercise</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-implement-the-hungarian-algorithm-for-graph-matching">5.8.1. Exercise 1: Implement the Hungarian Algorithm for Graph Matching</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-visualize-the-optimal-assignment">5.8.2. Exercise 2: Visualize the Optimal Assignment</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-evaluate-the-matching-results">5.8.3. Exercise 3: Evaluate the Matching Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-3-graph-matching-hungarian-algorithm-or-munkres-algorithm">6.1. Practical Session 1.3: Graph Matching: Hungarian Algorithm or Munkres Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">6.2. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-definition">6.3. Problem Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-principles">6.4. Basic Principles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">6.5. Pseudocode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-steps-in-detail">6.6. Algorithm Steps in Detail</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-complexity">6.7. Time Complexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">6.8. Exercise</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-implement-the-hungarian-algorithm-for-graph-matching">6.8.1. Exercise 1: Implement the Hungarian Algorithm for Graph Matching</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-visualize-the-optimal-assignment">6.8.2. Exercise 2: Visualize the Optimal Assignment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-evaluate-the-matching-results">6.8.3. Exercise 3: Evaluate the Matching Results</a></li>
 </ul>
 </li>
 </ul>
@@ -413,17 +417,17 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="graph-matching">
-<h1><span class="section-number">5. </span>Graph Matching<a class="headerlink" href="#graph-matching" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6. </span>Graph Matching<a class="headerlink" href="#graph-matching" title="Permalink to this heading">#</a></h1>
 <section id="practical-session-1-3-graph-matching-hungarian-algorithm-or-munkres-algorithm">
-<h2><span class="section-number">5.1. </span>Practical Session 1.3: Graph Matching: Hungarian Algorithm or Munkres Algorithm<a class="headerlink" href="#practical-session-1-3-graph-matching-hungarian-algorithm-or-munkres-algorithm" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.1. </span>Practical Session 1.3: Graph Matching: Hungarian Algorithm or Munkres Algorithm<a class="headerlink" href="#practical-session-1-3-graph-matching-hungarian-algorithm-or-munkres-algorithm" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="introduction">
-<h2><span class="section-number">5.2. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>The Hungarian Algorithm, developed by Harold Kuhn in 1955, is an optimization algorithm that solves the assignment problem in polynomial time <span class="math notranslate nohighlight">\(O(n^3)\)</span>. This algorithm finds the optimal way to assign n tasks to n workers, minimizing the total cost of the assignments.</p>
 <p>The name “Hungarian” comes from the fact that it was based on the earlier works of two Hungarian mathematicians: Dénes König and Jenő Egerváry.</p>
 </section>
 <section id="problem-definition">
-<h2><span class="section-number">5.3. </span>Problem Definition<a class="headerlink" href="#problem-definition" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.3. </span>Problem Definition<a class="headerlink" href="#problem-definition" title="Permalink to this heading">#</a></h2>
 <p>Given:</p>
 <ul class="simple">
 <li><p>A cost matrix C of size n×n where C[i,j] represents the cost of assigning worker i to task j</p></li>
@@ -432,7 +436,7 @@ document.write(`
 </ul>
 </section>
 <section id="basic-principles">
-<h2><span class="section-number">5.4. </span>Basic Principles<a class="headerlink" href="#basic-principles" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.4. </span>Basic Principles<a class="headerlink" href="#basic-principles" title="Permalink to this heading">#</a></h2>
 <p>The algorithm works by transforming the cost matrix through a series of steps:</p>
 <ol class="arabic simple">
 <li><p>Row and column reductions to create zeros</p></li>
@@ -441,7 +445,7 @@ document.write(`
 </ol>
 </section>
 <section id="pseudocode">
-<h2><span class="section-number">5.5. </span>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.5. </span>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FUNCTION</span> <span class="n">HungarianAlgorithm</span><span class="p">(</span><span class="n">cost_matrix</span><span class="p">):</span>
     <span class="c1"># Step 1: Row Reduction</span>
     <span class="n">FOR</span> <span class="n">each</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cost_matrix</span><span class="p">:</span>
@@ -478,7 +482,7 @@ document.write(`
 </div>
 </section>
 <section id="algorithm-steps-in-detail">
-<h2><span class="section-number">5.6. </span>Algorithm Steps in Detail<a class="headerlink" href="#algorithm-steps-in-detail" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.6. </span>Algorithm Steps in Detail<a class="headerlink" href="#algorithm-steps-in-detail" title="Permalink to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p><strong>Matrix Reduction</strong></p>
 <ul class="simple">
@@ -511,7 +515,7 @@ document.write(`
 </ol>
 </section>
 <section id="time-complexity">
-<h2><span class="section-number">5.7. </span>Time Complexity<a class="headerlink" href="#time-complexity" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7. </span>Time Complexity<a class="headerlink" href="#time-complexity" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Overall complexity: <span class="math notranslate nohighlight">\(O(n^3)\)</span></p></li>
 <li><p>Space complexity: <span class="math notranslate nohighlight">\(O(n^2)\)</span></p></li>
@@ -520,10 +524,10 @@ document.write(`
 <p>This algorithm guarantees finding an optimal solution to the assignment problem, making it a fundamental tool in operations research and combinatorial optimization.</p>
 </section>
 <section id="exercise">
-<h2><span class="section-number">5.8. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.8. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <p>In the previous session, we learned about graph construction methods for matching keypoints in images. In this session, we will implement the Hungarian Algorithm to solve the assignment problem in graph matching. We will use the keypoints extracted from images to create a cost matrix and find the optimal assignment of keypoints between two images.</p>
 <section id="exercise-1-implement-the-hungarian-algorithm-for-graph-matching">
-<h3><span class="section-number">5.8.1. </span>Exercise 1: Implement the Hungarian Algorithm for Graph Matching<a class="headerlink" href="#exercise-1-implement-the-hungarian-algorithm-for-graph-matching" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.8.1. </span>Exercise 1: Implement the Hungarian Algorithm for Graph Matching<a class="headerlink" href="#exercise-1-implement-the-hungarian-algorithm-for-graph-matching" title="Permalink to this heading">#</a></h3>
 <p>Implement the Hungarian Algorithm to find the optimal assignment of keypoints between two images, using the cost matrix created from the Euclidean distances between keypoints, and you must use the <code class="docutils literal notranslate"><span class="pre">scipy.optimize.linear_sum_assignment</span></code> function to solve the assignment problem.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
@@ -572,23 +576,23 @@ document.write(`
 </div>
 </section>
 <section id="exercise-2-visualize-the-optimal-assignment">
-<h3><span class="section-number">5.8.2. </span>Exercise 2: Visualize the Optimal Assignment<a class="headerlink" href="#exercise-2-visualize-the-optimal-assignment" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.8.2. </span>Exercise 2: Visualize the Optimal Assignment<a class="headerlink" href="#exercise-2-visualize-the-optimal-assignment" title="Permalink to this heading">#</a></h3>
 <p>Visualize the optimal assignment by connecting the matched keypoints with lines on the images.</p>
 <figure class="align-default" id="duck-matching-good">
 <a class="reference internal image-reference" href="_images/duck_matching_full_bueno.png"><img alt="_images/duck_matching_full_bueno.png" src="_images/duck_matching_full_bueno.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Visualizing the Duck Images with Keypoints, Delaunay Triangulation and Matching (Good Result)</span><a class="headerlink" href="#duck-matching-good" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.1 </span><span class="caption-text">Visualizing the Duck Images with Keypoints, Delaunay Triangulation and Matching (Good Result)</span><a class="headerlink" href="#duck-matching-good" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="duck-matching-bad">
 <a class="reference internal image-reference" href="_images/duck_matching_full_malo.png"><img alt="_images/duck_matching_full_malo.png" src="_images/duck_matching_full_malo.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Visualizing the Duck Images with Keypoints, Delaunay Triangulation and Matching (Bad Result)</span><a class="headerlink" href="#duck-matching-bad" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.2 </span><span class="caption-text">Visualizing the Duck Images with Keypoints, Delaunay Triangulation and Matching (Bad Result)</span><a class="headerlink" href="#duck-matching-bad" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="exercise-3-evaluate-the-matching-results">
-<h3><span class="section-number">5.8.3. </span>Exercise 3: Evaluate the Matching Results<a class="headerlink" href="#exercise-3-evaluate-the-matching-results" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.8.3. </span>Exercise 3: Evaluate the Matching Results<a class="headerlink" href="#exercise-3-evaluate-the-matching-results" title="Permalink to this heading">#</a></h3>
 <p>Finally, we ask you to extract the accuracy of the matching results. The accuracy is defined as the number of correctly matched keypoints divided by the total number of keypoints. As you know, you have 5 categories of images, so you should evaluate the accuracy for each category, and create a csv file with the results of each category, reporting the mean accuracy for each category and the standard deviation.</p>
 </section>
 </section>
@@ -630,7 +634,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>Graph Construction for Matching</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Graph Construction for Matching</p>
       </div>
     </a>
     <a class="right-next"
@@ -638,7 +642,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Graph Matching with Topological Features</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Graph Matching with Topological Features</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -658,17 +662,17 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-3-graph-matching-hungarian-algorithm-or-munkres-algorithm">5.1. Practical Session 1.3: Graph Matching: Hungarian Algorithm or Munkres Algorithm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">5.2. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-definition">5.3. Problem Definition</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-principles">5.4. Basic Principles</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">5.5. Pseudocode</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-steps-in-detail">5.6. Algorithm Steps in Detail</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-complexity">5.7. Time Complexity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">5.8. Exercise</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-implement-the-hungarian-algorithm-for-graph-matching">5.8.1. Exercise 1: Implement the Hungarian Algorithm for Graph Matching</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-visualize-the-optimal-assignment">5.8.2. Exercise 2: Visualize the Optimal Assignment</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-evaluate-the-matching-results">5.8.3. Exercise 3: Evaluate the Matching Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-3-graph-matching-hungarian-algorithm-or-munkres-algorithm">6.1. Practical Session 1.3: Graph Matching: Hungarian Algorithm or Munkres Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">6.2. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-definition">6.3. Problem Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-principles">6.4. Basic Principles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">6.5. Pseudocode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-steps-in-detail">6.6. Algorithm Steps in Detail</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-complexity">6.7. Time Complexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">6.8. Exercise</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-implement-the-hungarian-algorithm-for-graph-matching">6.8.1. Exercise 1: Implement the Hungarian Algorithm for Graph Matching</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-visualize-the-optimal-assignment">6.8.2. Exercise 2: Visualize the Optimal Assignment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-evaluate-the-matching-results">6.8.3. Exercise 3: Evaluate the Matching Results</a></li>
 </ul>
 </li>
 </ul>

@@ -10,6 +10,9 @@ parts:
   chapters:
   - file: topic1
   - file: topic2
+- caption: Puzzles and Rubik
+  chapters:
+  - file: topic3
 - caption: Practice 1
   chapters:
   - file: practice_1_1

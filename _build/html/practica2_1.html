@@ -1,0 +1,1543 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>&lt;no title&gt; &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'practica2_1';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2025
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">NP-Hardness and Graph Matching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Puzzles and Rubik</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">4. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">5. Graph Construction for Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">6. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">7. Graph Matching with Topological Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">8. Clustering</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fpractica2_1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/practica2_1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><no title></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p>## Learning Gaussian Mixture Models with Entropy-Based Criteria</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">centros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Genera datos sintéticos siguiendo distribuciones gaussianas de forma simplificada.</span>
+<span class="sd">    </span>
+<span class="sd">    Parámetros:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    n_puntos_por_cluster : int</span>
+<span class="sd">        Cantidad de puntos para cada cluster</span>
+<span class="sd">    n_clusters : int</span>
+<span class="sd">        Número de clusters a generar</span>
+<span class="sd">    centros : array o None</span>
+<span class="sd">        Coordenadas de los centros (x,y). Si es None, se generan automáticamente.</span>
+<span class="sd">    </span>
+<span class="sd">    Retorna:</span>
+<span class="sd">    --------</span>
+<span class="sd">    X : array</span>
+<span class="sd">        Coordenadas (x,y) de todos los puntos</span>
+<span class="sd">    y : array</span>
+<span class="sd">        Etiqueta del cluster al que pertenece cada punto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Si no se especifican centros, los generamos aleatoriamente</span>
+    <span class="k">if</span> <span class="n">centros</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">centros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    
+    <span class="c1"># Listas para almacenar los puntos y sus etiquetas</span>
+    <span class="n">todos_puntos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">todas_etiquetas</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Para cada cluster:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
+        <span class="c1"># Obtenemos el centro del cluster actual</span>
+        <span class="n">centro</span> <span class="o">=</span> <span class="n">centros</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># Generamos puntos con distribución normal alrededor del centro</span>
+        <span class="c1"># con una desviación estándar de 0.5</span>
+        <span class="n">puntos_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">centro</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">n_muestras</span><span class="p">)</span>
+        <span class="n">puntos_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">centro</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">n_muestras</span><span class="p">)</span>
+        
+        <span class="c1"># Combinamos las coordenadas x e y</span>
+        <span class="c1">#puntos_cluster = np.column_stack([puntos_x, puntos_y])</span>
+        <span class="c1"># Usamos np.concatenate en lugar de np.column_stack</span>
+        
+        <span class="n">puntos_cluster</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">puntos_x</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">puntos_y</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">etiquetas_cluster</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_muestras</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        
+        <span class="c1"># En lugar de usar np.full, usamos np.repeat</span>
+        
+
+        <span class="c1"># Guardamos los puntos y las etiquetas del cluster</span>
+        <span class="n">todos_puntos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">puntos_cluster</span><span class="p">)</span>
+        <span class="n">todas_etiquetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_muestras</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+    
+    <span class="c1"># Unimos todos los clusters</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">todos_puntos</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">todas_etiquetas</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="c1"># Visualizar los datos generados</span>
+<span class="k">def</span> <span class="nf">visualizar_datos</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">centros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualiza los datos generados coloreados por cluster.</span>
+<span class="sd">    </span>
+<span class="sd">    Parámetros:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    X : array, shape (n_samples, 2)</span>
+<span class="sd">        Coordenadas de los puntos.</span>
+<span class="sd">    y : array, shape (n_samples,)</span>
+<span class="sd">        Etiquetas de cluster.</span>
+<span class="sd">    centros : array o None</span>
+<span class="sd">        Coordenadas de los centros reales (opcional).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># Asignar un color a cada cluster</span>
+    <span class="c1"># colores = plt.cm.tab10(np.linspace(0, 1, len(np.unique(y))))</span>
+    
+    <span class="c1"># # Graficar cada cluster</span>
+    <span class="c1"># for i, color in enumerate(colores):</span>
+    <span class="c1">#     mascara = (y == i)</span>
+    <span class="c1">#     plt.scatter(X[mascara, 0], X[mascara, 1], </span>
+    <span class="c1">#                color=color, alpha=0.7, s=30, label=f&#39;Cluster {i+1}&#39;)</span>
+    <span class="c1"># Elegimos los colores manualmente</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="s1">&#39;olive&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">]</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="n">colores</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colores</span><span class="p">):</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Graficar los centros reales si se proporcionan</span>
+    <span class="k">if</span> <span class="n">centros</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">centros</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">centros</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Centros reales&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Datos sintéticos generados&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 1&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 2&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;datos_sinteticos.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Ejemplo de uso</span>
+<span class="n">centros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># Centro del cluster 1</span>
+    <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>   <span class="c1"># Centro del cluster 2</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>     <span class="c1"># Centro del cluster 3</span>
+<span class="p">])</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                               <span class="n">centros</span><span class="o">=</span><span class="n">centros</span><span class="p">)</span>
+
+<span class="n">visualizar_datos</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">centros</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2e60b1d83dd3bc0400b6979fc9ad0535738522243abc8c79deb45be1e079d943.png" src="_images/2e60b1d83dd3bc0400b6979fc9ad0535738522243abc8c79deb45be1e079d943.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span><span class="p">,</span> <span class="n">make_circles</span><span class="p">,</span> <span class="n">make_blobs</span><span class="p">,</span> <span class="n">make_classification</span>
+
+<span class="k">def</span> <span class="nf">generar_doble_luna</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Genera datos sintéticos con forma de doble luna.</span>
+<span class="sd">    </span>
+<span class="sd">    Parámetros:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    n_muestras : int</span>
+<span class="sd">        Cantidad total de puntos a generar</span>
+<span class="sd">    noise : float</span>
+<span class="sd">        Nivel de ruido (desviación estándar del ruido gaussiano)</span>
+<span class="sd">    random_state : int</span>
+<span class="sd">        Semilla para reproducibilidad</span>
+<span class="sd">        </span>
+<span class="sd">    Retorna:</span>
+<span class="sd">    --------</span>
+<span class="sd">    X : array</span>
+<span class="sd">        Coordenadas (x,y) de todos los puntos</span>
+<span class="sd">    y : array</span>
+<span class="sd">        Etiqueta de la luna a la que pertenece cada punto (0 o 1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Utilizamos make_moons de scikit-learn para generar los datos</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_muestras</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="n">noise</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="c1"># Visualizar los datos generados</span>
+<span class="k">def</span> <span class="nf">visualizar_datos</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualiza los datos generados con forma de doble luna.</span>
+<span class="sd">    </span>
+<span class="sd">    Parámetros:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    X : array, shape (n_samples, 2)</span>
+<span class="sd">        Coordenadas de los puntos.</span>
+<span class="sd">    y : array, shape (n_samples,)</span>
+<span class="sd">        Etiquetas (0 o 1).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># Elegimos los colores manualmente</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">]</span>
+    
+    <span class="c1"># Graficamos cada luna</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colores</span><span class="p">):</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Luna </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Datos sintéticos con forma de doble luna&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 1&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 2&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;doble_luna.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Ejemplo de uso</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generar_doble_luna</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.07</span><span class="p">)</span>
+
+<span class="c1"># Visualizamos los datos</span>
+<span class="n">visualizar_datos</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0437cb9dfb34eecfefcf2366c2ccb395942e987ce90085b754e948d05ffa6fa5.png" src="_images/0437cb9dfb34eecfefcf2366c2ccb395942e987ce90085b754e948d05ffa6fa5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">class</span> <span class="nc">DeterministicAnnealing</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">T_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implementación del algoritmo Deterministic Annealing para clustering.</span>
+<span class="sd">        </span>
+<span class="sd">        Parámetros:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        n_clusters : int</span>
+<span class="sd">            Número de clusters a encontrar</span>
+<span class="sd">        T_min : float</span>
+<span class="sd">            Temperatura mínima para detener el enfriamiento</span>
+<span class="sd">        T_max : float</span>
+<span class="sd">            Temperatura inicial</span>
+<span class="sd">        epsilon : float</span>
+<span class="sd">            Umbral de convergencia para la matriz de pertenencia</span>
+<span class="sd">        max_iter : int</span>
+<span class="sd">            Número máximo de iteraciones</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_min</span> <span class="o">=</span> <span class="n">T_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">=</span> <span class="n">T_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Matriz de pertenencia</span>
+    
+    <span class="k">def</span> <span class="nf">_calcular_distancia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la matriz de distancias euclidianas al cuadrado entre puntos y centroides.</span>
+<span class="sd">        </span>
+<span class="sd">        Utilizamos la identidad: ||a-b||² = ||a||² + ||b||² - 2&lt;a,b&gt;</span>
+<span class="sd">        donde &lt;a,b&gt; es el producto escalar.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Normas al cuadrado de los puntos: (n_muestras, 1)</span>
+        <span class="n">normas_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># Normas al cuadrado de los centroides: (n_clusters,)</span>
+        <span class="n">normas_centroides</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">centroides</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Producto escalar entre puntos y centroides: (n_muestras, n_clusters)</span>
+        <span class="n">producto_escalar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        
+        <span class="c1"># Distancia euclidiana al cuadrado</span>
+        <span class="n">distancias</span> <span class="o">=</span> <span class="n">normas_X</span> <span class="o">+</span> <span class="n">normas_centroides</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">producto_escalar</span>
+        
+        <span class="c1"># Evitar errores numéricos</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">distancias</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_actualizar_pertenencia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza la matriz de pertenencia (probabilidades).</span>
+<span class="sd">        </span>
+<span class="sd">        Esta es la parte clave del algoritmo deterministic annealing:</span>
+<span class="sd">        la probabilidad de pertenencia depende de la distancia y la temperatura.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcular_distancia</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">T</span>  <span class="c1"># Inverso de la temperatura</span>
+        
+        <span class="c1"># Calculamos exp(-beta * D) estabilizando numéricamente</span>
+        <span class="n">exp_term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+        
+        <span class="c1"># Normalización para obtener probabilidades</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">exp_term</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp_term</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">M</span>
+    
+    <span class="k">def</span> <span class="nf">_actualizar_centroides</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza las posiciones de los centroides basado en la matriz de pertenencia.</span>
+<span class="sd">        </span>
+<span class="sd">        Cada centroide se actualiza como un promedio ponderado de todos los puntos,</span>
+<span class="sd">        donde los pesos son las probabilidades de pertenencia.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Suma ponderada de puntos para cada cluster</span>
+        <span class="n">numerador</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+        
+        <span class="c1"># Suma de pesos para cada cluster</span>
+        <span class="n">denominador</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="c1"># Usamos axis=0 para sumar por columnas y np.newaxis para mantener la forma correcta, sino se obtiene un error</span>
+        
+        <span class="c1"># Evitar división por cero (usando operaciones vectorizadas)</span>
+        <span class="n">centroides</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">numerador</span><span class="p">)</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="n">denominador</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">centroides</span><span class="p">[</span><span class="n">mascara</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span> <span class="o">=</span> <span class="p">(</span><span class="n">numerador</span> <span class="o">/</span> <span class="n">denominador</span><span class="p">)[</span><span class="n">mascara</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        
+        <span class="k">return</span> <span class="n">centroides</span>
+    
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ajusta el modelo de Deterministic Annealing a los datos.</span>
+<span class="sd">        </span>
+<span class="sd">        Proceso:</span>
+<span class="sd">        1. Inicializar centroides y temperatura</span>
+<span class="sd">        2. Bucle principal de annealing:</span>
+<span class="sd">           - Calcular matriz de pertenencia</span>
+<span class="sd">           - Actualizar centroides</span>
+<span class="sd">           - Reducir temperatura</span>
+<span class="sd">           - Verificar convergencia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_muestras</span><span class="p">,</span> <span class="n">n_dimensiones</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        
+        <span class="c1"># Inicializar centroides aleatoriamente</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">n_dimensiones</span><span class="p">)</span>
+        
+        
+        <span class="c1"># Inicializar parámetros para el bucle</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Contador de iteraciones</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span>  <span class="c1"># Temperatura inicial</span>
+        <span class="n">convergencia</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">M_anterior</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n_muestras</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span>
+        
+        <span class="c1"># Bucle principal</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">convergencia</span><span class="p">:</span>
+            <span class="c1"># Actualizar matriz de pertenencia con temperatura actual</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actualizar_pertenencia</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+            
+            <span class="c1"># Actualizar centroides</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actualizar_centroides</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+            
+            <span class="c1"># Actualizar contador y temperatura</span>
+            <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">t</span><span class="p">)</span>  <span class="c1"># Programa de enfriamiento</span>
+            
+            <span class="c1"># Verificar convergencia</span>
+            <span class="n">diferencia</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">-</span> <span class="n">M_anterior</span><span class="p">))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">T</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_min</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">diferencia</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">):</span>
+                <span class="n">convergencia</span> <span class="o">=</span> <span class="kc">True</span>
+            
+            <span class="c1"># Guardar matriz actual para próxima iteración</span>
+            <span class="n">M_anterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predice el cluster para cada punto en X.</span>
+<span class="sd">        </span>
+<span class="sd">        Retorna el índice del cluster con mayor probabilidad para cada punto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;El modelo debe ser entrenado antes de predecir&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Calcular matriz de pertenencia a temperatura mínima (asignación casi dura)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actualizar_pertenencia</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_min</span><span class="p">)</span>
+        
+        <span class="c1"># Asignar cada punto al cluster con mayor probabilidad</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ajusta el modelo y predice los clusters en un solo paso.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">demo_deterministic_annealing</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Demostración completa del algoritmo Deterministic Annealing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">centros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># Centro del cluster 1</span>
+        <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>   <span class="c1"># Centro del cluster 2</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>     <span class="c1"># Centro del cluster 3</span>
+    <span class="p">])</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                                <span class="n">centros</span><span class="o">=</span><span class="n">centros</span><span class="p">)</span>
+    <span class="c1">#X, y = generar_doble_luna(n_muestras=1000, noise=0.07)</span>
+    <span class="c1"># 2. Aplicar Deterministic Annealing</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aplicando Deterministic Annealing...&quot;</span><span class="p">)</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">DeterministicAnnealing</span><span class="p">(</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
+        <span class="n">T_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">T_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span>
+    <span class="p">)</span>
+    
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="c1"># 3. Visualizar resultados</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Visualizando resultados del clustering...&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    
+    <span class="c1"># Asignar colores a los clusters</span>
+    <span class="c1">#colores = plt.cm.tab10(np.linspace(0, 1, n_clusters))</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="s1">&#39;olive&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">]</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="n">colores</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="c1"># Graficar puntos por cluster</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="n">colores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> 
+                   <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Graficar centroides encontrados</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">da</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> 
+               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Centroides&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deterministic Annealing Clustering (</span><span class="si">{</span><span class="n">n_clusters</span><span class="si">}</span><span class="s1"> clusters)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 1&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 2&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">da</span>
+
+<span class="c1"># Ejecutar demostración</span>
+<span class="n">modelo</span> <span class="o">=</span> <span class="n">demo_deterministic_annealing</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Aplicando Deterministic Annealing...
+Visualizando resultados del clustering...
+</pre></div>
+</div>
+<img alt="_images/edee69788bf927d607201f36d89600e4e3b4a11f6cabda1c8fb8bbd166476455.png" src="_images/edee69788bf927d607201f36d89600e4e3b4a11f6cabda1c8fb8bbd166476455.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">class</span> <span class="nc">DeterministicAnnealing</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">T_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implementación del algoritmo Deterministic Annealing para clustering.</span>
+<span class="sd">        </span>
+<span class="sd">        Parámetros:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        n_clusters : int</span>
+<span class="sd">            Número de clusters a encontrar</span>
+<span class="sd">        T_min : float</span>
+<span class="sd">            Temperatura mínima para detener el enfriamiento</span>
+<span class="sd">        T_max : float</span>
+<span class="sd">            Temperatura inicial</span>
+<span class="sd">        epsilon : float</span>
+<span class="sd">            Umbral de convergencia para la matriz de pertenencia</span>
+<span class="sd">        max_iter : int</span>
+<span class="sd">            Número máximo de iteraciones</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_min</span> <span class="o">=</span> <span class="n">T_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">=</span> <span class="n">T_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Matriz de pertenencia</span>
+        
+        <span class="c1"># Para seguimiento de la evolución de la entropía</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entropy_per_point_history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entropy_per_cluster_history</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span> <span class="nf">_calcular_distancia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la matriz de distancias euclidianas al cuadrado entre puntos y centroides.</span>
+<span class="sd">        </span>
+<span class="sd">        Utilizamos la identidad: ||a - b||² = ||a||² + ||b||² - 2&lt;a,b&gt;</span>
+<span class="sd">        donde &lt;a,b&gt; es el producto escalar.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Normas al cuadrado de los puntos: (n_muestras, 1)</span>
+        <span class="n">normas_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># Normas al cuadrado de los centroides: (n_clusters,)</span>
+        <span class="n">normas_centroides</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">centroides</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Producto escalar entre puntos y centroides: (n_muestras, n_clusters)</span>
+        <span class="n">producto_escalar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        
+        <span class="c1"># Distancia euclidiana al cuadrado</span>
+        <span class="n">distancias</span> <span class="o">=</span> <span class="n">normas_X</span> <span class="o">+</span> <span class="n">normas_centroides</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">producto_escalar</span>
+        
+        <span class="c1"># Evitar errores numéricos</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">distancias</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_actualizar_pertenencia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza la matriz de pertenencia (probabilidades).</span>
+<span class="sd">        </span>
+<span class="sd">        Esta es la parte clave del algoritmo deterministic annealing:</span>
+<span class="sd">        la probabilidad de pertenencia depende de la distancia y la temperatura.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcular_distancia</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">T</span>  <span class="c1"># Inverso de la temperatura</span>
+        
+        <span class="c1"># Calculamos exp(-beta * D) estabilizando numéricamente</span>
+        <span class="n">exp_term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+        
+        <span class="c1"># Normalización para obtener probabilidades</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">exp_term</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp_term</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">M</span>
+    
+    <span class="k">def</span> <span class="nf">_actualizar_centroides</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza las posiciones de los centroides basado en la matriz de pertenencia.</span>
+<span class="sd">        </span>
+<span class="sd">        Cada centroide se actualiza como un promedio ponderado de todos los puntos,</span>
+<span class="sd">        donde los pesos son las probabilidades de pertenencia.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Suma ponderada de puntos para cada cluster</span>
+        <span class="n">numerador</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+        
+        <span class="c1"># Suma de pesos para cada cluster</span>
+        <span class="n">denominador</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="c1"># Usamos axis=0 para sumar por columnas y np.newaxis para mantener la forma correcta, sino se obtiene un error</span>
+        
+        <span class="c1"># Evitar división por cero (usando operaciones vectorizadas)</span>
+        <span class="n">centroides</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">numerador</span><span class="p">)</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="n">denominador</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">centroides</span><span class="p">[</span><span class="n">mascara</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span> <span class="o">=</span> <span class="p">(</span><span class="n">numerador</span> <span class="o">/</span> <span class="n">denominador</span><span class="p">)[</span><span class="n">mascara</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        
+        <span class="k">return</span> <span class="n">centroides</span>
+    
+    <span class="k">def</span> <span class="nf">calcular_entropia_por_punto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la entropía condicional H(C|X), que es la entropía por punto.</span>
+<span class="sd">        </span>
+<span class="sd">        Esta entropía mide la incertidumbre en la asignación de clusters para cada punto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Evitar log(0)</span>
+        <span class="n">M_safe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)</span>
+        
+        <span class="c1"># H(C|X) = -1/m * Σₐ Σᵢ &lt;Mₐᵢ&gt; * log(&lt;Mₐᵢ&gt;)</span>
+        <span class="n">entropia_puntos</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">M_safe</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">M_safe</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">M_safe</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">entropia_puntos</span>
+    
+    <span class="k">def</span> <span class="nf">calcular_entropia_por_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la entropía condicional H(X|C), que es la entropía por cluster.</span>
+<span class="sd">        </span>
+<span class="sd">        Esta entropía mide qué tan uniforme es la distribución de puntos dentro de cada cluster.</span>
+<span class="sd">        También devuelve un array con las entropías individuales de cada cluster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_muestras</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">entropias_clusters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">entropia_total</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="c1"># Para cada cluster i</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">):</span>
+            <span class="c1"># p(C=i) = 1/m * Σₐ &lt;Mₐᵢ&gt;</span>
+            <span class="n">p_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">n_muestras</span> <span class="c1"># Con self.M[:, i] se obtiene la columna i de la matriz de pertenencia</span>
+            <span class="k">if</span> <span class="n">p_c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># p(X=a|C=i) = &lt;Mₐᵢ&gt; / Σₐ &lt;Mₐᵢ&gt;</span>
+                <span class="n">p_x_dado_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+                
+                <span class="c1"># Evitar log(0)</span>
+                <span class="n">p_x_dado_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">p_x_dado_c</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)</span>
+                
+                <span class="c1"># H(X|C=i) = -Σₐ p(X=a|C=i) * log(p(X=a|C=i))</span>
+                <span class="n">entropia_cluster</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_x_dado_c</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p_x_dado_c</span><span class="p">))</span>
+                
+                <span class="c1"># Contribución a la entropía total</span>
+                <span class="n">entropia_total</span> <span class="o">+=</span> <span class="n">p_c</span> <span class="o">*</span> <span class="n">entropia_cluster</span>
+                
+                <span class="c1"># Guardar la entropía de este cluster</span>
+                <span class="n">entropias_clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropia_cluster</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Si el cluster está vacío, su entropía es cero</span>
+                <span class="n">entropias_clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">entropia_total</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">entropias_clusters</span><span class="p">)</span>
+     
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ajusta el modelo de Deterministic Annealing a los datos.</span>
+<span class="sd">        </span>
+<span class="sd">        Proceso:</span>
+<span class="sd">        1. Inicializar centroides y temperatura</span>
+<span class="sd">        2. Bucle principal de annealing:</span>
+<span class="sd">           - Calcular matriz de pertenencia</span>
+<span class="sd">           - Actualizar centroides</span>
+<span class="sd">           - Reducir temperatura</span>
+<span class="sd">           - Verificar convergencia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_muestras</span><span class="p">,</span> <span class="n">n_dimensiones</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        
+        <span class="c1"># Inicializar centroides aleatoriamente</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">n_dimensiones</span><span class="p">)</span>
+        
+        <span class="c1"># Inicializar parámetros para el bucle</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Contador de iteraciones</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span>  <span class="c1"># Temperatura inicial</span>
+        <span class="n">convergencia</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">M_anterior</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n_muestras</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span>
+        
+        <span class="c1"># Para seguimiento de la evolución</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entropy_per_point_history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entropy_per_cluster_history</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># Bucle principal</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">convergencia</span><span class="p">:</span>
+            
+            <span class="c1"># Actualizar matriz de pertenencia con temperatura actual</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actualizar_pertenencia</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+            
+            <span class="c1"># Actualizar centroides</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actualizar_centroides</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+            
+            <span class="c1"># Calcular y guardar entropías para seguimiento</span>
+            <span class="n">entropia_por_punto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcular_entropia_por_punto</span><span class="p">()</span>
+            <span class="n">entropia_por_cluster</span><span class="p">,</span> <span class="n">entropias_individuales</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcular_entropia_por_cluster</span><span class="p">()</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">entropy_per_point_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropia_por_punto</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entropy_per_cluster_history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">entropia_por_cluster</span><span class="p">,</span> <span class="n">entropias_individuales</span><span class="p">))</span>
+            
+            <span class="c1"># Actualizar contador y temperatura</span>
+            <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">t</span><span class="p">)</span>  <span class="c1"># Programa de enfriamiento</span>
+            
+            <span class="c1"># Verificar convergencia</span>
+            <span class="n">diferencia</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">-</span> <span class="n">M_anterior</span><span class="p">))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">T</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_min</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">diferencia</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">):</span>
+                <span class="n">convergencia</span> <span class="o">=</span> <span class="kc">True</span>
+            
+            <span class="c1"># Guardar matriz actual para próxima iteración</span>
+            <span class="n">M_anterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predice el cluster para cada punto en X.</span>
+<span class="sd">        </span>
+<span class="sd">        Retorna el índice del cluster con mayor probabilidad para cada punto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;El modelo debe ser entrenado antes de predecir&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Calcular matriz de pertenencia a temperatura mínima (asignación casi dura)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actualizar_pertenencia</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_min</span><span class="p">)</span>
+        
+        <span class="c1"># Asignar cada punto al cluster con mayor probabilidad</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ajusta el modelo y predice los clusters en un solo paso.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">demo_deterministic_annealing</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Demostración completa del algoritmo Deterministic Annealing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">centros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># Centro del cluster 1</span>
+        <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>   <span class="c1"># Centro del cluster 2</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>     <span class="c1"># Centro del cluster 3</span>
+    <span class="p">])</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                                <span class="n">centros</span><span class="o">=</span><span class="n">centros</span><span class="p">)</span>
+    <span class="c1">#X, y = generar_doble_luna(n_muestras=1000, noise=0.07)</span>
+    <span class="c1"># 2. Aplicar Deterministic Annealing</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aplicando Deterministic Annealing...&quot;</span><span class="p">)</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">DeterministicAnnealing</span><span class="p">(</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
+        <span class="n">T_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">T_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span>
+    <span class="p">)</span>
+    
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="c1"># 3. Visualizar resultados</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Visualizando resultados del clustering...&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    
+    <span class="c1"># Asignar colores a los clusters</span>
+    <span class="c1">#colores = plt.cm.tab10(np.linspace(0, 1, n_clusters))</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="s1">&#39;olive&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">]</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="n">colores</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="c1"># Graficar puntos por cluster</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="n">colores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> 
+                   <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Graficar centroides encontrados</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">da</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> 
+               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Centroides&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deterministic Annealing Clustering (</span><span class="si">{</span><span class="n">n_clusters</span><span class="si">}</span><span class="s1"> clusters)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 1&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 2&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">da</span>
+
+<span class="c1"># Ejecutar demostración</span>
+<span class="n">modelo</span> <span class="o">=</span> <span class="n">demo_deterministic_annealing</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Aplicando Deterministic Annealing...
+Visualizando resultados del clustering...
+</pre></div>
+</div>
+<img alt="_images/d46a2306ff4a03130b3cc7051844e0827de6d1b77a0a949541752b4ccf20f90f.png" src="_images/d46a2306ff4a03130b3cc7051844e0827de6d1b77a0a949541752b4ccf20f90f.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.cm</span> <span class="kn">import</span> <span class="n">get_cmap</span>
+
+<span class="k">def</span> <span class="nf">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">centros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Genera datos gaussianos para testing con clusters.</span>
+<span class="sd">    </span>
+<span class="sd">    Parámetros:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    n_muestras : int</span>
+<span class="sd">        Número total de muestras a generar</span>
+<span class="sd">    n_clusters : int</span>
+<span class="sd">        Número de clusters</span>
+<span class="sd">    centros : array, opcional</span>
+<span class="sd">        Array de forma (n_clusters, n_dimensiones) con los centros de los clusters</span>
+<span class="sd">    std : float</span>
+<span class="sd">        Desviación estándar de los datos generados</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Si no se proporcionan centros, generarlos aleatoriamente</span>
+    <span class="k">if</span> <span class="n">centros</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">centros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">5</span>
+    
+    <span class="c1"># Muestras por cluster</span>
+    <span class="n">n_por_cluster</span> <span class="o">=</span> <span class="n">n_muestras</span> <span class="o">//</span> <span class="n">n_clusters</span>
+    
+    <span class="c1"># Generar datos</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">centro</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">centros</span><span class="p">):</span>
+        <span class="n">X_cluster</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">centro</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">std</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_por_cluster</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X_cluster</span><span class="p">)</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_por_cluster</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+    
+    <span class="c1"># Concatenar y mezclar</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    
+    <span class="c1"># Mezclar datos</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">plot_entropia_por_cluster</span><span class="p">(</span><span class="n">modelo</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Grafica la evolución de la entropía por cluster a lo largo de las iteraciones.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_iteraciones</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">modelo</span><span class="o">.</span><span class="n">entropy_per_cluster_history</span><span class="p">)</span>
+    <span class="n">num_clusters</span> <span class="o">=</span> <span class="n">modelo</span><span class="o">.</span><span class="n">n_clusters</span>
+    
+    <span class="c1"># Obtener entropías por cluster en cada iteración</span>
+    <span class="n">entropias_por_iteracion</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iteraciones</span><span class="p">):</span>
+        <span class="c1"># Obtener entropías individuales para esta iteración</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">entropias_individuales</span> <span class="o">=</span> <span class="n">modelo</span><span class="o">.</span><span class="n">entropy_per_cluster_history</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">entropias_por_iteracion</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropias_individuales</span><span class="p">)</span>
+    
+    <span class="c1"># Crear matriz de entropías para graficar</span>
+    <span class="n">entropias_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_iteraciones</span><span class="p">,</span> <span class="n">num_clusters</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entropias</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">entropias_por_iteracion</span><span class="p">):</span>
+        <span class="c1"># Asegurarse de que hay suficientes entropías (por si algún cluster está vacío)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">num_clusters</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">entropias</span><span class="p">))):</span>
+            <span class="n">entropias_array</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">entropias</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    
+    <span class="c1"># Seleccionar algunas iteraciones representativas para mostrar (como en la imagen de ejemplo)</span>
+    <span class="k">if</span> <span class="n">num_iteraciones</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">indices_seleccionados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_iteraciones</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">indices_seleccionados</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_iteraciones</span><span class="p">)</span>
+    
+    <span class="n">iteraciones_seleccionadas</span> <span class="o">=</span> <span class="p">[</span><span class="n">entropias_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices_seleccionados</span><span class="p">]</span>
+    
+    <span class="c1"># Crear gráfico de barras apiladas</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># Colores para los clusters</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">tab10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_clusters</span><span class="p">))</span>
+    
+    <span class="c1"># Posiciones de las barras</span>
+    <span class="n">posiciones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices_seleccionados</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="c1"># Para cada cluster, crear una barra apilada</span>
+    <span class="n">fondo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices_seleccionados</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_clusters</span><span class="p">):</span>
+        <span class="n">valores</span> <span class="o">=</span> <span class="p">[</span><span class="n">iter_entropias</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">iter_entropias</span> <span class="ow">in</span> <span class="n">iteraciones_seleccionadas</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">posiciones</span><span class="p">,</span> <span class="n">valores</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">fondo</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fondo</span> <span class="o">+=</span> <span class="n">valores</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Entropy per Cluster&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">posiciones</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Entropy (nats)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="k">def</span> <span class="nf">plot_entropia_por_punto</span><span class="p">(</span><span class="n">modelo</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un scatter plot donde el tamaño de cada punto depende de su entropía.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calcular entropía para cada punto</span>
+    <span class="n">entropias_puntos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+        <span class="c1"># Probabilidades de pertenencia para este punto</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">modelo</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># Evitar log(0)</span>
+        <span class="n">probs_safe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)</span>
+        <span class="c1"># Entropía para este punto</span>
+        <span class="n">entropia</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">probs_safe</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">probs_safe</span><span class="p">))</span>
+        <span class="n">entropias_puntos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropia</span><span class="p">)</span>
+    
+    <span class="n">entropias_puntos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">entropias_puntos</span><span class="p">)</span>
+    
+    <span class="c1"># Normalizar entropías para tamaños de puntos</span>
+    <span class="c1"># Convertimos las entropías a un rango de tamaños entre 10 y 100</span>
+    <span class="n">min_entropia</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">entropias_puntos</span><span class="p">)</span>
+    <span class="n">max_entropia</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">entropias_puntos</span><span class="p">)</span>
+    <span class="n">tamanios</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">90</span> <span class="o">*</span> <span class="p">(</span><span class="n">entropias_puntos</span> <span class="o">-</span> <span class="n">min_entropia</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_entropia</span> <span class="o">-</span> <span class="n">min_entropia</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>
+    
+    <span class="c1"># Predicciones de clusters</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">modelo</span><span class="o">.</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Crear gráfico</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    
+    <span class="c1"># Colormap para los clusters</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;tab10&#39;</span><span class="p">)</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">modelo</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">)]</span>
+    
+    <span class="c1"># Graficar puntos coloreados por cluster y tamaño por entropía</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">modelo</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">):</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">colores</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">s</span><span class="o">=</span><span class="n">tamanios</span><span class="p">[</span><span class="n">mascara</span><span class="p">],</span> 
+                   <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Graficar centroides</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">modelo</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">modelo</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> 
+              <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Centroides&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Añadir una barra de color para la entropía</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
+    
+    <span class="c1"># Crear un gradiente de color para la entropía</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">min_entropia</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">max_entropia</span><span class="p">)</span>
+    <span class="n">sm</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">sm</span><span class="o">.</span><span class="n">set_array</span><span class="p">([])</span>
+    
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Entropía del punto&#39;</span><span class="p">)</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Clustering con tamaño de puntos proporcional a su entropía&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 1&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 2&#39;</span><span class="p">)</span>
+    <span class="c1">#ax.legend()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="k">def</span> <span class="nf">demo_deterministic_annealing_con_entropia</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Demostración completa del algoritmo Deterministic Annealing con visualización de entropía.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 1. Generar datos</span>
+    <span class="n">centros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># Centro del cluster 1</span>
+        <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>   <span class="c1"># Centro del cluster 2</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>    <span class="c1"># Centro del cluster 3</span>
+    <span class="p">])</span>
+    
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">centros</span><span class="o">=</span><span class="n">centros</span><span class="p">)</span>
+    
+    <span class="c1"># 2. Aplicar Deterministic Annealing</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aplicando Deterministic Annealing...&quot;</span><span class="p">)</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">DeterministicAnnealing</span><span class="p">(</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
+        <span class="n">T_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">T_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span>
+    <span class="p">)</span>
+    
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="c1"># 3. Visualizar resultados básicos</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Visualizando resultados del clustering...&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    
+    <span class="c1"># Asignar colores a los clusters</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="s1">&#39;olive&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">]</span>
+    <span class="n">colores</span> <span class="o">=</span> <span class="n">colores</span><span class="p">[:</span><span class="n">n_clusters</span><span class="p">]</span>
+    
+    <span class="c1"># Graficar puntos por cluster</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
+        <span class="n">mascara</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">mascara</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="n">colores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> 
+                   <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cluster </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Graficar centroides encontrados</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">da</span><span class="o">.</span><span class="n">centroids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> 
+               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Centroides&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deterministic Annealing Clustering (</span><span class="si">{</span><span class="n">n_clusters</span><span class="si">}</span><span class="s1"> clusters)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 1&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dimensión 2&#39;</span><span class="p">)</span>
+    <span class="c1">#plt.legend(loc=&#39;upper right&#39;)</span>
+    <span class="c1"># No imprimimos la leyenda para evitar superposición con la barra de color</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="c1"># 4. Visualizar entropía por cluster</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Visualizando evolución de entropía por cluster...&quot;</span><span class="p">)</span>
+    <span class="n">fig_entropia_cluster</span> <span class="o">=</span> <span class="n">plot_entropia_por_cluster</span><span class="p">(</span><span class="n">da</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="c1"># 5. Visualizar entropía por punto</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Visualizando entropía por punto...&quot;</span><span class="p">)</span>
+    <span class="n">fig_entropia_punto</span> <span class="o">=</span> <span class="n">plot_entropia_por_punto</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">da</span>
+
+<span class="c1"># Para usar esta función:</span>
+<span class="n">modelo</span> <span class="o">=</span> <span class="n">demo_deterministic_annealing_con_entropia</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Entropia final por cluster:&quot;</span><span class="p">,</span> <span class="n">modelo</span><span class="o">.</span><span class="n">calcular_entropia_por_cluster</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Aplicando Deterministic Annealing...
+Visualizando resultados del clustering...
+</pre></div>
+</div>
+<img alt="_images/44451d80ae5b71afd12ddc050f6139c9b0415c8954ac77cfd6560b301e156a9f.png" src="_images/44451d80ae5b71afd12ddc050f6139c9b0415c8954ac77cfd6560b301e156a9f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Visualizando evolución de entropía por cluster...
+</pre></div>
+</div>
+<img alt="_images/f074437c9dd35f8e47c0396ce7a1f582201f9252ab1912e491b46c404bf24a48.png" src="_images/f074437c9dd35f8e47c0396ce7a1f582201f9252ab1912e491b46c404bf24a48.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Visualizando entropía por punto...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/mz/h7lyhbx179g0m6677zcjjdbc0000gn/T/ipykernel_85858/42879459.py:130: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed in 3.11. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap()`` or ``pyplot.get_cmap()`` instead.
+  cmap = get_cmap(&#39;tab10&#39;)
+</pre></div>
+</div>
+<img alt="_images/bf7a68f7da5703146378093845c3a72ef06067793fef735c475c51cab47550d5.png" src="_images/bf7a68f7da5703146378093845c3a72ef06067793fef735c475c51cab47550d5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entropia final por cluster: (4.605170646505084, array([4.60517065, 4.60517065, 4.60517065, 4.60517065, 4.60517065,
+       4.60517065, 4.60517065, 4.60517065, 4.60517065]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 5.067268612873276 -&gt; 2</span>
+<span class="c1"># 4.605170646055333 -&gt; 3</span>
+<span class="c1"># 4.467127594210047 -&gt; 4</span>
+<span class="c1"># 4.318664285336398 -&gt; 5</span>
+<span class="c1"># 4.257749649090237 -&gt; 6</span>
+<span class="c1"># 4.244473973709584 -&gt; 7</span>
+<span class="c1"># 4.1337585003769055 -&gt; 8</span>
+<span class="c1"># 3.957764401686084 -&gt; 9</span>
+<span class="c1"># 4.001169648828887 -&gt; 10</span>
+<span class="c1"># 3.9541275060315906 -&gt; 11</span>
+<span class="c1"># 3.9565135650894847 -&gt; 12</span>
+
+<span class="c1"># Dibujamos una grafica de como varia la entropia en funcion del numero de clusters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">entropias</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5.067268612873276</span><span class="p">,</span> <span class="mf">4.605170646055333</span><span class="p">,</span> <span class="mf">4.467127594210047</span><span class="p">,</span> <span class="mf">4.318664285336398</span><span class="p">,</span> <span class="mf">4.257749649090237</span><span class="p">,</span> <span class="mf">4.244473973709584</span><span class="p">,</span> <span class="mf">4.1337585003769055</span><span class="p">,</span> <span class="mf">3.957764401686084</span><span class="p">,</span> <span class="mf">4.001169648828887</span><span class="p">,</span> <span class="mf">3.9541275060315906</span><span class="p">,</span> <span class="mf">3.9565135650894847</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="n">entropias</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Entropía por número de clusters&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Número de clusters&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Entropía&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="c1">#plt.savefig(&#39;entropia_clusters.png&#39;, dpi=700)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/905374b8e94a209a32834e72dfd50ae3e26b90cd0d13c67535fb60b816e70f19.png" src="_images/905374b8e94a209a32834e72dfd50ae3e26b90cd0d13c67535fb60b816e70f19.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4.488216528415952 -&gt; 4</span>
+<span class="c1"># 4.359429911899708 -&gt; 5</span>
+<span class="c1"># 4.199537019067531 -&gt; 6</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

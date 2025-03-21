@@ -1,0 +1,749 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Clustering &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'practice_2_1';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2025
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">NP-Hardness and Graph Matching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Puzzles and Rubik</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">4. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">5. Graph Construction for Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">6. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">7. Graph Matching with Topological Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">8. Clustering</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fpractice_2_1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/practice_2_1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Clustering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-2-1-deterministic-annealing">Practical Session 2.1: Deterministic Annealing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-annealing">Deterministic Annealing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">Exercise 1:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">Exercise 2: Implementing Deterministic Annealing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">Exercise 3: Testing the Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">Exercise 4: Entropy</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="clustering">
+<h1>Clustering<a class="headerlink" href="#clustering" title="Permalink to this heading">#</a></h1>
+<section id="practical-session-2-1-deterministic-annealing">
+<h2>Practical Session 2.1: Deterministic Annealing<a class="headerlink" href="#practical-session-2-1-deterministic-annealing" title="Permalink to this heading">#</a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
+<p>In this session, we will explore the concept of deterministic annealing, a technique used for clustering data points into groups. Deterministic annealing is an optimization algorithm that extends the idea of simulated annealing to clustering problems. It allows us to find the optimal clustering of data points by gradually reducing the temperature parameter.</p>
+</section>
+<section id="deterministic-annealing">
+<h3>Deterministic Annealing<a class="headerlink" href="#deterministic-annealing" title="Permalink to this heading">#</a></h3>
+<p><a class="reference external" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=726788">Deterministic Annealing (DA)</a> is a search technique easily applicable to the central clustering problem (see more details in <a class="reference external" href="https://thesis.library.caltech.edu/2858/1/Rose_k_1991.pdf">Keneth Rose’s PhD Thesis</a>).</p>
+<p>The basic idea of DA is that for each value of <span class="math notranslate nohighlight">\(\beta=\frac{1}{T}\)</span> we <span style="color:#f88146"><strong>interate two phases</strong></span> for minimizing
+the free energy <span class="math notranslate nohighlight">\(F_{\beta}({\cal C})\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Expectation</strong>. For <ins>fixed centers</ins> <span class="math notranslate nohighlight">\(\mathbf{c}_i\)</span>, we estimate the <span style="color:#f88146"><strong>probability</strong></span> that any point <span class="math notranslate nohighlight">\(\mathbf{x}_a\)</span> “belongs” to each cluster (“membership”). We denote such probabilities as <span class="math notranslate nohighlight">\(\langle \mathbf{M}_{ai} \rangle\)</span> and they are given by:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{M}_{ai} \rangle = \frac{\exp(-\beta D(\mathbf{x}_a,\mathbf{c}_i))}{\sum_{i'=1}^k \exp(-\beta D(\mathbf{x}_a,\mathbf{c}_{i'}))}\;.
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Update</strong>. For <ins>fixed probabilities</ins> <span class="math notranslate nohighlight">\(\langle \mathbf{M}_{ai} \rangle\)</span>, we update the <span style="color:#f88146"><strong>centers</strong></span>. If <span class="math notranslate nohighlight">\(D(\mathbf{x}_a,\mathbf{c}_i)=||\mathbf{x}_q-\mathbf{c}_i||^2\)</span> (squared Euclidean distance), then we have</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{c}_i =  \frac{\sum_{a=1}^m \mathbf{x}_a \langle \mathbf{M}_{ai}\rangle}{\sum_{a=1}^m\langle \mathbf{M}_{ai}\rangle}\;,
+\]</div>
+<p>i.e. the new (“fuzzy”) centers are the expected centers according to the fixed probabilities or (“memberships”).</p>
+<p>Some considerations about the above algorithm:</p>
+<ul class="simple">
+<li><p>It is <strong>deterministic</strong>, i.e. we do not draw random numbers at any step of the algoorithm.</p></li>
+<li><p>The <strong>initial (inverse) temperature</strong> <span class="math notranslate nohighlight">\(\beta=1/T_{max}\)</span>, where <span class="math notranslate nohighlight">\(T_{max}=T(0)\)</span>, is used as in SA, to make all the assignments almost equally probable: note that <span class="math notranslate nohighlight">\(e^{-\beta D(\mathbf{x}_a,\mathbf{c}_i)}\rightarrow 1\)</span>, if <span class="math notranslate nohighlight">\(\beta\rightarrow 0\)</span>. Under these conditions, we have <span class="math notranslate nohighlight">\(\langle M_{ai}\rangle\approx 1/k\)</span>.</p></li>
+<li><p><strong>Initialization</strong>. <span class="math notranslate nohighlight">\(T_{max}\)</span> is set to the maximum variance <span class="math notranslate nohighlight">\(\sigma^2_{max}\)</span> of  the data. If the data is multidimensional, as it happens usually, <span class="math notranslate nohighlight">\(\sigma^2_{max}\)</span> has an spectral interpretation (PCA).</p></li>
+<li><p>However, as the algorithm evolves, <span class="math notranslate nohighlight">\(\beta\)</span> increases and the <strong>exponential decay becomes more selective</strong>: given <span class="math notranslate nohighlight">\(D(\mathbf{x}_a,\mathbf{c}_i)\le D(\mathbf{x}_a,\mathbf{c}_j)+\alpha\)</span>, the second distance decays exponentially faster than the first as <span class="math notranslate nohighlight">\(\beta\)</span> increases.</p></li>
+<li><p><strong>Alternating Expectation and Update</strong>. Given the probabilities <span class="math notranslate nohighlight">\(\langle M_{ai}\rangle\)</span> we update the centers <span class="math notranslate nohighlight">\(\mathbf{c}_i\)</span> and then we re-compute the probabilities until a “fixed point” (stable assignment/centers) is reached.</p></li>
+<li><p><strong>Convervence</strong>. The algorithm converges to the nearest local optimum of the free energy to the initialization point <span class="math notranslate nohighlight">\({\cal C}^0\)</span>. We add the condition <span class="math notranslate nohighlight">\(\sum_{ai}|\langle \mathbf{M}_{ai}\rangle - \langle \mathbf{M}^{old}_{ai}\rangle|\le\epsilon\)</span> with <span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>, which means that the algorithm stops if the <span class="math notranslate nohighlight">\(\langle \mathbf{M}_{ai}\rangle\)</span> are stable enough. For instance, if we start by setting <span class="math notranslate nohighlight">\(\langle M_{ai}\rangle\approx 1/k\)</span>, the algorithm only performs a single iteration. Why? Because the centers in step 4.2. are not modified at all.</p></li>
+<li><p><strong>Complexity</strong>. Each iteration takes <span class="math notranslate nohighlight">\(O(mk)\)</span> and the number of iterations can be accelerated by a faster annealing schedule.</p></li>
+<li><p><strong>Outputs</strong>. The algorithm returns the best centers <span class="math notranslate nohighlight">\({\cal C}^{\ast}\)</span> and the optimal assignments <span class="math notranslate nohighlight">\(\langle \mathbf{M}_{ai}^{\ast}\rangle\)</span> where a point <span class="math notranslate nohighlight">\(\mathbf{x}_a\)</span> is assigned to the cluster centered at <span class="math notranslate nohighlight">\(\mathbf{c}_{i'}\)</span> if:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
+\]</div>
+</section>
+</section>
+<section id="exercise-1">
+<h2>Exercise 1:<a class="headerlink" href="#exercise-1" title="Permalink to this heading">#</a></h2>
+<p>Implement a function that generates points from Gaussian distributions. The function should take the following parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">centros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Genera datos sintéticos siguiendo distribuciones gaussianas de forma simplificada.</span>
+<span class="sd">    </span>
+<span class="sd">    Parámetros:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    n_puntos_por_cluster : int</span>
+<span class="sd">        Cantidad de puntos para cada cluster</span>
+<span class="sd">    n_clusters : int</span>
+<span class="sd">        Número de clusters a generar</span>
+<span class="sd">    centros : array o None</span>
+<span class="sd">        Coordenadas de los centros (x,y).</span>
+<span class="sd">    </span>
+<span class="sd">    Retorna:</span>
+<span class="sd">    --------</span>
+<span class="sd">    X : array</span>
+<span class="sd">        Coordenadas (x,y) de todos los puntos</span>
+<span class="sd">    y : array</span>
+<span class="sd">        Etiqueta del cluster al que pertenece cada punto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>After generating the data, plot the points using different colors for each cluster. And the result should be like this:</p>
+<figure class="align-default" id="gaussian-data">
+<a class="reference internal image-reference" href="_images/datos_sinteticos.png"><img alt="_images/datos_sinteticos.png" src="_images/datos_sinteticos.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Visualización de datos generados con distribuciones gaussianas</span><a class="headerlink" href="#gaussian-data" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="exercise-2-implementing-deterministic-annealing">
+<h2>Exercise 2: Implementing Deterministic Annealing<a class="headerlink" href="#exercise-2-implementing-deterministic-annealing" title="Permalink to this heading">#</a></h2>
+<p>Implement the Deterministic Annealing algorithm for clustering. You can use the following template:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">class</span> <span class="nc">DeterministicAnnealing</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">T_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implementación del algoritmo Deterministic Annealing para clustering.</span>
+<span class="sd">        </span>
+<span class="sd">        Parámetros:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        n_clusters : int</span>
+<span class="sd">            Número de clusters a encontrar</span>
+<span class="sd">        T_min : float</span>
+<span class="sd">            Temperatura mínima para detener el enfriamiento</span>
+<span class="sd">        T_max : float</span>
+<span class="sd">            Temperatura inicial</span>
+<span class="sd">        epsilon : float</span>
+<span class="sd">            Umbral de convergencia para la matriz de pertenencia</span>
+<span class="sd">        max_iter : int</span>
+<span class="sd">            Número máximo de iteraciones</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_min</span> <span class="o">=</span> <span class="n">T_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">=</span> <span class="n">T_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Matriz de pertenencia</span>
+    
+    <span class="k">def</span> <span class="nf">_calcular_distancia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la matriz de distancias euclidianas al cuadrado entre puntos y centroides.</span>
+<span class="sd">        </span>
+<span class="sd">        Utilizamos la identidad: ||a-b||² = ||a||² + ||b||² - 2&lt;a,b&gt;</span>
+<span class="sd">        donde &lt;a,b&gt; es el producto escalar.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        
+        <span class="c1"># Evitar errores numéricos</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">distancias</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_actualizar_pertenencia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">centroides</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza la matriz de pertenencia (probabilidades).</span>
+<span class="sd">        </span>
+<span class="sd">        Esta es la parte clave del algoritmo deterministic annealing:</span>
+<span class="sd">        la probabilidad de pertenencia depende de la distancia y la temperatura.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="n">M</span>
+    
+    <span class="k">def</span> <span class="nf">_actualizar_centroides</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza las posiciones de los centroides basado en la matriz de pertenencia.</span>
+<span class="sd">        </span>
+<span class="sd">        Cada centroide se actualiza como un promedio ponderado de todos los puntos,</span>
+<span class="sd">        donde los pesos son las probabilidades de pertenencia.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ajusta el modelo de Deterministic Annealing a los datos.</span>
+<span class="sd">        </span>
+<span class="sd">        Proceso:</span>
+<span class="sd">        1. Inicializar centroides y temperatura</span>
+<span class="sd">        2. Bucle principal de annealing:</span>
+<span class="sd">           - Calcular matriz de pertenencia</span>
+<span class="sd">           - Actualizar centroides</span>
+<span class="sd">           - Reducir temperatura</span>
+<span class="sd">           - Verificar convergencia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_muestras</span><span class="p">,</span> <span class="n">n_dimensiones</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        
+        <span class="c1"># Iniciamos con el bariocentro de los datos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centroids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># Inicializar parámetros para el bucle</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Contador de iteraciones</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span>  <span class="c1"># Temperatura inicial</span>
+        <span class="n">convergencia</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">M_anterior</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n_muestras</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span>
+        
+        <span class="c1"># Bucle principal</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">convergencia</span><span class="p">:</span>
+            <span class="c1"># Actualizar matriz de pertenencia con temperatura actual</span>
+            
+            <span class="c1"># Actualizar centroides</span>
+            
+            
+            <span class="c1"># Actualizar contador y temperatura</span>
+            
+            
+            <span class="c1"># Verificar convergencia</span>
+            
+            <span class="c1"># Guardar matriz actual para próxima iteración</span>
+        
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predice el cluster para cada punto en X.</span>
+<span class="sd">        </span>
+<span class="sd">        Retorna el índice del cluster con mayor probabilidad para cada punto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ajusta el modelo y predice los clusters en un solo paso.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="exercise-3-testing-the-algorithm">
+<h2>Exercise 3: Testing the Algorithm<a class="headerlink" href="#exercise-3-testing-the-algorithm" title="Permalink to this heading">#</a></h2>
+<p>Generate synthetic data using the function implemented in Exercise 1 and apply the Deterministic Annealing algorithm to cluster the data. You should try at least the following configurations:</p>
+<ol class="arabic simple">
+<li><p>Generate data with 3 clusters and apply the algorithm with 6 clusters.</p></li>
+<li><p>Generate data with 3 clusters and apply the algorithm with 2 clusters.</p></li>
+<li><p>Generate data with 5 clusters and apply the algorithm with 5 clusters.</p></li>
+<li><p>Generate data with 5 clusters and apply the algorithm with 2 clusters.</p></li>
+<li><p>Generate data with 5 clusters and apply the algorithm with 10 clusters.</p></li>
+</ol>
+</section>
+<section id="exercise-4-entropy">
+<h2>Exercise 4: Entropy<a class="headerlink" href="#exercise-4-entropy" title="Permalink to this heading">#</a></h2>
+<p>Implement a function that calculates the entropy of the clustering. The function should take the following parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calcular_entropia_por_punto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la entropía condicional H(C|X), que es la entropía por punto.</span>
+<span class="sd">        </span>
+<span class="sd">        Esta entropía mide la incertidumbre en la asignación de clusters para cada punto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">calcular_entropia_por_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la entropía condicional H(X|C), que es la entropía por cluster.</span>
+<span class="sd">        </span>
+<span class="sd">        Esta entropía mide qué tan uniforme es la distribución de puntos dentro de cada cluster.</span>
+<span class="sd">        También devuelve un array con las entropías individuales de cada cluster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-2-1-deterministic-annealing">Practical Session 2.1: Deterministic Annealing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-annealing">Deterministic Annealing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">Exercise 1:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">Exercise 2: Implementing Deterministic Annealing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">Exercise 3: Testing the Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">Exercise 4: Entropy</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -67,7 +67,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'topic3';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Introduction to the practical part of TAB2025" href="practice_intro.html" />
+    <link rel="next" title="4. Introduction to the practical part of TAB2025" href="practice_1_1.html" />
     <link rel="prev" title="2. Simulated and Deterministic Annealing" href="topic2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -174,7 +174,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="intro.html">
-                    TAB2024
+                    TAB2025
                 </a>
             </li>
         </ul>
@@ -183,14 +183,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Heuristic Search</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Puzzles and Rubik</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Heuristic Search</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_intro.html">4. Introduction to the practical part of TAB2025</a></li>
-
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">4. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">5. Graph Construction for Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">6. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">7. Graph Matching with Topological Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">8. Clustering</a></li>
 </ul>
 
     </div>
@@ -403,10 +409,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-iterative-deepening">3.3.2. DF Iterative Deepening</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast">3.3.3. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast-for-rubik">3.3.4. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> for Rubik</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learnable-heuristics">3.4. Learnable Heuristics</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-oracles">3.4.1. Deep Oracles</a></li>
 </ul>
 </li>
 </ul>
@@ -954,7 +956,7 @@ f(\mathbf{n})\le C^{\ast}\;\;\text{for all expanded nodes}\;.
 <li><p><strong>return</strong> <span class="math notranslate nohighlight">\(T\)</span></p></li>
 </ol>
 </section>
-</div><p>The since <span class="math notranslate nohighlight">\(T(\mathbf{n})=h^{\ast}(\mathbf{n})\)</span>, lookup tables allow us to characterize the distribution of optimal distances. In <a class="reference internal" href="#puzzle-lut"><span class="std std-numref">Fig. 3.4</span></a> we show that the 8-puzzle can be solve in <span class="math notranslate nohighlight">\(31\)</span> moves. In addition, we see that:</p>
+</div><p>Then, since <span class="math notranslate nohighlight">\(T(\mathbf{n})=h^{\ast}(\mathbf{n})\)</span>, lookup tables allow us to characterize the distribution of optimal distances. In <a class="reference internal" href="#puzzle-lut"><span class="std std-numref">Fig. 3.4</span></a> we show that the 8-puzzle can be solve in <span class="math notranslate nohighlight">\(31\)</span> moves. In addition, we see that:</p>
 <ul class="simple">
 <li><p>Most of the states have distances between 20-25 moves.</p></li>
 <li><p>The distribution is asymmetric towards large distances, but it is very far from being equiprobable.</p></li>
@@ -1121,37 +1123,20 @@ b^d(1 + 2x + 3x^2 + \ldots )\rightarrow b^d(1-x)^{-2}\;\;\text{for}\; |x|&lt;1\;
 \[
 |\Omega| = 43,252,003,274,489,856,000\;,
 \]</div>
-<p>which requires <span class="math notranslate nohighlight">\(128\)</span> GB of memory. <a class="reference external" href="https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf">Richard E. Korf</a> addressed this problem in 1997 by applying ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> making  interesting findings:</p>
+<p>which requires <span class="math notranslate nohighlight">\(128\)</span> GB of memory! If you can access a Google Colab account with a 51 GB limit, we can only account for moves up to length <span class="math notranslate nohighlight">\(8\)</span>. In <a class="reference internal" href="#rubik-lut"><span class="std std-numref">Fig. 3.7</span></a> we show the distances of <span class="math notranslate nohighlight">\(8\times 10^6\)</span> moves. Note the exponential increment in the number of nodes with distance!</p>
+<figure class="align-center" id="rubik-lut">
+<a class="reference internal image-reference" href="images/Topic3/Rubik-Table-Photoroom.png"><img alt="images/Topic3/Rubik-Table-Photoroom.png" src="images/Topic3/Rubik-Table-Photoroom.png" style="width: 600px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.7 </span><span class="caption-text">(Some) Distribution of distances for the Lookup table of Rubik</span><a class="headerlink" href="#rubik-lut" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference external" href="https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf">Richard E. Korf</a> addressed this problem in 1997 by applying ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> making  interesting findings:</p>
 <ol class="arabic simple">
 <li><p>The <ins>3D generalization of the Manhattan</ins> distance (number of moves required to correctly position and oriented each ‘cubie’), again considering the cubies independent. The sum of the moves of all cubies is divided by <span class="math notranslate nohighlight">\(8\)</span> to ensure admissibility.</p></li>
 <li><p><ins>A better heuristic</ins> is to take the maximum of the Manhattan distances of the corner cubies (3 orientations each) and the edge cubies (2 orientations each). The expected distance for the edge cubies is <span class="math notranslate nohighlight">\(5.5\)</span> whereas that of the corner ones is <span class="math notranslate nohighlight">\(3\)</span>.</p></li>
 <li><p>Another solution consists of computing <ins>partial lookup tables storing Manhattan distances</ins> (e.g. for the corner cubies, for the edge cubies, etc) and combine them.</p></li>
-<li><p>However, the <ins>above solutions are not enough to contain the above combinatorial explosion</ins> and ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> is only able to compute some movemens per day!</p></li>
 </ol>
-</section>
-</section>
-<section id="learnable-heuristics">
-<h2><span class="section-number">3.4. </span>Learnable Heuristics<a class="headerlink" href="#learnable-heuristics" title="Permalink to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.nature.com/articles/s42256-019-0070-z">DeepCubeA</a> is the flagship solution of the current <strong>change of paradigm</strong>, where admissibility becomes only a <span style="color:#f88146"><strong>conceptual guide</strong> for solving large problems such as the Rubik’s Cube (RC) and it is replaced by <strong>performance analysis</strong></span>.</p>
-<section id="deep-oracles">
-<h3><span class="section-number">3.4.1. </span>Deep Oracles<a class="headerlink" href="#deep-oracles" title="Permalink to this heading">#</a></h3>
-<p>Assume that, given <span class="math notranslate nohighlight">\(\mathbf{n}\in\Omega\)</span> the perfect discriminator <span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> cannot be computed but <strong>approximated</strong>. How is such an approximation computed?</p>
-<p>Let us explain this process for the Rubik’s Cube (RC).</p>
-<p><strong>Training set</strong>. Given that the target <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> for RC is fixed and well known, as well as the <strong>God’s Number</strong> for the problem <span class="math notranslate nohighlight">\(N=20\)</span>, let us sample a set of <span class="math notranslate nohighlight">\(p_{train}\)</span> paths <span class="math notranslate nohighlight">\(P=\{\Gamma_i\}\)</span> for <span class="math notranslate nohighlight">\(i=1,2,\ldots,p_{train}\)</span>. These paths start at <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> and go backwards <strong>scrambling</strong> the RC, i.e. the <span class="math notranslate nohighlight">\(i-\)</span>th path has the following structure:</p>
-<div class="math notranslate nohighlight">
-\[
-\Gamma_{i}=\{(\mathbf{n}_F=\mathbf{n}^{i}_{0})\rightarrow \mathbf{n}^{i}_1\rightarrow\mathbf{n}^{i}_2\rightarrow\ldots \rightarrow\mathbf{n}^{i}_{N}\}
-\]</div>
-<p>Each <span class="math notranslate nohighlight">\(\Gamma_{i}\)</span> is a <strong>random walk</strong> through <span class="math notranslate nohighlight">\(\Omega\)</span> in reverse order from <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> backwards using <strong>legal moves</strong> <span class="math notranslate nohighlight">\(\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}\)</span>. These paths <em>are not exclusive</em> and may visit a given state several times. There are, however, some optimizations are done in order to avoid ‘do-undo’ moves or three consecutive moves that are really one, etc.</p>
-<p>We are approximating (or more properly <strong>learning</strong>) a lookup table <span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> instead of <strong>memorizing</strong> it. Then, we need (ideally) a function such that given a state <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> proposes a new state <span class="math notranslate nohighlight">\(\mathbf{n}'\)</span> closer (or at least not far) to/from the objective:</p>
-<div class="math notranslate nohighlight">
-\[
-h_{\theta}(\mathbf{n})=\mathbf{n}':\; h^{\ast}(\mathbf{n}')\le h^{\ast}(\mathbf{n})\;.  
-\]</div>
-<p>This is basically the concept of <strong>admissibility</strong> but remember that such a concept is pointless in very large problems. Keep however the subscript <span class="math notranslate nohighlight">\(\theta\)</span> in mind since it indicates that <span style="color:#f88146">the funcion <span class="math notranslate nohighlight">\(h_{\theta}\)</span> can be <strong>parameterized</strong> by <span class="math notranslate nohighlight">\(\theta\)</span> and these parameters can be learnt</span>.</p>
-<p>is a <strong>legal move</strong> as well as it is <span class="math notranslate nohighlight">\(\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}\)</span></p>
-<p>Once we have the paths, we focus on the individual moves <span class="math notranslate nohighlight">\(\mathbf{n}^{k}_{i+1}\rightarrow \mathbf{n}^{k}\)</span></p>
-<p><a class="reference external" href="https://towardsdatascience.com/understanding-binary-cross-entropy-log-loss-a-visual-explanation-a3ac6025181a">Binary Cross Entropy</a></p>
+<p>However, the <ins>above solutions are not enough to contain the above combinatorial explosion</ins> and ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> is only able to compute some movemens per day!</p>
 </section>
 </section>
 </section>
@@ -1196,7 +1181,7 @@ h_{\theta}(\mathbf{n})=\mathbf{n}':\; h^{\ast}(\mathbf{n}')\le h^{\ast}(\mathbf{
       </div>
     </a>
     <a class="right-next"
-       href="practice_intro.html"
+       href="practice_1_1.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
@@ -1237,10 +1222,6 @@ h_{\theta}(\mathbf{n})=\mathbf{n}':\; h^{\ast}(\mathbf{n}')\le h^{\ast}(\mathbf{
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-iterative-deepening">3.3.2. DF Iterative Deepening</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast">3.3.3. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast-for-rubik">3.3.4. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> for Rubik</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learnable-heuristics">3.4. Learnable Heuristics</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-oracles">3.4.1. Deep Oracles</a></li>
 </ul>
 </li>
 </ul>
