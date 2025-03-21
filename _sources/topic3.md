@@ -481,7 +481,7 @@ More algorithmically, we have
 4. **return** $T$
 ```
 
-The since $T(\mathbf{n})=h^{\ast}(\mathbf{n})$, lookup tables allow us to characterize the distribution of optimal distances. In {numref}`8-puzzle-LUT` we show that the 8-puzzle can be solve in $31$ moves. In addition, we see that: 
+Then, since $T(\mathbf{n})=h^{\ast}(\mathbf{n})$, lookup tables allow us to characterize the distribution of optimal distances. In {numref}`8-puzzle-LUT` we show that the 8-puzzle can be solve in $31$ moves. In addition, we see that: 
 -  Most of the states have distances between 20-25 moves. 
 -  The distribution is asymmetric towards large distances, but it is very far from being equiprobable. 
 - If our target state changes (for instance placing the 'space' in the center), we should re-compute the table. 
@@ -658,41 +658,23 @@ $$
 |\Omega| = 43,252,003,274,489,856,000\;,
 $$
 
-which requires $128$ GB of memory. [Richard E. Korf](https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf) addressed this problem in 1997 by applying ID$A^{\ast}$ making  interesting findings: 
+which requires $128$ GB of memory! If you can access a Google Colab account with a 51 GB limit, we can only account for moves up to length $8$. In {numref}`Rubik-LUT` we show the distances of $8\times 10^6$ moves. Note the exponential increment in the number of nodes with distance!
+
+```{figure} ./images/Topic3/Rubik-Table-Photoroom.png
+---
+name: Rubik-LUT
+width: 600px
+align: center
+height: 500px
+---
+(Some) Distribution of distances for the Lookup table of Rubik
+```
+
+
+
+[Richard E. Korf](https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf) addressed this problem in 1997 by applying ID$A^{\ast}$ making  interesting findings: 
 1) The <ins>3D generalization of the Manhattan</ins> distance (number of moves required to correctly position and oriented each 'cubie'), again considering the cubies independent. The sum of the moves of all cubies is divided by $8$ to ensure admissibility. 
 2) <ins>A better heuristic</ins> is to take the maximum of the Manhattan distances of the corner cubies (3 orientations each) and the edge cubies (2 orientations each). The expected distance for the edge cubies is $5.5$ whereas that of the corner ones is $3$. 
 3) Another solution consists of computing <ins>partial lookup tables storing Manhattan distances</ins> (e.g. for the corner cubies, for the edge cubies, etc) and combine them. 
-3) However, the <ins>above solutions are not enough to contain the above combinatorial explosion</ins> and ID$A^{\ast}$ is only able to compute some movemens per day!
 
-## Learnable Heuristics
-[DeepCubeA](https://www.nature.com/articles/s42256-019-0070-z) is the flagship solution of the current **change of paradigm**, where admissibility becomes only a <span style="color:#f88146">**conceptual guide** for solving large problems such as the Rubik's Cube (RC) and it is replaced by **performance analysis**</span>. 
-
-### Deep Oracles 
-Assume that, given $\mathbf{n}\in\Omega$ the perfect discriminator $h^{\ast}(\mathbf{n})$ cannot be computed but **approximated**. How is such an approximation computed?
-
-Let us explain this process for the Rubik's Cube (RC). 
-
-**Training set**. Given that the target $\mathbf{n}_F$ for RC is fixed and well known, as well as the **God's Number** for the problem $N=20$, let us sample a set of $p_{train}$ paths $P=\{\Gamma_i\}$ for $i=1,2,\ldots,p_{train}$. These paths start at $\mathbf{n}_F$ and go backwards **scrambling** the RC, i.e. the $i-$th path has the following structure: 
-
-$$
-\Gamma_{i}=\{(\mathbf{n}_F=\mathbf{n}^{i}_{0})\rightarrow \mathbf{n}^{i}_1\rightarrow\mathbf{n}^{i}_2\rightarrow\ldots \rightarrow\mathbf{n}^{i}_{N}\}
-$$
-
-Each $\Gamma_{i}$ is a **random walk** through $\Omega$ in reverse order from $\mathbf{n}_F$ backwards using **legal moves** $\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}$. These paths *are not exclusive* and may visit a given state several times. There are, however, some optimizations are done in order to avoid 'do-undo' moves or three consecutive moves that are really one, etc.  
-
-We are approximating (or more properly **learning**) a lookup table $h^{\ast}(\mathbf{n})$ instead of **memorizing** it. Then, we need (ideally) a function such that given a state $\mathbf{n}$ proposes a new state $\mathbf{n}'$ closer (or at least not far) to/from the objective: 
-
-$$
-h_{\theta}(\mathbf{n})=\mathbf{n}':\; h^{\ast}(\mathbf{n}')\le h^{\ast}(\mathbf{n})\;.  
-$$
-
-This is basically the concept of **admissibility** but remember that such a concept is pointless in very large problems. Keep however the subscript $\theta$ in mind since it indicates that <span style="color:#f88146">the funcion $h_{\theta}$ can be **parameterized** by $\theta$ and these parameters can be learnt</span>. 
-
-
-
- is a **legal move** as well as it is $\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}$
-
-Once we have the paths, we focus on the individual moves $\mathbf{n}^{k}_{i+1}\rightarrow \mathbf{n}^{k}$
-
-
-[Binary Cross Entropy](https://towardsdatascience.com/understanding-binary-cross-entropy-log-loss-a-visual-explanation-a3ac6025181a)
+However, the <ins>above solutions are not enough to contain the above combinatorial explosion</ins> and ID$A^{\ast}$ is only able to compute some movemens per day!

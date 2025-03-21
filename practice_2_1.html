@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>8. Clustering &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+    <title>Clustering &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
   
   
   
@@ -64,10 +64,9 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'practice_2';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'practice_2_1';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="7. Graph Matching with Topological Features" href="practice_1_4.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -194,8 +193,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">7. Graph Matching with Topological Features</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Clustering</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">8. Clustering</a></li>
 </ul>
 
     </div>
@@ -267,7 +266,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fpractice_2.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fpractice_2_1.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -297,7 +296,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="_sources/practice_2.md" target="_blank"
+      <li><a href="_sources/practice_2_1.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -391,14 +390,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-2-deterministic-annealing">8.1. Practical Session 2: Deterministic Annealing</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">8.1.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-annealing">8.1.2. Deterministic Annealing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-2-1-deterministic-annealing">Practical Session 2.1: Deterministic Annealing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-annealing">Deterministic Annealing</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">8.2. Exercise 1:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">8.3. Exercise 2: Implementing Deterministic Annealing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">8.4. Exercise 3: Testing the Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">Exercise 1:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">Exercise 2: Implementing Deterministic Annealing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">Exercise 3: Testing the Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">Exercise 4: Entropy</a></li>
 </ul>
             </nav>
         </div>
@@ -411,15 +411,15 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="clustering">
-<h1><span class="section-number">8. </span>Clustering<a class="headerlink" href="#clustering" title="Permalink to this heading">#</a></h1>
-<section id="practical-session-2-deterministic-annealing">
-<h2><span class="section-number">8.1. </span>Practical Session 2: Deterministic Annealing<a class="headerlink" href="#practical-session-2-deterministic-annealing" title="Permalink to this heading">#</a></h2>
+<h1>Clustering<a class="headerlink" href="#clustering" title="Permalink to this heading">#</a></h1>
+<section id="practical-session-2-1-deterministic-annealing">
+<h2>Practical Session 2.1: Deterministic Annealing<a class="headerlink" href="#practical-session-2-1-deterministic-annealing" title="Permalink to this heading">#</a></h2>
 <section id="introduction">
-<h3><span class="section-number">8.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
 <p>In this session, we will explore the concept of deterministic annealing, a technique used for clustering data points into groups. Deterministic annealing is an optimization algorithm that extends the idea of simulated annealing to clustering problems. It allows us to find the optimal clustering of data points by gradually reducing the temperature parameter.</p>
 </section>
 <section id="deterministic-annealing">
-<h3><span class="section-number">8.1.2. </span>Deterministic Annealing<a class="headerlink" href="#deterministic-annealing" title="Permalink to this heading">#</a></h3>
+<h3>Deterministic Annealing<a class="headerlink" href="#deterministic-annealing" title="Permalink to this heading">#</a></h3>
 <p><a class="reference external" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=726788">Deterministic Annealing (DA)</a> is a search technique easily applicable to the central clustering problem (see more details in <a class="reference external" href="https://thesis.library.caltech.edu/2858/1/Rose_k_1991.pdf">Keneth Rose’s PhD Thesis</a>).</p>
 <p>The basic idea of DA is that for each value of <span class="math notranslate nohighlight">\(\beta=\frac{1}{T}\)</span> we <span style="color:#f88146"><strong>interate two phases</strong></span> for minimizing
 the free energy <span class="math notranslate nohighlight">\(F_{\beta}({\cal C})\)</span>:</p>
@@ -438,37 +438,7 @@ the free energy <span class="math notranslate nohighlight">\(F_{\beta}({\cal C})
 \mathbf{c}_i =  \frac{\sum_{a=1}^m \mathbf{x}_a \langle \mathbf{M}_{ai}\rangle}{\sum_{a=1}^m\langle \mathbf{M}_{ai}\rangle}\;,
 \]</div>
 <p>i.e. the new (“fuzzy”) centers are the expected centers according to the fixed probabilities or (“memberships”).</p>
-<div class="proof algorithm admonition" id="DA-alg">
-<p class="admonition-title"><span class="caption-number">Algorithm 8.1 </span> (Deterministic Annealing [Clustering])</p>
-<section class="algorithm-content" id="proof-content">
-<p><strong>Inputs</strong> Given a set of points <span class="math notranslate nohighlight">\({\cal X}=\{\mathbf{x}_1,\ldots,\mathbf{x}_m\}\)</span>, the free energy <span class="math notranslate nohighlight">\(F_{\beta}({\cal C})\)</span>, an annealing schedule <span class="math notranslate nohighlight">\(\beta =1/T(t)\)</span> and an inital state <span class="math notranslate nohighlight">\({\cal C}^0=(\mathbf{c}^0_1,\ldots,\mathbf{c}^0_k)\)</span><br />
-<strong>Outputs</strong> <span class="math notranslate nohighlight">\({\cal C}^{\ast}=\arg\min_{{\cal C}\in\Omega} F_{\beta\rightarrow\infty}({\cal C})\)</span> and <span class="math notranslate nohighlight">\(\langle \mathbf{M}^{\ast}_{ai}\rangle\)</span></p>
-<ol class="arabic">
-<li><p>convegence = False</p></li>
-<li><p><span class="math notranslate nohighlight">\(\langle \mathbf{M}^{old}_{ai}\rangle\leftarrow 1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(t\leftarrow 0\)</span></p></li>
-<li><p><strong>while</strong> <span class="math notranslate nohighlight">\(\neg\)</span> convergence:</p>
-<ol class="arabic">
-<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(\mathbf{x}_a\in {\cal X}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{c}_i\in {\cal C}\)</span>:</p>
-<p><span class="math notranslate nohighlight">\(
-\langle \mathbf{M}_{ai} \rangle = \frac{\exp(-\beta D(\mathbf{x}_a,\mathbf{c}_i))}{\sum_{i'=1}^k \exp(-\beta D(\mathbf{x}_a,\mathbf{c}_{i'}))}
-\)</span></p>
-</li>
-<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(\mathbf{c}_i\in {\cal C}\)</span>:</p>
-<p><span class="math notranslate nohighlight">\(
-\mathbf{c}_i =  \frac{\sum_{a=1}^m \mathbf{x}_a \langle \mathbf{M}_{ai}\rangle}{\sum_{a=1}^m\langle \mathbf{M}_{ai}\rangle}
-\)</span></p>
-</li>
-<li><p><span class="math notranslate nohighlight">\(t\leftarrow t+1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(T(t)\leftarrow \frac{1}{\log(1 + t)}\)</span></p></li>
-<li><p>convergence = <span class="math notranslate nohighlight">\((T(t)&lt;T_{min})\)</span> <strong>or</strong> <span class="math notranslate nohighlight">\((t&gt;t_{max})\)</span> <strong>or</strong> <span class="math notranslate nohighlight">\((\sum_{ai}|\langle \mathbf{M}_{ai}\rangle - \langle \mathbf{M}^{old}_{ai}\rangle|\le\epsilon )\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\langle \mathbf{M}^{old}_{ai}\rangle\leftarrow \langle \mathbf{M}_{ai}\rangle\)</span></p></li>
-</ol>
-</li>
-<li><p><strong>return</strong> <span class="math notranslate nohighlight">\({\cal C}^{\ast}\)</span>, <span class="math notranslate nohighlight">\(\langle M^{\ast}\rangle\)</span></p></li>
-</ol>
-</section>
-</div><p>Some considerations about the above algorithm:</p>
+<p>Some considerations about the above algorithm:</p>
 <ul class="simple">
 <li><p>It is <strong>deterministic</strong>, i.e. we do not draw random numbers at any step of the algoorithm.</p></li>
 <li><p>The <strong>initial (inverse) temperature</strong> <span class="math notranslate nohighlight">\(\beta=1/T_{max}\)</span>, where <span class="math notranslate nohighlight">\(T_{max}=T(0)\)</span>, is used as in SA, to make all the assignments almost equally probable: note that <span class="math notranslate nohighlight">\(e^{-\beta D(\mathbf{x}_a,\mathbf{c}_i)}\rightarrow 1\)</span>, if <span class="math notranslate nohighlight">\(\beta\rightarrow 0\)</span>. Under these conditions, we have <span class="math notranslate nohighlight">\(\langle M_{ai}\rangle\approx 1/k\)</span>.</p></li>
@@ -486,7 +456,7 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 </section>
 </section>
 <section id="exercise-1">
-<h2><span class="section-number">8.2. </span>Exercise 1:<a class="headerlink" href="#exercise-1" title="Permalink to this heading">#</a></h2>
+<h2>Exercise 1:<a class="headerlink" href="#exercise-1" title="Permalink to this heading">#</a></h2>
 <p>Implement a function that generates points from Gaussian distributions. The function should take the following parameters:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generar_datos_gaussianos</span><span class="p">(</span><span class="n">n_muestras</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">centros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -515,12 +485,12 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 <figure class="align-default" id="gaussian-data">
 <a class="reference internal image-reference" href="_images/datos_sinteticos.png"><img alt="_images/datos_sinteticos.png" src="_images/datos_sinteticos.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.1 </span><span class="caption-text">Visualización de datos generados con distribuciones gaussianas</span><a class="headerlink" href="#gaussian-data" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Visualización de datos generados con distribuciones gaussianas</span><a class="headerlink" href="#gaussian-data" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="exercise-2-implementing-deterministic-annealing">
-<h2><span class="section-number">8.3. </span>Exercise 2: Implementing Deterministic Annealing<a class="headerlink" href="#exercise-2-implementing-deterministic-annealing" title="Permalink to this heading">#</a></h2>
+<h2>Exercise 2: Implementing Deterministic Annealing<a class="headerlink" href="#exercise-2-implementing-deterministic-annealing" title="Permalink to this heading">#</a></h2>
 <p>Implement the Deterministic Annealing algorithm for clustering. You can use the following template:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">class</span> <span class="nc">DeterministicAnnealing</span><span class="p">:</span>
@@ -634,7 +604,7 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 </div>
 </section>
 <section id="exercise-3-testing-the-algorithm">
-<h2><span class="section-number">8.4. </span>Exercise 3: Testing the Algorithm<a class="headerlink" href="#exercise-3-testing-the-algorithm" title="Permalink to this heading">#</a></h2>
+<h2>Exercise 3: Testing the Algorithm<a class="headerlink" href="#exercise-3-testing-the-algorithm" title="Permalink to this heading">#</a></h2>
 <p>Generate synthetic data using the function implemented in Exercise 1 and apply the Deterministic Annealing algorithm to cluster the data. You should try at least the following configurations:</p>
 <ol class="arabic simple">
 <li><p>Generate data with 3 clusters and apply the algorithm with 6 clusters.</p></li>
@@ -643,6 +613,27 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 <li><p>Generate data with 5 clusters and apply the algorithm with 2 clusters.</p></li>
 <li><p>Generate data with 5 clusters and apply the algorithm with 10 clusters.</p></li>
 </ol>
+</section>
+<section id="exercise-4-entropy">
+<h2>Exercise 4: Entropy<a class="headerlink" href="#exercise-4-entropy" title="Permalink to this heading">#</a></h2>
+<p>Implement a function that calculates the entropy of the clustering. The function should take the following parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calcular_entropia_por_punto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la entropía condicional H(C|X), que es la entropía por punto.</span>
+<span class="sd">        </span>
+<span class="sd">        Esta entropía mide la incertidumbre en la asignación de clusters para cada punto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">calcular_entropia_por_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula la entropía condicional H(X|C), que es la entropía por cluster.</span>
+<span class="sd">        </span>
+<span class="sd">        Esta entropía mide qué tan uniforme es la distribución de puntos dentro de cada cluster.</span>
+<span class="sd">        También devuelve un array con las entropías individuales de cada cluster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering.</p>
 </section>
 </section>
 
@@ -676,15 +667,6 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="practice_1_4.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">7. </span>Graph Matching with Topological Features</p>
-      </div>
-    </a>
 </div>
                 </footer>
               
@@ -701,14 +683,15 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-2-deterministic-annealing">8.1. Practical Session 2: Deterministic Annealing</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">8.1.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-annealing">8.1.2. Deterministic Annealing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-2-1-deterministic-annealing">Practical Session 2.1: Deterministic Annealing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-annealing">Deterministic Annealing</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">8.2. Exercise 1:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">8.3. Exercise 2: Implementing Deterministic Annealing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">8.4. Exercise 3: Testing the Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">Exercise 1:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">Exercise 2: Implementing Deterministic Annealing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">Exercise 3: Testing the Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">Exercise 4: Entropy</a></li>
 </ul>
   </nav></div>
 
