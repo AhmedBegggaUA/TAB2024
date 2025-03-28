@@ -238,3 +238,42 @@ Generate synthetic data using the function implemented in Exercise 1 and apply t
 3. Generate data with 5 clusters and apply the algorithm with 5 clusters.
 4. Generate data with 5 clusters and apply the algorithm with 2 clusters.
 5. Generate data with 5 clusters and apply the algorithm with 10 clusters.
+
+
+##  Exercise 4: Entropy
+
+Implement a function that calculates the entropy of the clustering. The function should take the following parameters:
+
+```{code-block} python
+def calcular_entropia_por_punto(self):
+        """
+        Calcula la entropía condicional H(C|X), que es la entropía por punto.
+        
+        Esta entropía mide la incertidumbre en la asignación de clusters para cada punto.
+        """
+    
+    def calcular_entropia_por_cluster(self):
+        """
+        Calcula la entropía condicional H(X|C), que es la entropía por cluster.
+        
+        Esta entropía mide qué tan uniforme es la distribución de puntos dentro de cada cluster.
+        También devuelve un array con las entropías individuales de cada cluster.
+        """
+
+```
+Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering. You are encouraged to create more experiments to test the algorithm.
+
+##  Exercise 5: Automated Clustering
+
+After implementing the Deterministic Annealing algorithm and the entropy function, you can now create a function that automatically clusters the data. So, now the question is: how to choose the number of clusters?
+The criteria will be given by the elbow method, which is a heuristic used in cluster analysis to determine the optimal number of clusters in a dataset. The elbow method involves plotting the explained variance as a function of the number of clusters and looking for the "elbow" point where the rate of decrease sharply changes. 
+
+The elbow point indicates the optimal number of clusters, as adding more clusters beyond this point does not significantly improve the explained variance.
+
+```{figure} ./images/automated_entropy.png
+---
+width: 800px
+name: entropy_data
+---
+Visualization of the entropy as a function of the number of clusters
+```
