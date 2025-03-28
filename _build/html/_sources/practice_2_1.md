@@ -227,4 +227,19 @@ def calcular_entropia_por_punto(self):
         """
 
 ```
-Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering.
+Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering. You are encouraged to create more experiments to test the algorithm.
+
+##  Exercise 5: Automated Clustering
+
+After implementing the Deterministic Annealing algorithm and the entropy function, you can now create a function that automatically clusters the data. So, now the question is: how to choose the number of clusters?
+The criteria will be given by the elbow method, which is a heuristic used in cluster analysis to determine the optimal number of clusters in a dataset. The elbow method involves plotting the explained variance as a function of the number of clusters and looking for the "elbow" point where the rate of decrease sharply changes. 
+
+The elbow point indicates the optimal number of clusters, as adding more clusters beyond this point does not significantly improve the explained variance.
+
+```{figure} ./images/automated_entropy.png
+---
+width: 800px
+name: entropy_data
+---
+Visualization of the entropy as a function of the number of clusters
+```

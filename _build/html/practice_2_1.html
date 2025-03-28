@@ -399,6 +399,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">Exercise 2: Implementing Deterministic Annealing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">Exercise 3: Testing the Algorithm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">Exercise 4: Entropy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-automated-clustering">Exercise 5: Automated Clustering</a></li>
 </ul>
             </nav>
         </div>
@@ -633,7 +634,19 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 <span class="sd">        &quot;&quot;&quot;</span>
 </pre></div>
 </div>
-<p>Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering.</p>
+<p>Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering. You are encouraged to create more experiments to test the algorithm.</p>
+</section>
+<section id="exercise-5-automated-clustering">
+<h2>Exercise 5: Automated Clustering<a class="headerlink" href="#exercise-5-automated-clustering" title="Permalink to this heading">#</a></h2>
+<p>After implementing the Deterministic Annealing algorithm and the entropy function, you can now create a function that automatically clusters the data. So, now the question is: how to choose the number of clusters?
+The criteria will be given by the elbow method, which is a heuristic used in cluster analysis to determine the optimal number of clusters in a dataset. The elbow method involves plotting the explained variance as a function of the number of clusters and looking for the “elbow” point where the rate of decrease sharply changes.</p>
+<p>The elbow point indicates the optimal number of clusters, as adding more clusters beyond this point does not significantly improve the explained variance.</p>
+<figure class="align-default" id="entropy-data">
+<a class="reference internal image-reference" href="_images/automated_entropy.png"><img alt="_images/automated_entropy.png" src="_images/automated_entropy.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Visualization of the entropy as a function of the number of clusters</span><a class="headerlink" href="#entropy-data" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 </section>
 
@@ -692,6 +705,7 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-implementing-deterministic-annealing">Exercise 2: Implementing Deterministic Annealing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">Exercise 3: Testing the Algorithm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">Exercise 4: Entropy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-automated-clustering">Exercise 5: Automated Clustering</a></li>
 </ul>
   </nav></div>
 
