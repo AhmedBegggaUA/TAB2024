@@ -411,6 +411,17 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast-for-rubik">3.3.4. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> for Rubik</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learnable-heuristics">3.4. Learnable Heuristics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-oracles">3.4.1. Deep Oracles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-entropy">3.4.2. Cross Entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rubik-state-space">3.4.3. Rubik State Space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-and-rubik">3.4.4. Beam Search and Rubik</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">3.5. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence">3.5.1. Kullback-Leibler Divergence</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -1139,6 +1150,374 @@ b^d(1 + 2x + 3x^2 + \ldots )\rightarrow b^d(1-x)^{-2}\;\;\text{for}\; |x|&lt;1\;
 <p>However, the <ins>above solutions are not enough to contain the above combinatorial explosion</ins> and ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> is only able to compute some movemens per day!</p>
 </section>
 </section>
+<section id="learnable-heuristics">
+<h2><span class="section-number">3.4. </span>Learnable Heuristics<a class="headerlink" href="#learnable-heuristics" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://www.nature.com/articles/s42256-019-0070-z">DeepCubeA</a> is the flagship solution of the current <strong>change of paradigm</strong>, where admissibility becomes only a <span style="color:#f88146"><strong>conceptual guide</strong></span> for solving large problems such as the Rubik’s Cube (RC) and it is replaced by:</p>
+<p>a)  <strong>Deep Oracles</strong>. In practice, it is assumed that we can only sample the space state <span class="math notranslate nohighlight">\(\Omega\)</span>. Doing so, an AIer can learn a predictor or <span style="color:#f88146"><strong>oracle</strong></span> <span class="math notranslate nohighlight">\(f_{\theta}(\mathbf{n})=\mathbf{n}'\)</span>, so that for any <span class="math notranslate nohighlight">\(\mathbf{n}\in\Omega\)</span>, then <span class="math notranslate nohighlight">\(\mathbf{n}'\)</span> is the closest state to the target state <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> (e.g the perfect Rubik’s solution). <span style="color:#f88146">The oracle can be interpreted as a maximizer of the probability</span> <span class="math notranslate nohighlight">\(p_{\theta}(\mathbf{n}'|\mathbf{n})\)</span> of reaching the target from <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> via <span class="math notranslate nohighlight">\(\mathbf{n}'\)</span>. The oracle is learnable, i.e. we must find the parameters <span class="math notranslate nohighlight">\(\theta\)</span>, via <span style="color:#f88146"><strong>Deep Neural Networks</strong></span> (DNN).</p>
+<p>b) <strong>Trade-off between computation and optimality</strong>. DNNs <span style="color:#f88146">aim to discover the unknown state space <span class="math notranslate nohighlight">\(\Omega\)</span> in order to make <strong>better and better predictions</strong></span>. Good predictions are those that match <strong>optimal solutions</strong> (e.g. those solving the game), but achieving them requires increasing levels of search. Then, DNNs can achieve <span style="color:#f88146"><strong>near-optimal solutions</strong>, i.e. acceptable solutions with a reasonable amount of time!</span></p>
+<section id="deep-oracles">
+<h3><span class="section-number">3.4.1. </span>Deep Oracles<a class="headerlink" href="#deep-oracles" title="Permalink to this heading">#</a></h3>
+<p>Assume that, given <span class="math notranslate nohighlight">\(\mathbf{n}\in\Omega\)</span> the perfect discriminator <span class="math notranslate nohighlight">\(h^{\ast}(\mathbf{n})\)</span> cannot be computed but <strong>approximated</strong>. How is such an approximation computed?</p>
+<p>Let us explain this process for the Rubik’s Cube (RC).</p>
+<p><strong>Training set</strong>. Given that the target <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> for RC is fixed and well known, as well as the <strong>overshooted God’s Number</strong> <span class="math notranslate nohighlight">\(N&gt;20\)</span>, let us sample a set of paths <span class="math notranslate nohighlight">\(P=\{\Gamma_i\}\)</span> for <span class="math notranslate nohighlight">\(i=1,2,\ldots,|P|\)</span>. These paths start at <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> and go backwards by <strong>scrambling</strong> the RC, i.e. the <span class="math notranslate nohighlight">\(i-\)</span>th path has the following structure:</p>
+<div class="math notranslate nohighlight">
+\[
+\Gamma_{i}=\{(\mathbf{n}_F=\mathbf{n}^{i}_{0})\rightarrow \mathbf{n}^{i}_1\rightarrow\mathbf{n}^{i}_2\rightarrow\ldots \rightarrow\mathbf{n}^{i}_{N}\}
+\]</div>
+<p>Each <span class="math notranslate nohighlight">\(\Gamma_{i}\)</span> <span style="color:#f88146">is a <strong>random walk</strong> through <span class="math notranslate nohighlight">\(\Omega\)</span> in reverse order from <span class="math notranslate nohighlight">\(\mathbf{n}_F\)</span> backwards using <strong>legal moves</strong> <span class="math notranslate nohighlight">\(\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}\in {\cal M}\)</span></span> and</p>
+<div class="math notranslate nohighlight">
+\[
+{\cal M} = \{U,U',D,D',R,R',L,L',F,F',B,B'\}
+\]</div>
+<p>The above paths <em>are not exclusive</em> and may visit a given state several times. There are, however, some optimizations are done in order to avoid ‘do-undo’ moves or ‘three consecutive moves that are really one’.</p>
+<p><strong>Encoding and Association</strong>. Given <span class="math notranslate nohighlight">\(\Gamma_i\)</span>, <span style="color:#f88146">only the corresponding <span class="math notranslate nohighlight">\(\mathbf{n}_N\)</span> is <strong>observable</strong></span>. Actually, for the Rubik Cube, <span class="math notranslate nohighlight">\(\mathbf{n}^i_N\)</span> is <strong>encoded</strong> by the colors of the <span class="math notranslate nohighlight">\(6\)</span> faces, each one having <span class="math notranslate nohighlight">\(3\times 3=9\)</span> tiles. Therefore, <span class="math notranslate nohighlight">\(\mathbf{n}_N\)</span> can be vectorized with <span class="math notranslate nohighlight">\(3\times 3\times 6= 54\)</span> parameters.</p>
+<p>During <span style="color:#f88146"><strong>training (offline phase)</strong></span>, we learn a function <span class="math notranslate nohighlight">\(f_{\theta}:\mathbb{R}^{54}\rightarrow [0,1]^{12}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+f_{\theta}(\mathbf{n}^i_N)=\left[
+    \begin{array}{c}
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_1\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_2\\
+    \ldots\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_{12}\\
+    \end{array}
+    \right] =\left[
+     \begin{array}{c}
+    p(m_1|\mathbf{n}^{i}_{N})\\
+    p(m_2|\mathbf{n}^{i}_{N})\\
+    \ldots\\
+    p(m_{12}|\mathbf{n}^{i}_{N})\\
+    \end{array}
+    \right]\;.
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sum_k p(m_k)=1\)</span> and we have <span class="math notranslate nohighlight">\(12\)</span> legal moves for Rukik. Such a function <span style="color:#f88146"><strong>associates</strong> encoded states with a discrete probability distribution of legal moves for <strong>undoing</strong> the scramble</span>.</p>
+<p>Again, training is performed offline (before the search for solving the Rubik Cube starts).</p>
+<p><strong>Inference</strong>. During <span style="color:#f88146">the <strong>search (test)</strong></span> we start at a vectorized space <span class="math notranslate nohighlight">\(\mathbf{n_0}\)</span>, corresponding to a scrabled cube very unlikely to be seen during training, and we query <span class="math notranslate nohighlight">\(f_{\theta}(\mathbf{n}_0)\)</span>. The result is <span class="math notranslate nohighlight">\(12\)</span> probabilities, one per legal move. Then, from <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> <span style="color:#f88146">we <strong>expand</strong> <span class="math notranslate nohighlight">\(12\)</span> candidates to un-scramble the Rubik Cube from it</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{n}'\in {\cal N}_{\mathbf{n}_0}=\left\{
+    \begin{array}{cc}
+    \mathbf{n}_0\circ m_1&amp;\text{with prob.}\;\; p(m_1|\mathbf{n}_0)\\
+    \mathbf{n}_0\circ m_2&amp;\text{with prob.}\;\; p(m_2|\mathbf{n}_0)\\
+    \ldots\\
+    \mathbf{n}_0\circ m_{12}&amp;\text{with prob.}\;\; p(m_{12}|\mathbf{n}_0)\\
+    \end{array}
+    \right\}\;
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{n}'=\mathbf{n}_0\circ m_k\)</span> is the state of <span class="math notranslate nohighlight">\(\Omega\)</span> obtained after applying the move <span class="math notranslate nohighlight">\(m_k\)</span> on <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span>.</p>
+<p>However, when expanding say <span class="math notranslate nohighlight">\(\mathbf{n}_1=\mathbf{n}_0\circ m_1\)</span> we have that its probabilities are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{n}'\in {\cal N}_{\mathbf{n}_1}=\left\{
+    \begin{array}{cc}
+    \mathbf{n}_1\circ m_1&amp;\text{with prob.}\;\; p(m_1|\mathbf{n}_1)p(m_1|\mathbf{n}_0)\\
+    \mathbf{n}_1\circ m_2&amp;\text{with prob.}\;\; p(m_2|\mathbf{n}_1)p(m_1|\mathbf{n}_0)\\
+    \ldots\\
+    \mathbf{n}_1\circ m_{12}&amp;\text{with prob.}\;\; p(m_{12}|\mathbf{n}_1)p(m_1|\mathbf{n}_0)\\
+    \end{array}
+    \right\}\;.
+\end{split}\]</div>
+<p>In other words, <span style="color:#f88146">the probability of each new state is the <strong>product of past probabilities</strong></span>. This product becomes the <span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> of a BFS strategy and there is no <span class="math notranslate nohighlight">\(h(\mathbf{n})\)</span>.</p>
+</section>
+<section id="cross-entropy">
+<h3><span class="section-number">3.4.2. </span>Cross Entropy<a class="headerlink" href="#cross-entropy" title="Permalink to this heading">#</a></h3>
+<p>Before analyzing the search in more detail, it is key to describe sucintly the learning of <span class="math notranslate nohighlight">\(f_{\theta}\)</span>. For the sake of simplicity, we consider that:</p>
+<ul class="simple">
+<li><p>We have only two classes (moves): <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p>The states of <span class="math notranslate nohighlight">\(\Omega\)</span> are denoted by <span class="math notranslate nohighlight">\(\mathbf{x}_1,\mathbf{x}_2,\ldots\)</span>.</p></li>
+<li><p>We do now know their distribution <span class="math notranslate nohighlight">\(p(\mathbf{x})\)</span>, because, in practice, the size of <span class="math notranslate nohighlight">\(\Omega\)</span> is virtually infinite.</p></li>
+<li><p>However, <em>for the training set</em>, we know:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\text{True Labels}:\;\; &amp; p(m=0|\mathbf{x})\;\;\text{as well as}\;\; p(m=1|\mathbf{x}) = 1 - p(m=0|\mathbf{x})\\
+\text{Predicted Labels}:\;\; &amp; q_{\theta}(m=0|\mathbf{x})\;\;\text{as well as}\;\; q_{\theta}(m=1|\mathbf{x})= 1 - q_{\theta}(m=0|\mathbf{x})\\
+\end{aligned}
+\end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(q_{\theta}(m|\mathbf{x})\)</span> is the distribution of the predictor (oracle) for a given configuration of the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>The “cost” of the configuration <span class="math notranslate nohighlight">\(\theta\)</span> is quantified by a <strong>loss function</strong>. The most used loss is the <strong>cross-entropy</strong> loss <span class="math notranslate nohighlight">\(CE\)</span>. For a given <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> we have:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+CE(\mathbf{x})&amp;=-\sum_{c\in\{0,1\}}p(m=c|\mathbf{x})\log q_{\theta}(m=c|\mathbf{x})\\
+              &amp;=\sum_{c\in\{0,1\}}p(m=c|\mathbf{x})\log\frac{1}{q_{\theta}(m=c|\mathbf{x})}\\
+              &amp;=E\left(\log\frac{1}{q_{\theta}(m=c|\mathbf{x})}\right)\\
+              
+\end{aligned}
+\end{split}\]</div>
+<p>or more understandable…</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+CE(\mathbf{x})=-p(m=0|\mathbf{x})\log q_{\theta}(m=0|\mathbf{x}) - \underbrace{p(m=1|\mathbf{x})}_{1-p(m=0|\mathbf{x})}\log \underbrace{q_{\theta}(m=1|\mathbf{x})}_{1-q_{\theta}(m=0|\mathbf{x})}\;.\\
+\end{split}\]</div>
+<p><br></br>
+<span style="color:#d94f0b">
+<strong>Example</strong>. Given four examples <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span>, <span class="math notranslate nohighlight">\(\mathbf{x}_2\)</span>, <span class="math notranslate nohighlight">\(\mathbf{x}_3\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_4\)</span>, we have
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+p(m=0|\mathbf{x}_1) = 1\;&amp;\; p(m=1|\mathbf{x}_1)=0 \\
+p(m=0|\mathbf{x}_2) = 0\;&amp;\; p(m=1|\mathbf{x}_2)=1 \\
+p(m=0|\mathbf{x}_3) = 1\;&amp;\; p(m=1|\mathbf{x}_3)=0 \\
+p(m=0|\mathbf{x}_4) = 0\;&amp;\; p(m=1|\mathbf{x}_4)=1 \\
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+and for the configuration <span class="math notranslate nohighlight">\(\theta\)</span> we have:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+q_{\theta}(m=0|\mathbf{x}_1) = 0.9\;&amp;\; q_{\theta}(m=1|\mathbf{x}_1)=0.1 \\
+q_{\theta}(m=0|\mathbf{x}_2) = 0.2\;&amp;\; q_{\theta}(m=1|\mathbf{x}_2)=0.8 \\
+q_{\theta}(m=0|\mathbf{x}_3) = 0.7\;&amp;\; q_{\theta}(m=1|\mathbf{x}_3)=0.3 \\
+q_{\theta}(m=0|\mathbf{x}_4) = 0.3\;&amp;\; q_{\theta}(m=1|\mathbf{x}_4)=0.7 \\
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Then, their respective <span class="math notranslate nohighlight">\(CE\)</span>s are
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+CE(\mathbf{x}_1) &amp;= \mathbf{-1\cdot\log 0.9} - 0\cdot\log 0.1 &amp;= 0.10 \\
+CE(\mathbf{x}_2) &amp;= -0\cdot\log 0.2 \mathbf{- 1\cdot\log 0.8} &amp;= 0.22 \\
+CE(\mathbf{x}_3) &amp;= \mathbf{-1\cdot\log 0.7} - 0\cdot\log 0.3 &amp;= 0.35 \\
+CE(\mathbf{x}_4) &amp;= -0\cdot\log 0.3 \mathbf{- 1\cdot\log 0.7} &amp;= 0.35 \\
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+where the only significant distribution (in bold) is when we match the true distrution of each data.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Following the above results, the best “fitted” points are <span class="math notranslate nohighlight">\(\mathbf{x}_3\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_4\)</span> (see <a class="reference internal" href="#ce-toy"><span class="std std-numref">Fig. 3.8</span></a>).
+</span>
+<br></br></p>
+<figure class="align-center" id="ce-toy">
+<a class="reference internal image-reference" href="_images/CE-toy-removebg-preview.png"><img alt="_images/CE-toy-removebg-preview.png" src="_images/CE-toy-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.8 </span><span class="caption-text">CEs of four examples (blue color is class <span class="math notranslate nohighlight">\(0\)</span> and orange is class <span class="math notranslate nohighlight">\(1\)</span>).</span><a class="headerlink" href="#ce-toy" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>For a larger example, we have that when the configuration <span class="math notranslate nohighlight">\(\theta\)</span> of the predictor is not good, then <span class="math notranslate nohighlight">\(q_{\theta}(m=1|\mathbf{x})\)</span> and <span class="math notranslate nohighlight">\(q_{\theta}(m=0|\mathbf{x})\)</span> <strong>overlap</strong> significantly (see <a class="reference internal" href="#overlap"><span class="std std-numref">Fig. 3.9</span></a>).</p>
+<figure class="align-center" id="overlap">
+<a class="reference internal image-reference" href="_images/Overlap-removebg-preview.png"><img alt="_images/Overlap-removebg-preview.png" src="_images/Overlap-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.9 </span><span class="caption-text">Overlap of the predicted distributions.</span><a class="headerlink" href="#overlap" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>As a result, CEs are not so good but at some examples (see <a class="reference internal" href="#overlap-ces"><span class="std std-numref">Fig. 3.10</span></a>):</p>
+<figure class="align-center" id="overlap-ces">
+<a class="reference internal image-reference" href="_images/Overlap-CEs-removebg-preview.png"><img alt="_images/Overlap-CEs-removebg-preview.png" src="_images/Overlap-CEs-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.10 </span><span class="caption-text">CEs for overlaped predicted distributions.</span><a class="headerlink" href="#overlap-ces" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note that <span class="math notranslate nohighlight">\(CE\)</span> has the form of a KL divergence between <span class="math notranslate nohighlight">\(p\)</span> (only known for the training set) and <span class="math notranslate nohighlight">\(q\)</span> (the distribution learnt by the predictor). Actually, look at the ratios:</p>
+<div class="math notranslate nohighlight">
+\[
+\log\frac{1}{q_{\theta}(m=c|\mathbf{x})}\;.
+\]</div>
+<p>These ratios mean the log-likelihood of  the truth <span class="math notranslate nohighlight">\(1\)</span> wrt of the prediction <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<p>Actually, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+E\left(\log\frac{1}{q}\right)&amp;=\sum_{c\in\{0,1\}}p(c)\log\frac{1}{q(c)}\\
+&amp;= \sum_{c\in\{0,1\}}p(c)\log\frac{1}{q(c)}\cdot\frac{p(c)}{p(c)}\\
+&amp;=\sum_{c\in\{0,1\}}p(c)\log\frac{1}{p(c)} + \sum_{c\in\{0,1\}}p(c)\log\frac{p(c)}{q(c)}\\
+&amp;= H(p) + D(p||q)\;.
+\end{align}
+\end{split}\]</div>
+<p>Therefore, if we change <span class="math notranslate nohighlight">\(\theta\)</span> to minimize <span class="math notranslate nohighlight">\(\frac{1}{N}\sum_{\mathbf{x}}CE(\mathbf{x})\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of training examples, we are implicitly minimizing the KL divergence between the predictor and the true distribution! Please, see a detailed discussion in the <a class="reference external" href="https://towardsdatascience.com/understanding-binary-cross-entropy-log-loss-a-visual-explanation-a3ac6025181a/">Towards Datascience Article</a>.</p>
+</section>
+<section id="rubik-state-space">
+<h3><span class="section-number">3.4.3. </span>Rubik State Space<a class="headerlink" href="#rubik-state-space" title="Permalink to this heading">#</a></h3>
+<p>The minimization of the average CE, now for <span class="math notranslate nohighlight">\(12\)</span> classes (moves in Rubik), is as in <a class="reference internal" href="#ce-rubik"><span class="std std-numref">Fig. 3.11</span></a>:</p>
+<figure class="align-center" id="ce-rubik">
+<a class="reference internal image-reference" href="_images/CE-Rubik-removebg-preview.png"><img alt="_images/CE-Rubik-removebg-preview.png" src="_images/CE-Rubik-removebg-preview.png" style="width: 500px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.11 </span><span class="caption-text">CEs for overlaped predicted distributions.</span><a class="headerlink" href="#ce-rubik" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note, that as learning progresses, the CE curve flattens. Then, close to the optimum, <span class="math notranslate nohighlight">\(\theta\)</span> is quasi stable and we can look at the structure of the state space <span class="math notranslate nohighlight">\(\Omega\)</span>. We attend to the last <span class="math notranslate nohighlight">\(100\)</span> iterations and we proceed as follows:</p>
+<ol class="arabic simple">
+<li><p>During these last iterations, we have explored <span class="math notranslate nohighlight">\(|\Omega'| =23,644\)</span> states <span class="math notranslate nohighlight">\(\mathbf{n}_i\)</span> as a “surrogate” of <span class="math notranslate nohighlight">\(\Omega\)</span>.</p></li>
+<li><p>The states in <span class="math notranslate nohighlight">\(\Omega'\)</span> almost distributed uniformly. Actually, most of them are <strong>visited once</strong>: <span class="math notranslate nohighlight">\(23,201\)</span> of <span class="math notranslate nohighlight">\(23,644\)</span> (<span class="math notranslate nohighlight">\(98\%\)</span>). However, the remaining <span class="math notranslate nohighlight">\(2\%\)</span> show that <span class="math notranslate nohighlight">\(\Omega'\)</span> follows a <strong>power law</strong> (see <a class="reference internal" href="#power-rubik"><span class="std std-numref">Fig. 3.12</span></a>).</p></li>
+<li><p>Move probabilities are almost uniform <span class="math notranslate nohighlight">\(p(m_k)=1/12=0.83\)</span>, as well.</p></li>
+<li><p>What about conditional probabilities <span class="math notranslate nohighlight">\(p_{\theta}(m_k|\mathbf{n}_i)\)</span>? Well, we observe that the predictor is <strong>absolutely certain</strong> about the move to recommend: <span class="math notranslate nohighlight">\(p_{\theta}(m_k|\mathbf{n}_i)=1\)</span> for a given <span class="math notranslate nohighlight">\(m_k\)</span> and <span class="math notranslate nohighlight">\(0\)</span> for the remaiming moves. This behavior is consistent with learning the true distribution of data in <span class="math notranslate nohighlight">\(\Omega\)</span> (see <a class="reference internal" href="#cond-rubik"><span class="std std-numref">Fig. 3.13</span></a>).</p></li>
+<li><p>Finally, as it is expected, each move is equally reachable: <span class="math notranslate nohighlight">\(\sum_i p(m_k|\mathbf{n}_i)=1/12\)</span> for all <span class="math notranslate nohighlight">\(m_k\)</span> (see <a class="reference internal" href="#cum-rubik"><span class="std std-numref">Fig. 3.14</span></a>)</p></li>
+</ol>
+<figure class="align-center" id="power-rubik">
+<a class="reference internal image-reference" href="_images/Power-Rubik-removebg-preview.png"><img alt="_images/Power-Rubik-removebg-preview.png" src="_images/Power-Rubik-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.12 </span><span class="caption-text">Power-law of visited space for Rubik.</span><a class="headerlink" href="#power-rubik" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="cond-rubik">
+<a class="reference internal image-reference" href="_images/Rubik-Cond-removebg-preview.png"><img alt="_images/Rubik-Cond-removebg-preview.png" src="_images/Rubik-Cond-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.13 </span><span class="caption-text">Conditional probabilities in Rubik (for a sample of states).</span><a class="headerlink" href="#cond-rubik" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="cum-rubik">
+<a class="reference internal image-reference" href="_images/Pred-Cumulative-removebg-preview.png"><img alt="_images/Pred-Cumulative-removebg-preview.png" src="_images/Pred-Cumulative-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.14 </span><span class="caption-text">Cummulative Conditional probabilities in Rubik per move.</span><a class="headerlink" href="#cum-rubik" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="beam-search-and-rubik">
+<h3><span class="section-number">3.4.4. </span>Beam Search and Rubik<a class="headerlink" href="#beam-search-and-rubik" title="Permalink to this heading">#</a></h3>
+<p><strong>Beam Search</strong>. Beam search is a particular case of BFS where the size of <span class="math notranslate nohighlight">\(\text{OPEN}\)</span> is bounded, for instance to <span class="math notranslate nohighlight">\(2^k\)</span> states. If at some point of the search we reach <span class="math notranslate nohighlight">\(2^k+1\)</span> or more stats, <span style="color:#f88146">the <span class="math notranslate nohighlight">\(\text{OPEN}\)</span> list is <strong>purged</strong> to retain only the best <span class="math notranslate nohighlight">\(2^k\)</span> states</span>. In other words, at any moment, we keep up to the best <span class="math notranslate nohighlight">\(2^k\)</span> states in <span class="math notranslate nohighlight">\(\text{OPEN}\)</span>.</p>
+<p><strong>Power Law</strong>. Obviously, a small value of <span class="math notranslate nohighlight">\(k\)</span> in <span class="math notranslate nohighlight">\(2^k\)</span> (max. size of <span class="math notranslate nohighlight">\(\text{OPEN}\)</span>) usually leads to poor solutions (we are sacrificing optimality to contain the combinatorial explosion). However, the experiments in <a class="reference external" href="https://openreview.net/pdf?id=bnBeNFB27b">Self Supervised Rubik</a> show that as we move from <span class="math notranslate nohighlight">\(2^7\)</span> to <span class="math notranslate nohighlight">\(2^{18}\)</span>, the Rubik solver improves significanlty. This is consistent with the <strong>scaling law</strong> used for Transformers.</p>
+<figure class="align-center" id="performance-rubik">
+<a class="reference internal image-reference" href="_images/Performance-DeepCube-removebg-preview.png"><img alt="_images/Performance-DeepCube-removebg-preview.png" src="_images/Performance-DeepCube-removebg-preview.png" style="width: 800px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">Performance analysis of DeepCube with Beam Search (image from <a class="reference external" href="https://openreview.net/pdf?id=bnBeNFB27b">Self Supervised Rubik</a>).</span><a class="headerlink" href="#performance-rubik" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>See also in <a class="reference internal" href="#performance-rubik"><span class="std std-numref">Fig. 3.15</span></a>, that the Rubik solver takes <span class="math notranslate nohighlight">\(N\)</span> moves on average (where <span class="math notranslate nohighlight">\(N\)</span> is God’s number). However, there is a significant devation both up and below God’s number!</p>
+</section>
+</section>
+<section id="appendix">
+<h2><span class="section-number">3.5. </span>Appendix<a class="headerlink" href="#appendix" title="Permalink to this heading">#</a></h2>
+<section id="kullback-leibler-divergence">
+<h3><span class="section-number">3.5.1. </span>Kullback-Leibler Divergence<a class="headerlink" href="#kullback-leibler-divergence" title="Permalink to this heading">#</a></h3>
+<p><strong>Distances between distributions</strong>. Consider two discrete random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> defined on the same domain <span class="math notranslate nohighlight">\({\cal D}=\{z_1,z_2,\ldots,z_n\}\)</span>. Then we have</p>
+<div class="math notranslate nohighlight">
+\[
+p_X(i) = p(X=z_i)\;\;\text{as well as}\;\; p_Y(i) = p(Y=z_i)\;\;\text{for}\; i=1,2,\ldots,n\;.
+\]</div>
+<p>Obviously, <span class="math notranslate nohighlight">\(\sum_i p_X(i) = \sum_i p_Y(i) = 1\)</span>.</p>
+<p>However, <span style="color:#f88146">how do we <strong>measure a sort of distance</strong> between <span class="math notranslate nohighlight">\(p_X\)</span> and <span class="math notranslate nohighlight">\(p_Y\)</span>?</span></p>
+<ul class="simple">
+<li><p>First of all, consider <span class="math notranslate nohighlight">\(n\)</span> as the <strong>dimensionality</strong> of the domain.</p></li>
+<li><p>It <a class="reference external" href="https://homes.cs.washington.edu/%7Epedrod/papers/cacm12.pdf">well known</a> that as <span class="math notranslate nohighlight">\(n\)</span> increases and we generate data, the probabilistic mass is not uniform at all. For the multivariate Gaussian distribution, for instance, such a mass is in a shell around the mean.</p></li>
+<li><p>In other words, high-dimensional data such as texts and images <strong>do not live in a uniform (maximal entropy) space where everything is equally probable</strong>.</p></li>
+<li><p>Therefore, if <span class="math notranslate nohighlight">\(X\)</span> is taken from “grey images of dogs” and <span class="math notranslate nohighlight">\(Y\)</span> is taken from “grey images of cats” and <span class="math notranslate nohighlight">\(z_i\in [0,255]\)</span> where <span class="math notranslate nohighlight">\(n=N\times N\)</span> is the mumber of pixels, it is quite clear that <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> <strong>cannot be compared by means of an Euclidean norm</strong>.</p></li>
+</ul>
+<p>The <span style="color:#f88146"><strong>Kullback-Leibler Divergence</strong> compares <span class="math notranslate nohighlight">\(p_X\)</span> and <span class="math notranslate nohighlight">\(p_Y\)</span> instead</span>. Again, the <strong>Euclidean distance is not suitable</strong> for comparing <span class="math notranslate nohighlight">\(p_X\)</span> and <span class="math notranslate nohighlight">\(p_Y\)</span> because it does not account for their intrinsic frequency and variability.</p>
+<p><span style="color:#f88146"><strong>Log-likelihood Ratio</strong></span>. The core of the Euclidean or Manhattan distance is <span class="math notranslate nohighlight">\(p_X(i) - p_y(i)\)</span>. However, given <span class="math notranslate nohighlight">\(i\)</span> we have to dilucidate whether it comes from <span class="math notranslate nohighlight">\(p_X\)</span> (dogs) or from <span class="math notranslate nohighlight">\(p_Y\)</span> (cats). This leads to the following <a class="reference external" href="https://en.wikipedia.org/wiki/Likelihood-ratio_test">Log-likelihood Statistical Test</a></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+H_0 &amp;:\textbf{(null hypothesis):}\;i\;\text{is generated by}\; p_X\\ 
+H_1 &amp;:\textbf{(alternative hypothesis):}\;i\;\text{is generated by}\; p_Y\\ 
+\end{aligned}
+\end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\text{If}\; \Lambda(i) \ge c,\;&amp; \textbf{do not reject}\; H_0\;.\\
+\text{If}\; \Lambda(i) &lt; c,\;&amp; \textbf{reject}\; H_0\;.\\
+\end{aligned}
+\end{split}\]</div>
+<p>and we have:</p>
+<div class="math notranslate nohighlight">
+\[
+\Lambda(i) = \log\frac{p_X(i)}{p_Y(i)} = \log p_X(i) - \log p_Y(i):\;\;\textbf{log-likelihood}\;.
+\]</div>
+<p>Herein, the <span class="math notranslate nohighlight">\(\log\)</span> is used in order to <span style="color:#f88146">maximize the likelihood</span>: the closer is <span class="math notranslate nohighlight">\(p\)</span> to <span class="math notranslate nohighlight">\(1\)</span> the smallest (less negative) is the <span class="math notranslate nohighlight">\(\log\)</span>.</p>
+<p><span style="color:#f88146"><strong>KL-divergence</strong></span>. Given <span class="math notranslate nohighlight">\(p_X\)</span> and <span class="math notranslate nohighlight">\(p_Y\)</span>, we have the following <em>divergences</em>:</p>
+<p><span class="math notranslate nohighlight">\(
+\begin{aligned}
+D(p_X||p_Y) &amp;= \sum_i p_X(i)\log \frac{p_X(i)}{p_Y(i)}\ge 0\\
+D(p_Y||p_X) &amp;= \sum_i p_Y(i)\log \frac{p_Y(i)}{p_X(i)}\ge 0\;.\\
+\end{aligned}
+\)</span></p>
+<p>which can be seen as <strong>expectations</strong> of the corresponding log-ratios: respectively</p>
+<p><span class="math notranslate nohighlight">\(
+\begin{aligned}
+D(p_X||p_Y) &amp;= E\left(\log \frac{p_X(i)}{p_Y(i)}\right)\ge 0\\
+D(p_Y||p_X) &amp;= E\left(\log \frac{p_Y(i)}{p_X(i)}\right)\ge 0\;,\\
+\end{aligned}
+\)</span></p>
+<p>i.e. the <span style="color:#f88146"><strong>KL divergence means</strong> how good or bad goes the corresponing test on average</span>.</p>
+<p>In general, <span class="math notranslate nohighlight">\(D(p_X||p_Y)\neq D(p_Y||p_X)\)</span>, since the triangular inequality</p>
+<p><span class="math notranslate nohighlight">\(
+D(p_X||p_Y) + D(p_Y||p_Z)\le D(p_X||p_Z)
+\)</span></p>
+<p>is not verified. Then <em>we do not have a distance but a divergence</em>. Actually, both the Euclidean distance and the KL divergence belong to a wider family known as <strong>Bregman Divergences</strong> <a class="reference external" href="https://link.springer.com/book/10.1007/978-1-84882-297-9">Escolano et al, book. Chapter 7</a>.</p>
+<p><strong>KL-divergence for Bernouilli</strong>. If <span class="math notranslate nohighlight">\(X\sim \text{Bernouilli}(p_X)\)</span> and <span class="math notranslate nohighlight">\(Y\sim \text{Bernouilli}(p_Y)\)</span>, what is the form of <span class="math notranslate nohighlight">\(D(p_X||p_Y)\)</span>?</p>
+<p>Well, look that the <strong>histogram</strong> of a <span class="math notranslate nohighlight">\(\text{Bernouilli}(p)\)</span> <em>does only have two bars</em>: <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(1-p\)</span>, since <span class="math notranslate nohighlight">\(p + (1-p)=1\)</span>. Then, <strong>we have two run two tests</strong> when computing the KL-divergence:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+D(p_X||p_Y)=p_X\log \frac{p_X}{p_Y} + (1-p_X)\log \frac{1-p_X}{1-p_Y}\;.
+\end{aligned}
+\]</div>
+<p><br></br>
+<span style="color:#d94f0b">
+<strong>Example</strong>. Compute the KL-divergence for Bernouilli distributions: <span class="math notranslate nohighlight">\(p_X=0.5\)</span> and <span class="math notranslate nohighlight">\(p_Y=0.75\)</span>.
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+D(p_X||p_Y)&amp;=0.5\log \frac{0.5}{0.75} + 0.5\log \frac{0.5}{0.25}\\
+           &amp;=0.5\left(\log 0.5 - \log 0.75\right) +0.5\left(\log 0.5 - \log 0.25\right)\\
+           &amp;=0.5\cdot (-0,4) +0.5\cdot (+0.69)\\
+           &amp;=-0.2 + 0.34\\
+           &amp;= 0.14\;.
+\end{aligned}
+\)</span>
+</span>
+<span style="color:#d94f0b">
+and
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+D(p_Y||p_X)&amp;=0.75\log \frac{0.75}{0.5} + 0.25\log \frac{0.25}{0.5}\\
+           &amp;=0.75\left(\log 0.75 - \log 0.5\right) +0.25\left(\log 0.25 - \log 0.5\right)\\
+           &amp;=0.5\cdot (+0,4) +0.25\cdot (-0.69)\\
+           &amp;=0.2 - 0.1725\\
+           &amp;= 0.0275\;.
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Therefore, <span class="math notranslate nohighlight">\(p_Y\)</span> is closer to <span class="math notranslate nohighlight">\(p_X\)</span> than <span class="math notranslate nohighlight">\(p_X\)</span> is to <span class="math notranslate nohighlight">\(p_Y\)</span>!
+</span></p>
+<p><strong>KL-divergence for Binomial and Normal</strong>. Extending the above definition for comparing <span class="math notranslate nohighlight">\(X\sim \text{Binomial}(n,p_X)\)</span> and <span class="math notranslate nohighlight">\(Y\sim \text{Binomial}(n,p_Y)\)</span> we obtain:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+D(p_X||p_Y)=n\cdot p_X\log \frac{p_X}{p_Y} + n\cdot (1-p_X)\log \frac{1-p_X}{1-p_Y}\;.
+\end{aligned}
+\]</div>
+<p>You can find the proof in <a class="reference external" href="https://statproofbook.github.io/P/bin-kl.html">The Book of Statistical Proofs</a> but the <strong>interpretation</strong> is straightforward: since a Binomial variable is a sum of <span class="math notranslate nohighlight">\(n\)</span> independent Bernouillis with the same probability of success, all we have to do is introduce <span class="math notranslate nohighlight">\(n\)</span> in each summand of the KL-divergence.</p>
+<p>Obviuosly, the larger <span class="math notranslate nohighlight">\(n\)</span> the larger the KL divergence! What about the KL for the Normal Distribution?. Well, the Normal/Gaussian distribution is continuous and the sum in the divergence must be replaced by an integral. From the <a class="reference external" href="https://statproofbook.github.io/P/norm-kl">same book</a> we have, for <span class="math notranslate nohighlight">\(p_X={\cal N}(\mu_X,\sigma_X^2)\)</span> and <span class="math notranslate nohighlight">\(p_Y={\cal N}(\mu_Y,\sigma_Y^2)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+D(p_X||p_Y)=\frac{1}{2}\left[\frac{(\mu_Y-\mu_X)^2}{\sigma_Y^2} + \frac{\sigma_X^2}{\sigma_Y^2}-\log\frac{\sigma_X^2}{\sigma_Y^2}-1\right]\;.
+\end{aligned}
+\]</div>
+<p>Notably, if <span class="math notranslate nohighlight">\(\mu_X = \mu_Y\)</span>, the KL divergence relies only on the variances’ ratio. This basically shows that statistical dispersion (aka of entropy) dominates how KL divergences are expressed. This explains why the <span style="color:#f88146">KL divergence is usually called the <strong>relative entropy</strong></span>.</p>
+<p>In <a class="reference internal" href="#kl-normal"><span class="std std-numref">Fig. 3.16</span></a>, we explore the two cases (similar vs different mean). Note that co-centering the distributions while preserving the variances reduces dramatically the KL divergence.</p>
+<figure class="align-center" id="kl-normal">
+<a class="reference internal image-reference" href="_images/KL-normal-removebg-preview.png"><img alt="_images/KL-normal-removebg-preview.png" src="_images/KL-normal-removebg-preview.png" style="width: 800px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.16 </span><span class="caption-text">KL divergences between Normals with different and same mean.</span><a class="headerlink" href="#kl-normal" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1222,6 +1601,17 @@ b^d(1 + 2x + 3x^2 + \ldots )\rightarrow b^d(1-x)^{-2}\;\;\text{for}\; |x|&lt;1\;
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-iterative-deepening">3.3.2. DF Iterative Deepening</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast">3.3.3. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ida-ast-for-rubik">3.3.4. ID<span class="math notranslate nohighlight">\(A^{\ast}\)</span> for Rubik</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learnable-heuristics">3.4. Learnable Heuristics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-oracles">3.4.1. Deep Oracles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-entropy">3.4.2. Cross Entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rubik-state-space">3.4.3. Rubik State Space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-search-and-rubik">3.4.4. Beam Search and Rubik</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">3.5. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence">3.5.1. Kullback-Leibler Divergence</a></li>
 </ul>
 </li>
 </ul>
