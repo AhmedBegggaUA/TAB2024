@@ -401,6 +401,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">8.4. Exercise 3: Testing the Algorithm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">8.5. Exercise 4: Entropy</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-automated-clustering">8.6. Exercise 5: Automated Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-image-segmentation">8.7. Exercise 6: Image Segmentation</a></li>
 </ul>
             </nav>
         </div>
@@ -637,7 +638,7 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 </section>
 <section id="exercise-3-testing-the-algorithm">
 <h2><span class="section-number">8.4. </span>Exercise 3: Testing the Algorithm<a class="headerlink" href="#exercise-3-testing-the-algorithm" title="Permalink to this heading">#</a></h2>
-<p>Generate synthetic data using the function implemented in Exercise 1 and apply the Deterministic Annealing algorithm to cluster the data. You should try at least the following configurations:</p>
+<p>Generate synthetic data using the function implemented in Exercise 1 and apply the Deterministic Annealing algorithm to cluster the data. You should try at least the following configurations, also, it is encouraged to create more experiments to test the algorithm, with more or less dispersion, more or less clusters, etc.</p>
 <ol class="arabic simple">
 <li><p>Generate data with 3 clusters and apply the algorithm with 6 clusters.</p></li>
 <li><p>Generate data with 3 clusters and apply the algorithm with 2 clusters.</p></li>
@@ -665,7 +666,8 @@ i' = \arg\max_{1\le i\le k}\langle \mathbf{M}_{ai}^{\ast}\rangle\;.
 <span class="sd">        &quot;&quot;&quot;</span>
 </pre></div>
 </div>
-<p>Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering. You are encouraged to create more experiments to test the algorithm.</p>
+<p>Now re-discuss the previous experiments using the entropy as a metric to evaluate the quality of the clustering. You are encouraged to create more experiments to test the algorithm. Also, you can help yourself with plots to visualize the results or how the entropy changes with the iterations of the while loop.
+<strong>Bonus</strong>: If you visualize the entropy per point, by changing the size of the points, making the size of the points proportional to the entropy (bigger size = higher entropy) and discuss what is happening, you will be rewarded with bonus points.</p>
 </section>
 <section id="exercise-5-automated-clustering">
 <h2><span class="section-number">8.6. </span>Exercise 5: Automated Clustering<a class="headerlink" href="#exercise-5-automated-clustering" title="Permalink to this heading">#</a></h2>
@@ -676,6 +678,50 @@ The criteria will be given by the elbow method, which is a heuristic used in clu
 <a class="reference internal image-reference" href="_images/automated_entropy.png"><img alt="_images/automated_entropy.png" src="_images/automated_entropy.png" style="width: 800px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 8.2 </span><span class="caption-text">Visualization of the entropy as a function of the number of clusters</span><a class="headerlink" href="#entropy-data" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Here we are asking you is to explain the elbow method and how to implement it. And then, use it to find the optimal number of clusters for the data generated in Exercise 1. Obiously, you will have to discuss the results and the elbow point.</p>
+</section>
+<section id="exercise-6-image-segmentation">
+<h2><span class="section-number">8.7. </span>Exercise 6: Image Segmentation<a class="headerlink" href="#exercise-6-image-segmentation" title="Permalink to this heading">#</a></h2>
+<p>In this exercise, we will apply the Deterministic Annealing algorithm to segment an image. The goal is to cluster the pixels of the image into different segments based on their color values. We will provide you the part that handles the image loading and visualization, and you will have to implement the segmentation using the algorithm you implemented in Exercise 2.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<span class="c1"># Fijamos las semillas para reproducibilidad</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># 1. Cargar una imagen</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;imagen.jpg&#39;</span><span class="p">))</span>
+
+<span class="c1"># 2. Preprocesamiento (opcional)</span>
+<span class="c1"># Aplicar un filtro de mediana para reducir el ruido, cuando decimos ruido nos referimos a que haya demasiada variación en los colores de los píxeles</span>
+<span class="c1"># en la imagen. Esto puede ayudar a mejorar la segmentación.</span>
+<span class="n">image_filtered</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># ndimage.median_filter es una función de SciPy que aplica un filtro de mediana a la imagen. Le pasamos la imagen y el tamaño del filtro (10x10 píxeles en este caso). Esto significa que cada píxel en la imagen filtrada es reemplazado por la mediana de los píxeles en una vecindad de 10x10 píxeles alrededor de él.</span>
+<span class="c1"># 2.1 Mostramos la imagen original y la imagen filtrada</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_filtered</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Filtrada&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># 3. Reformatear la imagen para clustering</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape de la imagen original:&quot;</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">pixel_values</span> <span class="o">=</span> <span class="n">image_filtered</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape de la imagen reformateada:&quot;</span><span class="p">,</span> <span class="n">pixel_values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">pixel_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">pixel_values</span><span class="p">)</span>
+
+<span class="c1"># 4. Aplicar Deterministic Annealing</span>
+<span class="c1"># ...</span>
+<span class="c1"># 5. Visualizar los resultados</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">segmented_image</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Segmentada con DA&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-center" id="segmentation">
+<a class="reference internal image-reference" href="_images/imagen_segmentada.png"><img alt="_images/imagen_segmentada.png" src="_images/imagen_segmentada.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.3 </span><span class="caption-text">Segmentación de la imagen utilizando el algoritmo de Deterministic Annealing</span><a class="headerlink" href="#segmentation" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -746,6 +792,7 @@ The criteria will be given by the elbow method, which is a heuristic used in clu
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-testing-the-algorithm">8.4. Exercise 3: Testing the Algorithm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-entropy">8.5. Exercise 4: Entropy</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-automated-clustering">8.6. Exercise 5: Automated Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-image-segmentation">8.7. Exercise 6: Image Segmentation</a></li>
 </ul>
   </nav></div>
 
