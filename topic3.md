@@ -678,3 +678,463 @@ height: 500px
 3) Another solution consists of computing <ins>partial lookup tables storing Manhattan distances</ins> (e.g. for the corner cubies, for the edge cubies, etc) and combine them. 
 
 However, the <ins>above solutions are not enough to contain the above combinatorial explosion</ins> and ID$A^{\ast}$ is only able to compute some movemens per day!
+
+## Learnable Heuristics
+[DeepCubeA](https://www.nature.com/articles/s42256-019-0070-z) is the flagship solution of the current **change of paradigm**, where admissibility becomes only a <span style="color:#f88146">**conceptual guide**</span> for solving large problems such as the Rubik's Cube (RC) and it is replaced by:
+
+a)  **Deep Oracles**. In practice, it is assumed that we can only sample the space state $\Omega$. Doing so, an AIer can learn a predictor or <span style="color:#f88146">**oracle**</span> $f_{\theta}(\mathbf{n})=\mathbf{n}'$, so that for any $\mathbf{n}\in\Omega$, then $\mathbf{n}'$ is the closest state to the target state $\mathbf{n}_F$ (e.g the perfect Rubik's solution). <span style="color:#f88146">The oracle can be interpreted as a maximizer of the probability</span> $p_{\theta}(\mathbf{n}'|\mathbf{n})$ of reaching the target from $\mathbf{n}$ via $\mathbf{n}'$. The oracle is learnable, i.e. we must find the parameters $\theta$, via <span style="color:#f88146">**Deep Neural Networks**</span> (DNN). 
+
+b) **Trade-off between computation and optimality**. DNNs <span style="color:#f88146">aim to discover the unknown state space $\Omega$ in order to make **better and better predictions**</span>. Good predictions are those that match **optimal solutions** (e.g. those solving the game), but achieving them requires increasing levels of search. Then, DNNs can achieve <span style="color:#f88146">**near-optimal solutions**, i.e. acceptable solutions with a reasonable amount of time!</span>
+
+### Deep Oracles 
+Assume that, given $\mathbf{n}\in\Omega$ the perfect discriminator $h^{\ast}(\mathbf{n})$ cannot be computed but **approximated**. How is such an approximation computed?
+
+Let us explain this process for the Rubik's Cube (RC). 
+
+**Training set**. Given that the target $\mathbf{n}_F$ for RC is fixed and well known, as well as the **overshooted God's Number** $N>20$, let us sample a set of paths $P=\{\Gamma_i\}$ for $i=1,2,\ldots,|P|$. These paths start at $\mathbf{n}_F$ and go backwards by **scrambling** the RC, i.e. the $i-$th path has the following structure: 
+
+$$
+\Gamma_{i}=\{(\mathbf{n}_F=\mathbf{n}^{i}_{0})\rightarrow \mathbf{n}^{i}_1\rightarrow\mathbf{n}^{i}_2\rightarrow\ldots \rightarrow\mathbf{n}^{i}_{N}\}
+$$
+
+Each $\Gamma_{i}$ <span style="color:#f88146">is a **random walk** through $\Omega$ in reverse order from $\mathbf{n}_F$ backwards using **legal moves** $\mathbf{n}^{i}_{k}\rightarrow \mathbf{n}^{i}_{k+1}\in {\cal M}$</span> and
+
+$$
+{\cal M} = \{U,U',D,D',R,R',L,L',F,F',B,B'\}
+$$
+
+The above paths *are not exclusive* and may visit a given state several times. There are, however, some optimizations are done in order to avoid 'do-undo' moves or 'three consecutive moves that are really one'.  
+
+
+**Encoding and Association**. Given $\Gamma_i$, <span style="color:#f88146">only the corresponding $\mathbf{n}_N$ is **observable**</span>. Actually, for the Rubik Cube, $\mathbf{n}^i_N$ is **encoded** by the colors of the $6$ faces, each one having $3\times 3=9$ tiles. Therefore, $\mathbf{n}_N$ can be vectorized with $3\times 3\times 6= 54$ parameters.
+
+During <span style="color:#f88146">**training (offline phase)**</span>, we learn a function $f_{\theta}:\mathbb{R}^{54}\rightarrow [0,1]^{12}$: 
+
+$$
+f_{\theta}(\mathbf{n}^i_N)=\left[
+    \begin{array}{c}
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_1\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_2\\
+    \ldots\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_{12}\\
+    \end{array}
+    \right] =\left[
+     \begin{array}{c}
+    p(m_1|\mathbf{n}^{i}_{N})\\
+    p(m_2|\mathbf{n}^{i}_{N})\\
+    \ldots\\
+    p(m_{12}|\mathbf{n}^{i}_{N})\\
+    \end{array}
+    \right]\;.
+$$ 
+
+
+where $\sum_k p(m_k)=1$ and we have $12$ legal moves for Rukik. Such a function <span style="color:#f88146">**associates** encoded states with a discrete probability distribution of legal moves for **undoing** the scramble</span>. 
+
+Again, training is performed offline (before the search for solving the Rubik Cube starts). 
+
+**Inference**. During <span style="color:#f88146">the **search (test)**</span> we start at a vectorized space $\mathbf{n_0}$, corresponding to a scrabled cube very unlikely to be seen during training, and we query $f_{\theta}(\mathbf{n}_0)$. The result is $12$ probabilities, one per legal move. Then, from $\mathbf{n}_0$ <span style="color:#f88146">we **expand** $12$ candidates to un-scramble the Rubik Cube from it</span>:  
+
+
+$$
+\mathbf{n}'\in {\cal N}_{\mathbf{n}_0}=\left\{
+    \begin{array}{cc}
+    \mathbf{n}_0\circ m_1&\text{with prob.}\;\; p(m_1|\mathbf{n}_0)\\
+    \mathbf{n}_0\circ m_2&\text{with prob.}\;\; p(m_2|\mathbf{n}_0)\\
+    \ldots\\
+    \mathbf{n}_0\circ m_{12}&\text{with prob.}\;\; p(m_{12}|\mathbf{n}_0)\\
+    \end{array}
+    \right\}\;
+$$ 
+
+where $\mathbf{n}'=\mathbf{n}_0\circ m_k$ is the state of $\Omega$ obtained after applying the move $m_k$ on $\mathbf{n}_0$. 
+
+However, when expanding say $\mathbf{n}_1=\mathbf{n}_0\circ m_1$ we have that its probabilities are
+
+$$
+\mathbf{n}'\in {\cal N}_{\mathbf{n}_1}=\left\{
+    \begin{array}{cc}
+    \mathbf{n}_1\circ m_1&\text{with prob.}\;\; p(m_1|\mathbf{n}_1)p(m_1|\mathbf{n}_0)\\
+    \mathbf{n}_1\circ m_2&\text{with prob.}\;\; p(m_2|\mathbf{n}_1)p(m_1|\mathbf{n}_0)\\
+    \ldots\\
+    \mathbf{n}_1\circ m_{12}&\text{with prob.}\;\; p(m_{12}|\mathbf{n}_1)p(m_1|\mathbf{n}_0)\\
+    \end{array}
+    \right\}\;.
+$$
+
+In other words, <span style="color:#f88146">the probability of each new state is the **product of past probabilities**</span>. This product becomes the $g(\mathbf{n})$ of a BFS strategy and there is no $h(\mathbf{n})$. 
+
+### Cross Entropy 
+Before analyzing the search in more detail, it is key to describe sucintly the learning of $f_{\theta}$. For the sake of simplicity, we consider that:
+
+- We have only two classes (moves): $0$ and $1$. 
+- The states of $\Omega$ are denoted by $\mathbf{x}_1,\mathbf{x}_2,\ldots$. 
+- We do now know their distribution $p(\mathbf{x})$, because, in practice, the size of $\Omega$ is virtually infinite.
+- However, *for the training set*, we know: 
+
+$$
+\begin{aligned}
+\text{True Labels}:\;\; & p(m=0|\mathbf{x})\;\;\text{as well as}\;\; p(m=1|\mathbf{x}) = 1 - p(m=0|\mathbf{x})\\
+\text{Predicted Labels}:\;\; & q_{\theta}(m=0|\mathbf{x})\;\;\text{as well as}\;\; q_{\theta}(m=1|\mathbf{x})= 1 - q_{\theta}(m=0|\mathbf{x})\\
+\end{aligned}
+$$
+
+Where $q_{\theta}(m|\mathbf{x})$ is the distribution of the predictor (oracle) for a given configuration of the parameters $\theta$.  
+
+
+
+The "cost" of the configuration $\theta$ is quantified by a **loss function**. The most used loss is the **cross-entropy** loss $CE$. For a given $\mathbf{x}$ we have: 
+
+$$
+\begin{aligned}
+CE(\mathbf{x})&=-\sum_{c\in\{0,1\}}p(m=c|\mathbf{x})\log q_{\theta}(m=c|\mathbf{x})\\
+              &=\sum_{c\in\{0,1\}}p(m=c|\mathbf{x})\log\frac{1}{q_{\theta}(m=c|\mathbf{x})}\\
+              &=E\left(\log\frac{1}{q_{\theta}(m=c|\mathbf{x})}\right)\\
+              
+\end{aligned}
+$$
+
+or more understandable...
+
+$$
+CE(\mathbf{x})=-p(m=0|\mathbf{x})\log q_{\theta}(m=0|\mathbf{x}) - \underbrace{p(m=1|\mathbf{x})}_{1-p(m=0|\mathbf{x})}\log \underbrace{q_{\theta}(m=1|\mathbf{x})}_{1-q_{\theta}(m=0|\mathbf{x})}\;.\\
+$$
+
+<br></br>
+<span style="color:#d94f0b"> 
+**Example**. Given four examples $\mathbf{x}_1$, $\mathbf{x}_2$, $\mathbf{x}_3$ and $\mathbf{x}_4$, we have
+</span>
+<br></br>
+<span style="color:#d94f0b">
+$
+\begin{aligned}
+p(m=0|\mathbf{x}_1) = 1\;&\; p(m=1|\mathbf{x}_1)=0 \\
+p(m=0|\mathbf{x}_2) = 0\;&\; p(m=1|\mathbf{x}_2)=1 \\
+p(m=0|\mathbf{x}_3) = 1\;&\; p(m=1|\mathbf{x}_3)=0 \\
+p(m=0|\mathbf{x}_4) = 0\;&\; p(m=1|\mathbf{x}_4)=1 \\
+\end{aligned}
+$
+</span>
+<br></br>
+<span style="color:#d94f0b"> 
+and for the configuration $\theta$ we have: 
+</span>
+<br></br>
+<span style="color:#d94f0b">
+$
+\begin{aligned}
+q_{\theta}(m=0|\mathbf{x}_1) = 0.9\;&\; q_{\theta}(m=1|\mathbf{x}_1)=0.1 \\
+q_{\theta}(m=0|\mathbf{x}_2) = 0.2\;&\; q_{\theta}(m=1|\mathbf{x}_2)=0.8 \\
+q_{\theta}(m=0|\mathbf{x}_3) = 0.7\;&\; q_{\theta}(m=1|\mathbf{x}_3)=0.3 \\
+q_{\theta}(m=0|\mathbf{x}_4) = 0.3\;&\; q_{\theta}(m=1|\mathbf{x}_4)=0.7 \\
+\end{aligned}
+$
+</span>
+<br></br>
+<span style="color:#d94f0b"> 
+Then, their respective $CE$s are
+</span>
+<br></br>
+<span style="color:#d94f0b">
+$
+\begin{aligned}
+CE(\mathbf{x}_1) &= \mathbf{-1\cdot\log 0.9} - 0\cdot\log 0.1 &= 0.10 \\
+CE(\mathbf{x}_2) &= -0\cdot\log 0.2 \mathbf{- 1\cdot\log 0.8} &= 0.22 \\
+CE(\mathbf{x}_3) &= \mathbf{-1\cdot\log 0.7} - 0\cdot\log 0.3 &= 0.35 \\
+CE(\mathbf{x}_4) &= -0\cdot\log 0.3 \mathbf{- 1\cdot\log 0.7} &= 0.35 \\
+\end{aligned}
+$
+</span>
+<br></br>
+<span style="color:#d94f0b"> 
+where the only significant distribution (in bold) is when we match the true distrution of each data. 
+</span>
+<br></br>
+<span style="color:#d94f0b"> 
+Following the above results, the best "fitted" points are $\mathbf{x}_3$ and $\mathbf{x}_4$ (see {numref}`CE-toy`).
+</span>
+<br></br>
+
+```{figure} ./images/Topic3/CE-toy-removebg-preview.png
+---
+name: CE-toy
+width: 500px
+align: center
+height: 400px
+---
+CEs of four examples (blue color is class $0$ and orange is class $1$). 
+```
+
+For a larger example, we have that when the configuration $\theta$ of the predictor is not good, then $q_{\theta}(m=1|\mathbf{x})$ and $q_{\theta}(m=0|\mathbf{x})$ **overlap** significantly (see {numref}`Overlap`). 
+
+```{figure} ./images/Topic3/Overlap-removebg-preview.png
+---
+name: Overlap
+width: 500px
+align: center
+height: 400px
+---
+Overlap of the predicted distributions. 
+```
+
+As a result, CEs are not so good but at some examples (see {numref}`Overlap-CEs`): 
+
+```{figure} ./images/Topic3/Overlap-CEs-removebg-preview.png
+---
+name: Overlap-CEs
+width: 500px
+align: center
+height: 400px
+---
+CEs for overlaped predicted distributions. 
+```
+
+Note that $CE$ has the form of a KL divergence between $p$ (only known for the training set) and $q$ (the distribution learnt by the predictor). Actually, look at the ratios: 
+
+$$
+\log\frac{1}{q_{\theta}(m=c|\mathbf{x})}\;.
+$$
+
+These ratios mean the log-likelihood of  the truth $1$ wrt of the prediction $q$. 
+
+Actually, we have
+
+$$
+\begin{align}
+E\left(\log\frac{1}{q}\right)&=\sum_{c\in\{0,1\}}p(c)\log\frac{1}{q(c)}\\
+&= \sum_{c\in\{0,1\}}p(c)\log\frac{1}{q(c)}\cdot\frac{p(c)}{p(c)}\\
+&=\sum_{c\in\{0,1\}}p(c)\log\frac{1}{p(c)} + \sum_{c\in\{0,1\}}p(c)\log\frac{p(c)}{q(c)}\\
+&= H(p) + D(p||q)\;.
+\end{align}
+$$
+
+Therefore, if we change $\theta$ to minimize $\frac{1}{N}\sum_{\mathbf{x}}CE(\mathbf{x})$, where $N$ is the number of training examples, we are implicitly minimizing the KL divergence between the predictor and the true distribution! Please, see a detailed discussion in the [Towards Datascience Article](https://towardsdatascience.com/understanding-binary-cross-entropy-log-loss-a-visual-explanation-a3ac6025181a/).
+
+### Rubik State Space
+The minimization of the average CE, now for $12$ classes (moves in Rubik), is as in {numref}`CE-Rubik`: 
+
+```{figure} ./images/Topic3/CE-Rubik-removebg-preview.png
+---
+name: CE-Rubik
+width: 500px
+align: center
+height: 500px
+---
+CEs for overlaped predicted distributions. 
+```
+
+Note, that as learning progresses, the CE curve flattens. Then, close to the optimum, $\theta$ is quasi stable and we can look at the structure of the state space $\Omega$. We attend to the last $100$ iterations and we proceed as follows: 
+
+1) During these last iterations, we have explored $|\Omega'| =23,644$ states $\mathbf{n}_i$ as a "surrogate" of $\Omega$. 
+
+2) The states in $\Omega'$ almost distributed uniformly. Actually, most of them are **visited once**: $23,201$ of $23,644$ ($98\%$). However, the remaining $2\%$ show that $\Omega'$ follows a **power law** (see {numref}`Power-Rubik`).
+
+3) Move probabilities are almost uniform $p(m_k)=1/12=0.83$, as well. 
+
+4) What about conditional probabilities $p_{\theta}(m_k|\mathbf{n}_i)$? Well, we observe that the predictor is **absolutely certain** about the move to recommend: $p_{\theta}(m_k|\mathbf{n}_i)=1$ for a given $m_k$ and $0$ for the remaiming moves. This behavior is consistent with learning the true distribution of data in $\Omega$ (see {numref}`Cond-Rubik`).
+
+5) Finally, as it is expected, each move is equally reachable: $\sum_i p(m_k|\mathbf{n}_i)=1/12$ for all $m_k$ (see {numref}`Cum-Rubik`)
+
+```{figure} ./images/Topic3/Power-Rubik-removebg-preview.png
+---
+name: Power-Rubik
+width: 500px
+align: center
+height: 400px
+---
+Power-law of visited space for Rubik.
+```
+
+```{figure} ./images/Topic3/Rubik-Cond-removebg-preview.png
+---
+name: Cond-Rubik
+width: 500px
+align: center
+height: 400px
+---
+Conditional probabilities in Rubik (for a sample of states).
+```
+
+```{figure} ./images/Topic3/Pred-Cumulative-removebg-preview.png
+---
+name: Cum-Rubik
+width: 500px
+align: center
+height: 400px
+---
+Cummulative Conditional probabilities in Rubik per move.
+```
+
+### Beam Search and Rubik
+**Beam Search**. Beam search is a particular case of BFS where the size of $\text{OPEN}$ is bounded, for instance to $2^k$ states. If at some point of the search we reach $2^k+1$ or more stats, <span style="color:#f88146">the $\text{OPEN}$ list is **purged** to retain only the best $2^k$ states</span>. In other words, at any moment, we keep up to the best $2^k$ states in $\text{OPEN}$.
+
+
+**Power Law**. Obviously, a small value of $k$ in $2^k$ (max. size of $\text{OPEN}$) usually leads to poor solutions (we are sacrificing optimality to contain the combinatorial explosion). However, the experiments in [Self Supervised Rubik](https://openreview.net/pdf?id=bnBeNFB27b) show that as we move from $2^7$ to $2^{18}$, the Rubik solver improves significanlty. This is consistent with the **scaling law** used for Transformers.
+
+```{figure} ./images/Topic3/Performance-DeepCube-removebg-preview.png
+---
+name: Performance-Rubik
+width: 800px
+align: center
+height: 600px
+---
+Performance analysis of DeepCube with Beam Search (image from [Self Supervised Rubik](https://openreview.net/pdf?id=bnBeNFB27b)).
+```
+
+See also in {numref}`Performance-Rubik`, that the Rubik solver takes $N$ moves on average (where $N$ is God's number). However, there is a significant devation both up and below God's number!
+
+
+
+
+
+## Appendix 
+### Kullback-Leibler Divergence 
+**Distances between distributions**. Consider two discrete random variables $X$ and $Y$ defined on the same domain ${\cal D}=\{z_1,z_2,\ldots,z_n\}$. Then we have 
+
+$$
+p_X(i) = p(X=z_i)\;\;\text{as well as}\;\; p_Y(i) = p(Y=z_i)\;\;\text{for}\; i=1,2,\ldots,n\;.
+$$
+
+Obviously, $\sum_i p_X(i) = \sum_i p_Y(i) = 1$. 
+
+However, <span style="color:#f88146">how do we **measure a sort of distance** between $p_X$ and $p_Y$?</span> 
+
+- First of all, consider $n$ as the **dimensionality** of the domain. 
+- It [well known](https://homes.cs.washington.edu/%7Epedrod/papers/cacm12.pdf) that as $n$ increases and we generate data, the probabilistic mass is not uniform at all. For the multivariate Gaussian distribution, for instance, such a mass is in a shell around the mean. 
+
+- In other words, high-dimensional data such as texts and images **do not live in a uniform (maximal entropy) space where everything is equally probable**. 
+
+- Therefore, if $X$ is taken from "grey images of dogs" and $Y$ is taken from "grey images of cats" and $z_i\in [0,255]$ where $n=N\times N$ is the mumber of pixels, it is quite clear that $X$ and $Y$ **cannot be compared by means of an Euclidean norm**. 
+
+The <span style="color:#f88146">**Kullback-Leibler Divergence** compares $p_X$ and $p_Y$ instead</span>. Again, the **Euclidean distance is not suitable** for comparing $p_X$ and $p_Y$ because it does not account for their intrinsic frequency and variability. 
+
+<span style="color:#f88146">**Log-likelihood Ratio**</span>. The core of the Euclidean or Manhattan distance is $p_X(i) - p_y(i)$. However, given $i$ we have to dilucidate whether it comes from $p_X$ (dogs) or from $p_Y$ (cats). This leads to the following [Log-likelihood Statistical Test](https://en.wikipedia.org/wiki/Likelihood-ratio_test) 
+
+$$
+\begin{aligned}
+H_0 &:\textbf{(null hypothesis):}\;i\;\text{is generated by}\; p_X\\ 
+H_1 &:\textbf{(alternative hypothesis):}\;i\;\text{is generated by}\; p_Y\\ 
+\end{aligned}
+$$
+
+where 
+
+$$
+\begin{aligned}
+\text{If}\; \Lambda(i) \ge c,\;& \textbf{do not reject}\; H_0\;.\\
+\text{If}\; \Lambda(i) < c,\;& \textbf{reject}\; H_0\;.\\
+\end{aligned}
+$$
+
+and we have: 
+
+$$
+\Lambda(i) = \log\frac{p_X(i)}{p_Y(i)} = \log p_X(i) - \log p_Y(i):\;\;\textbf{log-likelihood}\;.
+$$
+
+Herein, the $\log$ is used in order to <span style="color:#f88146">maximize the likelihood</span>: the closer is $p$ to $1$ the smallest (less negative) is the $\log$. 
+
+<span style="color:#f88146">**KL-divergence**</span>. Given $p_X$ and $p_Y$, we have the following *divergences*: 
+
+$
+\begin{aligned}
+D(p_X||p_Y) &= \sum_i p_X(i)\log \frac{p_X(i)}{p_Y(i)}\ge 0\\
+D(p_Y||p_X) &= \sum_i p_Y(i)\log \frac{p_Y(i)}{p_X(i)}\ge 0\;.\\
+\end{aligned}
+$
+
+which can be seen as **expectations** of the corresponding log-ratios: respectively 
+
+$
+\begin{aligned}
+D(p_X||p_Y) &= E\left(\log \frac{p_X(i)}{p_Y(i)}\right)\ge 0\\
+D(p_Y||p_X) &= E\left(\log \frac{p_Y(i)}{p_X(i)}\right)\ge 0\;,\\
+\end{aligned}
+$
+
+i.e. the <span style="color:#f88146">**KL divergence means** how good or bad goes the corresponing test on average</span>.
+
+In general, $D(p_X||p_Y)\neq D(p_Y||p_X)$, since the triangular inequality 
+
+$
+D(p_X||p_Y) + D(p_Y||p_Z)\le D(p_X||p_Z)
+$ 
+
+is not verified. Then *we do not have a distance but a divergence*. Actually, both the Euclidean distance and the KL divergence belong to a wider family known as **Bregman Divergences** [Escolano et al, book. Chapter 7](https://link.springer.com/book/10.1007/978-1-84882-297-9). 
+
+
+**KL-divergence for Bernouilli**. If $X\sim \text{Bernouilli}(p_X)$ and $Y\sim \text{Bernouilli}(p_Y)$, what is the form of $D(p_X||p_Y)$? 
+
+Well, look that the **histogram** of a $\text{Bernouilli}(p)$ *does only have two bars*: $p$ and $1-p$, since $p + (1-p)=1$. Then, **we have two run two tests** when computing the KL-divergence:
+
+$$
+\begin{aligned}
+D(p_X||p_Y)=p_X\log \frac{p_X}{p_Y} + (1-p_X)\log \frac{1-p_X}{1-p_Y}\;.
+\end{aligned}
+$$
+
+<br></br>
+<span style="color:#d94f0b"> 
+**Example**. Compute the KL-divergence for Bernouilli distributions: $p_X=0.5$ and $p_Y=0.75$.
+</span>
+<span style="color:#d94f0b"> 
+$
+\begin{aligned}
+D(p_X||p_Y)&=0.5\log \frac{0.5}{0.75} + 0.5\log \frac{0.5}{0.25}\\
+           &=0.5\left(\log 0.5 - \log 0.75\right) +0.5\left(\log 0.5 - \log 0.25\right)\\
+           &=0.5\cdot (-0,4) +0.5\cdot (+0.69)\\
+           &=-0.2 + 0.34\\
+           &= 0.14\;.
+\end{aligned}
+$
+</span>
+<span style="color:#d94f0b"> 
+and 
+</span>
+<span style="color:#d94f0b"> 
+$
+\begin{aligned}
+D(p_Y||p_X)&=0.75\log \frac{0.75}{0.5} + 0.25\log \frac{0.25}{0.5}\\
+           &=0.75\left(\log 0.75 - \log 0.5\right) +0.25\left(\log 0.25 - \log 0.5\right)\\
+           &=0.5\cdot (+0,4) +0.25\cdot (-0.69)\\
+           &=0.2 - 0.1725\\
+           &= 0.0275\;.
+\end{aligned}
+$
+</span>
+<br></br>
+<span style="color:#d94f0b"> 
+Therefore, $p_Y$ is closer to $p_X$ than $p_X$ is to $p_Y$!
+</span>
+
+**KL-divergence for Binomial and Normal**. Extending the above definition for comparing $X\sim \text{Binomial}(n,p_X)$ and $Y\sim \text{Binomial}(n,p_Y)$ we obtain: 
+
+$$
+\begin{aligned}
+D(p_X||p_Y)=n\cdot p_X\log \frac{p_X}{p_Y} + n\cdot (1-p_X)\log \frac{1-p_X}{1-p_Y}\;.
+\end{aligned}
+$$
+
+You can find the proof in [The Book of Statistical Proofs](https://statproofbook.github.io/P/bin-kl.html) but the **interpretation** is straightforward: since a Binomial variable is a sum of $n$ independent Bernouillis with the same probability of success, all we have to do is introduce $n$ in each summand of the KL-divergence. 
+
+Obviuosly, the larger $n$ the larger the KL divergence! What about the KL for the Normal Distribution?. Well, the Normal/Gaussian distribution is continuous and the sum in the divergence must be replaced by an integral. From the [same book](https://statproofbook.github.io/P/norm-kl) we have, for $p_X={\cal N}(\mu_X,\sigma_X^2)$ and $p_Y={\cal N}(\mu_Y,\sigma_Y^2)$: 
+
+$$
+\begin{aligned}
+D(p_X||p_Y)=\frac{1}{2}\left[\frac{(\mu_Y-\mu_X)^2}{\sigma_Y^2} + \frac{\sigma_X^2}{\sigma_Y^2}-\log\frac{\sigma_X^2}{\sigma_Y^2}-1\right]\;.
+\end{aligned}
+$$
+
+Notably, if $\mu_X = \mu_Y$, the KL divergence relies only on the variances' ratio. This basically shows that statistical dispersion (aka of entropy) dominates how KL divergences are expressed. This explains why the <span style="color:#f88146">KL divergence is usually called the **relative entropy**</span>.
+
+In {numref}`KL-Normal`, we explore the two cases (similar vs different mean). Note that co-centering the distributions while preserving the variances reduces dramatically the KL divergence. 
+
+```{figure} ./images/Topic3/KL-normal-removebg-preview.png
+---
+name: KL-Normal
+width: 800px
+align: center
+height: 400px
+---
+KL divergences between Normals with different and same mean. 
+```
