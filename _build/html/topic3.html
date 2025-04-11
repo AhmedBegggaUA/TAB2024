@@ -1176,10 +1176,10 @@ b^d(1 + 2x + 3x^2 + \ldots )\rightarrow b^d(1-x)^{-2}\;\;\text{for}\; |x|&lt;1\;
 \[\begin{split}
 f_{\theta}(\mathbf{n}^i_N)=\left[
     \begin{array}{c}
-    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_1\\
-    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_2\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1}=m_1)\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1}=m_2)\\
     \ldots\\
-    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_{12}\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1}=m_{12})\\
     \end{array}
     \right] =\left[
      \begin{array}{c}
@@ -1382,14 +1382,39 @@ E\left(\log\frac{1}{q}\right)&amp;=\sum_{c\in\{0,1\}}p(c)\log\frac{1}{q(c)}\\
 <section id="beam-search-and-rubik">
 <h3><span class="section-number">3.4.4. </span>Beam Search and Rubik<a class="headerlink" href="#beam-search-and-rubik" title="Permalink to this heading">#</a></h3>
 <p><strong>Beam Search</strong>. Beam search is a particular case of BFS where the size of <span class="math notranslate nohighlight">\(\text{OPEN}\)</span> is bounded, for instance to <span class="math notranslate nohighlight">\(2^k\)</span> states. If at some point of the search we reach <span class="math notranslate nohighlight">\(2^k+1\)</span> or more stats, <span style="color:#f88146">the <span class="math notranslate nohighlight">\(\text{OPEN}\)</span> list is <strong>purged</strong> to retain only the best <span class="math notranslate nohighlight">\(2^k\)</span> states</span>. In other words, at any moment, we keep up to the best <span class="math notranslate nohighlight">\(2^k\)</span> states in <span class="math notranslate nohighlight">\(\text{OPEN}\)</span>.</p>
+<p><strong>Self-supervised Rubik</strong> is basically a beam search where <span class="math notranslate nohighlight">\(\text{OPEN}\)</span> where we retain the best <span class="math notranslate nohighlight">\(2^k\)</span> non-expanded nodes ordered in descending order wrt</p>
+<div class="math notranslate nohighlight">
+\[
+g(\mathbf{n})=p(\mathbf{n})\cdot p(\text{parent}(\mathbf{n}))
+\]</div>
+<p>and recursively, we define <span class="math notranslate nohighlight">\(p(\text{parent}(\mathbf{n}))\)</span>. In other words, the most promising sequence of moves is the one maximizing a product of probabilities <span class="math notranslate nohighlight">\(\prod_i p(i)\)</span> starting and <span class="math notranslate nohighlight">\(p(\mathbf{n})\)</span> and ending <span class="math notranslate nohighlight">\(p(\mathbf{n}_0)\)</span>.</p>
+<p>Actually, the deeper a path the less probable and more informative is. The above experiments, showing that <span class="math notranslate nohighlight">\(p(\mathbf{n})=1\)</span> for only one of the <span class="math notranslate nohighlight">\(12\)</span> moves, leads to a very focused search where few paths have <span class="math notranslate nohighlight">\(\prod_i p(i)\approx 1\)</span> and the remaining ones have <span class="math notranslate nohighlight">\(\prod_i p(i)\approx 0\)</span>.</p>
+<p><strong>Effect of the Deep Oracle</strong>. If the DNN is not good enouth, the Beam-Search algorithm is reduced to a bounded BFS.</p>
+<p><strong>Entropy Analysis</strong>. Since <span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> is defined in probabilistic terms, we can envision <span class="math notranslate nohighlight">\(\text{OPEN}\)</span> as a probability distribution. In this regard, we <em>interpret beam search</em> as follows:</p>
+<ol class="arabic simple">
+<li><p>During the first iterations <span class="math notranslate nohighlight">\(\text{OPEN}\)</span> increments its entropy, i.e. the partial solutions become maximally diverse.</p></li>
+<li><p>As the search progresses, some partial paths (but not too much) are more likely than others.</p></li>
+<li><p>By the end of the search (close to the max-allowed-depth), the <span style="color:#f88146">entropy decreases only if the seach succeeds</span>.</p></li>
+</ol>
+<p>In <a class="reference internal" href="#entropy-rubik"><span class="std std-numref">Fig. 3.15</span></a>, we represent the solution length vs the average entropy of many executions (all of them successful). Note that:</p>
+<ol class="arabic simple">
+<li><p>Looking at the average solution length (between <span class="math notranslate nohighlight">\(24-26\)</span>), the vertical distribution of entropies is quite uniform (although medium-large entropies are more frequent than small ones). This is consistent with the fact that <strong>the DNN <span class="math notranslate nohighlight">\(f_{\theta}\)</span> becomes a nearly uniform sampler</strong>.</p></li>
+<li><p>There is a <strong>slight positive correlation</strong> (0.28) between solution length and average entropy. The largest the required length the largest (and less diverse) the entropy.</p></li>
+</ol>
+<figure class="align-center" id="entropy-rubik">
+<a class="reference internal image-reference" href="_images/Entropy-Beam-removebg-preview.png"><img alt="_images/Entropy-Beam-removebg-preview.png" src="_images/Entropy-Beam-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">Entropy analysis for many executions of Rubik Beam Search.</span><a class="headerlink" href="#entropy-rubik" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <p><strong>Power Law</strong>. Obviously, a small value of <span class="math notranslate nohighlight">\(k\)</span> in <span class="math notranslate nohighlight">\(2^k\)</span> (max. size of <span class="math notranslate nohighlight">\(\text{OPEN}\)</span>) usually leads to poor solutions (we are sacrificing optimality to contain the combinatorial explosion). However, the experiments in <a class="reference external" href="https://openreview.net/pdf?id=bnBeNFB27b">Self Supervised Rubik</a> show that as we move from <span class="math notranslate nohighlight">\(2^7\)</span> to <span class="math notranslate nohighlight">\(2^{18}\)</span>, the Rubik solver improves significanlty. This is consistent with the <strong>scaling law</strong> used for Transformers.</p>
 <figure class="align-center" id="performance-rubik">
 <a class="reference internal image-reference" href="_images/Performance-DeepCube-removebg-preview.png"><img alt="_images/Performance-DeepCube-removebg-preview.png" src="_images/Performance-DeepCube-removebg-preview.png" style="width: 800px; height: 600px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">Performance analysis of DeepCube with Beam Search (image from <a class="reference external" href="https://openreview.net/pdf?id=bnBeNFB27b">Self Supervised Rubik</a>).</span><a class="headerlink" href="#performance-rubik" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.16 </span><span class="caption-text">Performance analysis of DeepCube with Beam Search (image from <a class="reference external" href="https://openreview.net/pdf?id=bnBeNFB27b">Self Supervised Rubik</a>).</span><a class="headerlink" href="#performance-rubik" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>See also in <a class="reference internal" href="#performance-rubik"><span class="std std-numref">Fig. 3.15</span></a>, that the Rubik solver takes <span class="math notranslate nohighlight">\(N\)</span> moves on average (where <span class="math notranslate nohighlight">\(N\)</span> is God’s number). However, there is a significant devation both up and below God’s number!</p>
+<p>See also in <a class="reference internal" href="#performance-rubik"><span class="std std-numref">Fig. 3.16</span></a>, that the Rubik solver takes <span class="math notranslate nohighlight">\(N\)</span> moves on average (where <span class="math notranslate nohighlight">\(N\)</span> is God’s number). However, there is a significant devation both up and below God’s number!</p>
 </section>
 </section>
 <section id="appendix">
@@ -1509,11 +1534,11 @@ D(p_X||p_Y)=\frac{1}{2}\left[\frac{(\mu_Y-\mu_X)^2}{\sigma_Y^2} + \frac{\sigma_X
 \end{aligned}
 \]</div>
 <p>Notably, if <span class="math notranslate nohighlight">\(\mu_X = \mu_Y\)</span>, the KL divergence relies only on the variances’ ratio. This basically shows that statistical dispersion (aka of entropy) dominates how KL divergences are expressed. This explains why the <span style="color:#f88146">KL divergence is usually called the <strong>relative entropy</strong></span>.</p>
-<p>In <a class="reference internal" href="#kl-normal"><span class="std std-numref">Fig. 3.16</span></a>, we explore the two cases (similar vs different mean). Note that co-centering the distributions while preserving the variances reduces dramatically the KL divergence.</p>
+<p>In <a class="reference internal" href="#kl-normal"><span class="std std-numref">Fig. 3.17</span></a>, we explore the two cases (similar vs different mean). Note that co-centering the distributions while preserving the variances reduces dramatically the KL divergence.</p>
 <figure class="align-center" id="kl-normal">
 <a class="reference internal image-reference" href="_images/KL-normal-removebg-preview.png"><img alt="_images/KL-normal-removebg-preview.png" src="_images/KL-normal-removebg-preview.png" style="width: 800px; height: 400px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.16 </span><span class="caption-text">KL divergences between Normals with different and same mean.</span><a class="headerlink" href="#kl-normal" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.17 </span><span class="caption-text">KL divergences between Normals with different and same mean.</span><a class="headerlink" href="#kl-normal" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>

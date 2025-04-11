@@ -713,10 +713,10 @@ During <span style="color:#f88146">**training (offline phase)**</span>, we learn
 $$
 f_{\theta}(\mathbf{n}^i_N)=\left[
     \begin{array}{c}
-    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_1\\
-    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_2\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1}=m_1)\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1}=m_2)\\
     \ldots\\
-    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1})=m_{12}\\
+    p(\mathbf{n}^{i}_{N}\rightarrow \mathbf{n}^{i}_{N-1}=m_{12})\\
     \end{array}
     \right] =\left[
      \begin{array}{c}
@@ -968,6 +968,39 @@ Cummulative Conditional probabilities in Rubik per move.
 ### Beam Search and Rubik
 **Beam Search**. Beam search is a particular case of BFS where the size of $\text{OPEN}$ is bounded, for instance to $2^k$ states. If at some point of the search we reach $2^k+1$ or more stats, <span style="color:#f88146">the $\text{OPEN}$ list is **purged** to retain only the best $2^k$ states</span>. In other words, at any moment, we keep up to the best $2^k$ states in $\text{OPEN}$.
 
+**Self-supervised Rubik** is basically a beam search where $\text{OPEN}$ where we retain the best $2^k$ non-expanded nodes ordered in descending order wrt
+
+$$
+g(\mathbf{n})=p(\mathbf{n})\cdot p(\text{parent}(\mathbf{n}))
+$$ 
+
+and recursively, we define $p(\text{parent}(\mathbf{n}))$. In other words, the most promising sequence of moves is the one maximizing a product of probabilities $\prod_i p(i)$ starting and $p(\mathbf{n})$ and ending $p(\mathbf{n}_0)$. 
+
+Actually, the deeper a path the less probable and more informative is. The above experiments, showing that $p(\mathbf{n})=1$ for only one of the $12$ moves, leads to a very focused search where few paths have $\prod_i p(i)\approx 1$ and the remaining ones have $\prod_i p(i)\approx 0$. 
+
+**Effect of the Deep Oracle**. If the DNN is not good enouth, the Beam-Search algorithm is reduced to a bounded BFS. 
+
+**Entropy Analysis**. Since $g(\mathbf{n})$ is defined in probabilistic terms, we can envision $\text{OPEN}$ as a probability distribution. In this regard, we *interpret beam search* as follows: 
+
+1) During the first iterations $\text{OPEN}$ increments its entropy, i.e. the partial solutions become maximally diverse. 
+2) As the search progresses, some partial paths (but not too much) are more likely than others. 
+3) By the end of the search (close to the max-allowed-depth), the <span style="color:#f88146">entropy decreases only if the seach succeeds</span>. 
+
+In {numref}`Entropy-Rubik`, we represent the solution length vs the average entropy of many executions (all of them successful). Note that:
+
+1) Looking at the average solution length (between $24-26$), the vertical distribution of entropies is quite uniform (although medium-large entropies are more frequent than small ones). This is consistent with the fact that **the DNN $f_{\theta}$ becomes a nearly uniform sampler**. 
+
+2) There is a **slight positive correlation** (0.28) between solution length and average entropy. The largest the required length the largest (and less diverse) the entropy. 
+
+```{figure} ./images/Topic3/Entropy-Beam-removebg-preview.png
+---
+name: Entropy-Rubik
+width: 500px
+align: center
+height: 400px
+---
+Entropy analysis for many executions of Rubik Beam Search.
+```
 
 **Power Law**. Obviously, a small value of $k$ in $2^k$ (max. size of $\text{OPEN}$) usually leads to poor solutions (we are sacrificing optimality to contain the combinatorial explosion). However, the experiments in [Self Supervised Rubik](https://openreview.net/pdf?id=bnBeNFB27b) show that as we move from $2^7$ to $2^{18}$, the Rubik solver improves significanlty. This is consistent with the **scaling law** used for Transformers.
 
