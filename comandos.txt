@@ -1,5 +1,5 @@
-ghp-import -n -p -f _build/html
 jupyter-book build --all ./   
+ghp-import -n -p -f _build/html
 git add .  
 git commit -m "Actualizada la página"
 git push 

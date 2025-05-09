@@ -22,3 +22,6 @@ parts:
 - caption: Practice 2
   chapters:
   - file: practice_2
+- caption: Practice 3
+  chapters:
+  - file: practice_3
