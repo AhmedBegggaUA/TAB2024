@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>5. Graph Construction for Matching &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+    <title>6. Graph Construction for Matching &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
   
   
   
@@ -65,8 +65,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'practice_1_2';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Graph Matching" href="practice_1_3.html" />
-    <link rel="prev" title="4. Introduction to the practical part of TAB2025" href="practice_1_1.html" />
+    <link rel="next" title="7. Graph Matching" href="practice_1_3.html" />
+    <link rel="prev" title="5. Introduction to the practical part of TAB2025" href="practice_1_1.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -185,20 +185,24 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Game Searching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic4.html">4. Game Search</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">4. Introduction to the practical part of TAB2025</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Graph Construction for Matching</a></li>
-<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">6. Graph Matching</a></li>
-<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">7. Graph Matching with Topological Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">5. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Graph Construction for Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">7. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">8. Graph Matching with Topological Features</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_2.html">8. Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">9. Clustering</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 3</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_3.html">9. Pacman with AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_3.html">10. Pacman with AI</a></li>
 </ul>
 
     </div>
@@ -394,20 +398,20 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-2-graph-matching-graph-construction">5.1. Practical Session 1.2: Graph Matching: Graph Construction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">5.1.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-construction-algorithms">5.1.2. <strong>Graph Construction Algorithms</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delaunay-triangulation">5.1.2.1. <strong>Delaunay Triangulation</strong></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-k-nn">5.1.2.2. <strong>k-Nearest Neighbors (k-NN)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-2-graph-matching-graph-construction">6.1. Practical Session 1.2: Graph Matching: Graph Construction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">6.1.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-construction-algorithms">6.1.2. <strong>Graph Construction Algorithms</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delaunay-triangulation">6.1.2.1. <strong>Delaunay Triangulation</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-k-nn">6.1.2.2. <strong>k-Nearest Neighbors (k-NN)</strong></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">5.1.3. <strong>Implementation</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">5.1.4. Exercise</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-delaunay-triangulation">5.1.4.1. Exercise 1: Delaunay Triangulation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-k-nearest-neighbors-k-nn">5.1.4.2. Exercise 2: k-Nearest Neighbors (k-NN)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">6.1.3. <strong>Implementation</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">6.1.4. Exercise</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-delaunay-triangulation">6.1.4.1. Exercise 1: Delaunay Triangulation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-k-nearest-neighbors-k-nn">6.1.4.2. Exercise 2: k-Nearest Neighbors (k-NN)</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">5.1.5. Summary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">6.1.5. Summary</a></li>
 </ul>
 </li>
 </ul>
@@ -422,11 +426,11 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="graph-construction-for-matching">
-<h1><span class="section-number">5. </span>Graph Construction for Matching<a class="headerlink" href="#graph-construction-for-matching" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6. </span>Graph Construction for Matching<a class="headerlink" href="#graph-construction-for-matching" title="Permalink to this heading">#</a></h1>
 <section id="practical-session-1-2-graph-matching-graph-construction">
-<h2><span class="section-number">5.1. </span>Practical Session 1.2: Graph Matching: Graph Construction<a class="headerlink" href="#practical-session-1-2-graph-matching-graph-construction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.1. </span>Practical Session 1.2: Graph Matching: Graph Construction<a class="headerlink" href="#practical-session-1-2-graph-matching-graph-construction" title="Permalink to this heading">#</a></h2>
 <section id="introduction">
-<h3><span class="section-number">5.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
 <p>In this session, we will extend our previous work on feature matching by constructing graphs based on keypoint annotations. You will implement two different graph construction methods:</p>
 <ol class="arabic simple">
 <li><p><strong>Delaunay Triangulation</strong></p></li>
@@ -436,9 +440,9 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="graph-construction-algorithms">
-<h3><span class="section-number">5.1.2. </span><strong>Graph Construction Algorithms</strong><a class="headerlink" href="#graph-construction-algorithms" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.1.2. </span><strong>Graph Construction Algorithms</strong><a class="headerlink" href="#graph-construction-algorithms" title="Permalink to this heading">#</a></h3>
 <section id="delaunay-triangulation">
-<h4><span class="section-number">5.1.2.1. </span><strong>Delaunay Triangulation</strong><a class="headerlink" href="#delaunay-triangulation" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.1.2.1. </span><strong>Delaunay Triangulation</strong><a class="headerlink" href="#delaunay-triangulation" title="Permalink to this heading">#</a></h4>
 <p>Delaunay Triangulation is a geometric technique that connects keypoints in a way that maximizes the minimum angle between edges, avoiding thin triangles. This method is commonly used for mesh generation and spatial interpolation.</p>
 <p><strong>Algorithm Steps:</strong></p>
 <ol class="arabic simple">
@@ -448,7 +452,7 @@ document.write(`
 </ol>
 </section>
 <section id="k-nearest-neighbors-k-nn">
-<h4><span class="section-number">5.1.2.2. </span><strong>k-Nearest Neighbors (k-NN)</strong><a class="headerlink" href="#k-nearest-neighbors-k-nn" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.1.2.2. </span><strong>k-Nearest Neighbors (k-NN)</strong><a class="headerlink" href="#k-nearest-neighbors-k-nn" title="Permalink to this heading">#</a></h4>
 <p>k-NN connects each keypoint to its <code class="docutils literal notranslate"><span class="pre">k</span></code> closest neighbors based on Euclidean distance.</p>
 <p><strong>Algorithm Steps:</strong></p>
 <ol class="arabic simple">
@@ -460,7 +464,7 @@ document.write(`
 </section>
 </section>
 <section id="implementation">
-<h3><span class="section-number">5.1.3. </span><strong>Implementation</strong><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.1.3. </span><strong>Implementation</strong><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">Delaunay</span>
@@ -495,24 +499,24 @@ document.write(`
 <figure class="align-default" id="duck-matching">
 <a class="reference internal image-reference" href="_images/duck_matching_delaunay.png"><img alt="_images/duck_matching_delaunay.png" src="_images/duck_matching_delaunay.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Visualizing the Duck Images with Keypoints and Delaunay Triangulation</span><a class="headerlink" href="#duck-matching" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.1 </span><span class="caption-text">Visualizing the Duck Images with Keypoints and Delaunay Triangulation</span><a class="headerlink" href="#duck-matching" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="duck-matching-knn-3">
 <a class="reference internal image-reference" href="_images/duck_matching_knn_3.png"><img alt="_images/duck_matching_knn_3.png" src="_images/duck_matching_knn_3.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Visualizing the Duck Images with Keypoints and k-NN Graph (k=3)</span><a class="headerlink" href="#duck-matching-knn-3" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.2 </span><span class="caption-text">Visualizing the Duck Images with Keypoints and k-NN Graph (k=3)</span><a class="headerlink" href="#duck-matching-knn-3" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="duck-matching-knn-4">
 <a class="reference internal image-reference" href="_images/duck_matching_knn.png"><img alt="_images/duck_matching_knn.png" src="_images/duck_matching_knn.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.3 </span><span class="caption-text">Visualizing the Duck Images with Keypoints and k-NN Graph (k=4)</span><a class="headerlink" href="#duck-matching-knn-4" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6.3 </span><span class="caption-text">Visualizing the Duck Images with Keypoints and k-NN Graph (k=4)</span><a class="headerlink" href="#duck-matching-knn-4" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="exercise">
-<h3><span class="section-number">5.1.4. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.1.4. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
 <p>In this session, we will extend our previous visualization work with the Willow-Object-Class Dataset by implementing and comparing different graph construction methods. You will need to create graph representations using both Delaunay triangulation and K-Nearest Neighbors (KNN) with varying k values.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -526,7 +530,7 @@ This modular approach will make your code more maintainable and easier to debug.
 </ol>
 </div>
 <section id="exercise-1-delaunay-triangulation">
-<h4><span class="section-number">5.1.4.1. </span>Exercise 1: Delaunay Triangulation<a class="headerlink" href="#exercise-1-delaunay-triangulation" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.1.4.1. </span>Exercise 1: Delaunay Triangulation<a class="headerlink" href="#exercise-1-delaunay-triangulation" title="Permalink to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>Load the Car, Face, Duck, Motorbike, and Winebottle images and keypoints from the Willow-Object-Class Dataset, at least 8 images, per category.</p></li>
 <li><p>Implement the <code class="docutils literal notranslate"><span class="pre">delaunay_graph</span></code> function to construct a Delaunay triangulation graph.</p></li>
@@ -535,7 +539,7 @@ This modular approach will make your code more maintainable and easier to debug.
 <p>In the end, you should have 8 images, each with the Delaunay triangulation graph overlayed.</p>
 </section>
 <section id="exercise-2-k-nearest-neighbors-k-nn">
-<h4><span class="section-number">5.1.4.2. </span>Exercise 2: k-Nearest Neighbors (k-NN)<a class="headerlink" href="#exercise-2-k-nearest-neighbors-k-nn" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.1.4.2. </span>Exercise 2: k-Nearest Neighbors (k-NN)<a class="headerlink" href="#exercise-2-k-nearest-neighbors-k-nn" title="Permalink to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>Load the Car, Face, Duck, Motorbike, and Winebottle images and keypoints from the Willow-Object-Class Dataset, at least 8 images, per category.</p></li>
 <li><p>Implement the <code class="docutils literal notranslate"><span class="pre">knn_graph</span></code> function to construct k-NN graphs with varying k values (e.g., k=3, k=5, k=7).</p></li>
@@ -544,7 +548,7 @@ This modular approach will make your code more maintainable and easier to debug.
 </section>
 </section>
 <section id="summary">
-<h3><span class="section-number">5.1.5. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.1.5. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h3>
 <p>In this session, you learned about graph construction methods for matching keypoints in images. You implemented Delaunay triangulation and k-NN graph construction algorithms and visualized the graphs overlayed on images from the Willow-Object-Class Dataset. These graph representations will be used in the next session to perform graph matching and alignment tasks.</p>
 </section>
 </section>
@@ -586,7 +590,7 @@ This modular approach will make your code more maintainable and easier to debug.
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>Introduction to the practical part of TAB2025</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Introduction to the practical part of TAB2025</p>
       </div>
     </a>
     <a class="right-next"
@@ -594,7 +598,7 @@ This modular approach will make your code more maintainable and easier to debug.
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Graph Matching</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Graph Matching</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -614,20 +618,20 @@ This modular approach will make your code more maintainable and easier to debug.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-2-graph-matching-graph-construction">5.1. Practical Session 1.2: Graph Matching: Graph Construction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">5.1.1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-construction-algorithms">5.1.2. <strong>Graph Construction Algorithms</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delaunay-triangulation">5.1.2.1. <strong>Delaunay Triangulation</strong></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-k-nn">5.1.2.2. <strong>k-Nearest Neighbors (k-NN)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-1-2-graph-matching-graph-construction">6.1. Practical Session 1.2: Graph Matching: Graph Construction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">6.1.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-construction-algorithms">6.1.2. <strong>Graph Construction Algorithms</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delaunay-triangulation">6.1.2.1. <strong>Delaunay Triangulation</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-k-nn">6.1.2.2. <strong>k-Nearest Neighbors (k-NN)</strong></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">5.1.3. <strong>Implementation</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">5.1.4. Exercise</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-delaunay-triangulation">5.1.4.1. Exercise 1: Delaunay Triangulation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-k-nearest-neighbors-k-nn">5.1.4.2. Exercise 2: k-Nearest Neighbors (k-NN)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">6.1.3. <strong>Implementation</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">6.1.4. Exercise</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-delaunay-triangulation">6.1.4.1. Exercise 1: Delaunay Triangulation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-k-nearest-neighbors-k-nn">6.1.4.2. Exercise 2: k-Nearest Neighbors (k-NN)</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">5.1.5. Summary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">6.1.5. Summary</a></li>
 </ul>
 </li>
 </ul>

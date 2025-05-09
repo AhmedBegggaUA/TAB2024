@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>9. Pacman with AI &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+    <title>10. Pacman with AI &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
   
   
   
@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'practice_3';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="8. Clustering" href="practice_2.html" />
+    <link rel="prev" title="9. Clustering" href="practice_2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -184,20 +184,24 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Game Searching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic4.html">4. Game Search</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">4. Introduction to the practical part of TAB2025</a></li>
-<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">5. Graph Construction for Matching</a></li>
-<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">6. Graph Matching</a></li>
-<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">7. Graph Matching with Topological Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">5. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">6. Graph Construction for Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">7. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">8. Graph Matching with Topological Features</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="practice_2.html">8. Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">9. Clustering</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 3</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Pacman with AI</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. Pacman with AI</a></li>
 </ul>
 
     </div>
@@ -393,17 +397,17 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-3-pacman-with-ai">9.1. Practical Session 3: Pacman with AI</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">9.1.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-3-pacman-with-ai">10.1. Practical Session 3: Pacman with AI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">10.1.1. Introduction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-overview">9.2. Repository Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">9.2.1. Key Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-overview">10.2. Repository Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">10.2.1. Key Components</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-neural-agent-works">9.3. How the Neural Agent Works</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-collection-and-training">9.4. Data Collection and Training</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">9.5. Getting Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-neural-agent-works">10.3. How the Neural Agent Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-collection-and-training">10.4. Data Collection and Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">10.5. Getting Started</a></li>
 </ul>
             </nav>
         </div>
@@ -416,19 +420,19 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="pacman-with-ai">
-<h1><span class="section-number">9. </span>Pacman with AI<a class="headerlink" href="#pacman-with-ai" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">10. </span>Pacman with AI<a class="headerlink" href="#pacman-with-ai" title="Permalink to this heading">#</a></h1>
 <section id="practical-session-3-pacman-with-ai">
-<h2><span class="section-number">9.1. </span>Practical Session 3: Pacman with AI<a class="headerlink" href="#practical-session-3-pacman-with-ai" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.1. </span>Practical Session 3: Pacman with AI<a class="headerlink" href="#practical-session-3-pacman-with-ai" title="Permalink to this heading">#</a></h2>
 <section id="introduction">
-<h3><span class="section-number">9.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">10.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
 <p>In this practical session, we will implement a simple net that plays the game Pacman. The goal is to understand all the repository and how to use it for further development.</p>
 </section>
 </section>
 <section id="repository-overview">
-<h2><span class="section-number">9.2. </span>Repository Overview<a class="headerlink" href="#repository-overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.2. </span>Repository Overview<a class="headerlink" href="#repository-overview" title="Permalink to this heading">#</a></h2>
 <p>This repository contains an implementation of the classic Pacman game with an AI component that allows for different intelligent agents to play the game. The project is based on UC Berkeley’s Pacman AI projects, modified to incorporate neural networks for agent decision-making.</p>
 <section id="key-components">
-<h3><span class="section-number">9.2.1. </span>Key Components<a class="headerlink" href="#key-components" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">10.2.1. </span>Key Components<a class="headerlink" href="#key-components" title="Permalink to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p><strong>Game Engine</strong> (<code class="docutils literal notranslate"><span class="pre">game.py</span></code>): Contains the core game mechanics, including:</p>
 <ul class="simple">
@@ -489,7 +493,7 @@ document.write(`
 </section>
 </section>
 <section id="how-the-neural-agent-works">
-<h2><span class="section-number">9.3. </span>How the Neural Agent Works<a class="headerlink" href="#how-the-neural-agent-works" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.3. </span>How the Neural Agent Works<a class="headerlink" href="#how-the-neural-agent-works" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">NeuralAgent</span></code> class in <code class="docutils literal notranslate"><span class="pre">multiAgents.py</span></code> provides an AI-powered Pacman that:</p>
 <ol class="arabic simple">
 <li><p>Loads a pre-trained neural network model from a file</p></li>
@@ -507,7 +511,7 @@ document.write(`
 </ol>
 </section>
 <section id="data-collection-and-training">
-<h2><span class="section-number">9.4. </span>Data Collection and Training<a class="headerlink" href="#data-collection-and-training" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.4. </span>Data Collection and Training<a class="headerlink" href="#data-collection-and-training" title="Permalink to this heading">#</a></h2>
 <p>The system includes a complete pipeline for collecting game data and training models:</p>
 <ol class="arabic simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">GameDataCollector</span></code> in <code class="docutils literal notranslate"><span class="pre">gamedata.py</span></code> captures game states during play</p></li>
@@ -517,7 +521,7 @@ document.write(`
 </ol>
 </section>
 <section id="getting-started">
-<h2><span class="section-number">9.5. </span>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.5. </span>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
 <p>To run the game with a keyboard-controlled Pacman:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">pacman</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
@@ -578,7 +582,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>Clustering</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>Clustering</p>
       </div>
     </a>
 </div>
@@ -597,17 +601,17 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-3-pacman-with-ai">9.1. Practical Session 3: Pacman with AI</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">9.1.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-3-pacman-with-ai">10.1. Practical Session 3: Pacman with AI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">10.1.1. Introduction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-overview">9.2. Repository Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">9.2.1. Key Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-overview">10.2. Repository Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">10.2.1. Key Components</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-neural-agent-works">9.3. How the Neural Agent Works</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-collection-and-training">9.4. Data Collection and Training</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">9.5. Getting Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-neural-agent-works">10.3. How the Neural Agent Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-collection-and-training">10.4. Data Collection and Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">10.5. Getting Started</a></li>
 </ul>
   </nav></div>
 
