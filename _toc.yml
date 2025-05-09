@@ -13,6 +13,9 @@ parts:
 - caption: Puzzles and Rubik
   chapters:
   - file: topic3
+- caption: Game Searching
+  chapters:
+  - file: topic4
 - caption: Practice 1
   chapters:
   - file: practice_1_1
