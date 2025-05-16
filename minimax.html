@@ -1,0 +1,997 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>11. Game Theory and Adversarial Search &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'minimax';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="12. Alpha-Beta Pruning" href="alphabeta.html" />
+    <link rel="prev" title="10. Pacman with AI" href="practice_3.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2025
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">NP-Hardness and Graph Matching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Puzzles and Rubik</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Game Searching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic4.html">4. Game Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">5. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">6. Graph Construction for Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">7. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">8. Graph Matching with Topological Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">9. Clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 3</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_3.html">10. Pacman with AI</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. Game Theory and Adversarial Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alphabeta.html">12. Alpha-Beta Pruning</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fminimax.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/minimax.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Game Theory and Adversarial Search</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-minimax-algorithm">11.1. Practical Session: Minimax Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">11.1.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-minimax">11.1.2. What is Minimax?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#core-concepts">11.1.2.1. Core Concepts</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-minimax-principle">11.1.2.2. The Minimax Principle</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-example-tic-tac-toe">11.1.3. Simple Example: Tic-Tac-Toe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">11.1.4. Mathematical Formulation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-pacman">11.2. Application to Pacman</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#game-structure-in-pacman">11.2.1. Game Structure in Pacman</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-order">11.2.2. Agent Order</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-example-depth-2-with-2-ghosts">11.2.3. Detailed Example: Depth 2 with 2 Ghosts</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-setup">11.2.3.1. Initial Setup</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-game-tree-depth-2">11.2.3.2. The Game Tree (Depth 2)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-by-step-execution">11.2.3.3. Step-by-Step Execution</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-for-pacman">11.2.4. Implementation for Pacman</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-execution-trace">11.2.5. Complete Execution Trace</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-implementation-details">11.2.6. Key Implementation Details</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-turn-management">11.2.6.1. 1. Agent Turn Management</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-progression">11.2.6.2. 2. Depth Progression</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-turn-cycle">11.2.6.3. 3. Agent Turn Cycle</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#base-cases">11.2.6.4. 3. Base Cases</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="game-theory-and-adversarial-search">
+<h1><span class="section-number">11. </span>Game Theory and Adversarial Search<a class="headerlink" href="#game-theory-and-adversarial-search" title="Permalink to this heading">#</a></h1>
+<section id="practical-session-minimax-algorithm">
+<h2><span class="section-number">11.1. </span>Practical Session: Minimax Algorithm<a class="headerlink" href="#practical-session-minimax-algorithm" title="Permalink to this heading">#</a></h2>
+<section id="introduction">
+<h3><span class="section-number">11.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
+<p>In this session, we will explore the concept of adversarial search through the <strong>Minimax algorithm</strong>. This algorithm is fundamental in game theory and is used to make optimal decisions in competitive environments where multiple agents have opposing objectives.</p>
+</section>
+<section id="what-is-minimax">
+<h3><span class="section-number">11.1.2. </span>What is Minimax?<a class="headerlink" href="#what-is-minimax" title="Permalink to this heading">#</a></h3>
+<p>The Minimax algorithm is a decision-making algorithm used in <strong>two-player zero-sum games</strong>. The key principle is that one player (the maximizer) tries to maximize their score, while the opponent (the minimizer) tries to minimize the maximizer’s score.</p>
+<section id="core-concepts">
+<h4><span class="section-number">11.1.2.1. </span>Core Concepts<a class="headerlink" href="#core-concepts" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p><strong>Game Tree</strong>: A tree structure representing all possible game states</p></li>
+<li><p><strong>Max Player</strong>: The player trying to maximize the evaluation score</p></li>
+<li><p><strong>Min Player</strong>: The player trying to minimize the evaluation score</p></li>
+<li><p><strong>Evaluation Function</strong>: A function that assigns a numeric value to game states</p></li>
+<li><p><strong>Depth</strong>: How many moves ahead to look in the game tree</p></li>
+</ol>
+</section>
+<section id="the-minimax-principle">
+<h4><span class="section-number">11.1.2.2. </span>The Minimax Principle<a class="headerlink" href="#the-minimax-principle" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Max</span> <span class="n">Level</span><span class="p">:</span>  <span class="n">Choose</span> <span class="n">the</span> <span class="n">action</span> <span class="n">that</span> <span class="n">leads</span> <span class="n">to</span> <span class="n">the</span> <span class="n">HIGHEST</span> <span class="n">value</span>
+<span class="n">Min</span> <span class="n">Level</span><span class="p">:</span>  <span class="n">Choose</span> <span class="n">the</span> <span class="n">action</span> <span class="n">that</span> <span class="n">leads</span> <span class="n">to</span> <span class="n">the</span> <span class="n">LOWEST</span> <span class="n">value</span>
+</pre></div>
+</div>
+<p>The algorithm works by recursively evaluating all possible future states, assuming both players play optimally.</p>
+</section>
+</section>
+<section id="simple-example-tic-tac-toe">
+<h3><span class="section-number">11.1.3. </span>Simple Example: Tic-Tac-Toe<a class="headerlink" href="#simple-example-tic-tac-toe" title="Permalink to this heading">#</a></h3>
+<p>Consider a simplified tic-tac-toe position where it’s X’s turn:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Current</span> <span class="n">state</span><span class="p">:</span>
+<span class="n">X</span> <span class="o">|</span> <span class="n">O</span> <span class="o">|</span>  
+<span class="o">---------</span>
+  <span class="o">|</span> <span class="n">X</span> <span class="o">|</span>  
+<span class="o">---------</span>
+  <span class="o">|</span> <span class="n">O</span> <span class="o">|</span>
+</pre></div>
+</div>
+<p>X (maximizer) has three possible moves. The minimax algorithm will:</p>
+<ol class="arabic simple">
+<li><p>Try each possible move</p></li>
+<li><p>Assume O (minimizer) will respond optimally</p></li>
+<li><p>Choose the move that guarantees the best outcome</p></li>
+</ol>
+</section>
+<section id="mathematical-formulation">
+<h3><span class="section-number">11.1.4. </span>Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this heading">#</a></h3>
+<p>For a game state <code class="docutils literal notranslate"><span class="pre">s</span></code>, the minimax value is defined as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">minimax</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">evaluation</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>                           <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="n">terminal</span>
+    <span class="nb">max</span><span class="p">(</span><span class="n">minimax</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">s</span><span class="p">)</span>      <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="n">Max</span> <span class="n">node</span>
+    <span class="nb">min</span><span class="p">(</span><span class="n">minimax</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">s</span><span class="p">)</span>      <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="n">Min</span> <span class="n">node</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="application-to-pacman">
+<h2><span class="section-number">11.2. </span>Application to Pacman<a class="headerlink" href="#application-to-pacman" title="Permalink to this heading">#</a></h2>
+<p>Now we will apply the Minimax algorithm to the Pacman game, where:</p>
+<ul class="simple">
+<li><p><strong>Pacman (Agent 0)</strong>: Maximizing player - wants to maximize score</p></li>
+<li><p><strong>Ghosts (Agents 1+)</strong>: Minimizing players - want to minimize Pacman’s score</p></li>
+</ul>
+<section id="game-structure-in-pacman">
+<h3><span class="section-number">11.2.1. </span>Game Structure in Pacman<a class="headerlink" href="#game-structure-in-pacman" title="Permalink to this heading">#</a></h3>
+<p>In Pacman Minimax with <strong>2 ghosts</strong>:</p>
+<ul class="simple">
+<li><p>One <strong>ply</strong> = Pacman moves + Ghost 1 moves + Ghost 2 moves</p></li>
+<li><p><strong>Depth 1</strong> = One complete ply (Pacman + both ghosts)</p></li>
+<li><p><strong>Depth 2</strong> = Two complete plies</p></li>
+</ul>
+</section>
+<section id="agent-order">
+<h3><span class="section-number">11.2.2. </span>Agent Order<a class="headerlink" href="#agent-order" title="Permalink to this heading">#</a></h3>
+<p>The agents take turns in this specific order:</p>
+<ol class="arabic simple">
+<li><p><strong>Pacman (Agent 0)</strong> - MAX player</p></li>
+<li><p><strong>Ghost 1 (Agent 1)</strong> - MIN player</p></li>
+<li><p><strong>Ghost 2 (Agent 2)</strong> - MIN player</p></li>
+<li><p>Back to <strong>Pacman (Agent 0)</strong> - depth increments</p></li>
+</ol>
+<p>This cycle repeats until the maximum depth is reached.</p>
+</section>
+<section id="detailed-example-depth-2-with-2-ghosts">
+<h3><span class="section-number">11.2.3. </span>Detailed Example: Depth 2 with 2 Ghosts<a class="headerlink" href="#detailed-example-depth-2-with-2-ghosts" title="Permalink to this heading">#</a></h3>
+<p>Let’s walk through a complete example with <strong>depth = 2</strong> and <strong>2 ghosts</strong>:</p>
+<section id="initial-setup">
+<h4><span class="section-number">11.2.3.1. </span>Initial Setup<a class="headerlink" href="#initial-setup" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Game</span> <span class="n">State</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">Pacman</span> <span class="n">at</span> <span class="n">position</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Ghost</span> <span class="mi">1</span> <span class="n">at</span> <span class="n">position</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Ghost</span> <span class="mi">2</span> <span class="n">at</span> <span class="n">position</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Food</span> <span class="n">dot</span> <span class="n">at</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Evaluation</span> <span class="n">scores</span> <span class="k">for</span> <span class="n">different</span> <span class="n">scenarios</span><span class="p">:</span>
+  <span class="o">*</span> <span class="n">Pacman</span> <span class="n">eats</span> <span class="n">food</span><span class="p">:</span> <span class="o">+</span><span class="mi">10</span>
+  <span class="o">*</span> <span class="n">Ghost</span> <span class="n">catches</span> <span class="n">Pacman</span><span class="p">:</span> <span class="o">-</span><span class="mi">500</span>
+  <span class="o">*</span> <span class="n">Normal</span> <span class="n">move</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="p">(</span><span class="n">time</span> <span class="n">penalty</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="the-game-tree-depth-2">
+<h4><span class="section-number">11.2.3.2. </span>The Game Tree (Depth 2)<a class="headerlink" href="#the-game-tree-depth-2" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                    ROOT: Pacman Turn (MAX)
+                   /          |          \
+               NORTH        EAST        SOUTH
+              Score: ?    Score: ?    Score: ?
+                |            |            |
+        
+    DEPTH 0: Ghost1 Turn (MIN)   DEPTH 0: Ghost1 Turn (MIN)   DEPTH 0: Ghost1 Turn (MIN)
+         /    |    \                  /    |    \                  /    |    \
+      N     E     S                N     E     S                N     E     S  
+      |     |     |                |     |     |                |     |     |
+      
+    DEPTH 0: Ghost2 Turn (MIN)   DEPTH 0: Ghost2 Turn (MIN)   DEPTH 0: Ghost2 Turn (MIN)
+         /    |    \                  /    |    \                  /    |    \
+      N     E     S                N     E     S                N     E     S  
+      |     |     |                |     |     |                |     |     |
+      
+    DEPTH 1: Pacman Turn (MAX)   DEPTH 1: Pacman Turn (MAX)   DEPTH 1: Pacman Turn (MAX)
+    /    |    \                  /    |    \                  /    |    \
+   N    E    S                  N    E    S                  N    E    S
+   |    |    |                  |    |    |                  |    |    |
+   
+   [... continues for depth 1 with both ghosts ...]
+   
+ DEPTH 2: EVALUATE            DEPTH 2: EVALUATE            DEPTH 2: EVALUATE
+   +9  -501  +8                +8   +9  -501               -501  +8   +7
+</pre></div>
+</div>
+</section>
+<section id="step-by-step-execution">
+<h4><span class="section-number">11.2.3.3. </span>Step-by-Step Execution<a class="headerlink" href="#step-by-step-execution" title="Permalink to this heading">#</a></h4>
+<p><strong>Step 1: Root Node (Pacman’s initial turn)</strong></p>
+<ul class="simple">
+<li><p>Pacman has 3 possible actions: NORTH, EAST, SOUTH</p></li>
+<li><p>We need to evaluate each branch</p></li>
+</ul>
+<p><strong>Step 2: Evaluate EAST branch</strong></p>
+<p>2.1. <strong>Pacman moves EAST</strong> → Pacman at (2,1), eats food (+10 points)</p>
+<p>2.2. <strong>Ghost 1’s turn (MIN)</strong></p>
+<ul class="simple">
+<li><p>Ghost 1 can move: NORTH, EAST, SOUTH</p></li>
+<li><p>Let’s say Ghost 1 moves NORTH → Ghost 1 at (3,0)</p></li>
+</ul>
+<p>2.3. <strong>Ghost 2’s turn (MIN)</strong></p>
+<ul class="simple">
+<li><p>Ghost 2 can move: NORTH, EAST, SOUTH</p></li>
+<li><p>Let’s say Ghost 2 moves EAST → Ghost 2 at (2,3)</p></li>
+</ul>
+<p>2.4. <strong>Pacman’s turn again (depth 1)</strong></p>
+<ul class="simple">
+<li><p>Pacman can move: NORTH, EAST, SOUTH</p></li>
+<li><p>Evaluate each possibility with the new ghost positions:</p>
+<ul>
+<li><p>NORTH: Pacman at (2,2) → Continue with both ghosts…</p></li>
+<li><p>EAST: Pacman at (3,1) → Continue with both ghosts…</p></li>
+<li><p>SOUTH: Pacman at (2,0) → Continue with both ghosts…</p></li>
+</ul>
+</li>
+</ul>
+<p>2.5. <strong>Complete evaluation for this path</strong></p>
+<ul class="simple">
+<li><p>After all ghost responses and final Pacman moves, this path evaluates to <strong>+5</strong></p></li>
+</ul>
+<p>2.6. <strong>Back to Ghost 2’s choices (step 2.3)</strong></p>
+<ul class="simple">
+<li><p>Ghost 2 evaluates all its moves:</p>
+<ul>
+<li><p>NORTH: Leads to final value +3</p></li>
+<li><p>EAST: Leads to final value +5  ← We calculated this</p></li>
+<li><p>SOUTH: Leads to final value +4</p></li>
+</ul>
+</li>
+<li><p>Ghost 2 chooses MIN: min(+3, +5, +4) = <strong>+3</strong></p></li>
+</ul>
+<p>2.7. <strong>Back to Ghost 1’s choices (step 2.2)</strong></p>
+<ul class="simple">
+<li><p>Ghost 1 evaluates all its moves (each leading to Ghost 2’s turn):</p>
+<ul>
+<li><p>NORTH: Leads to Ghost 2 min = +3  ← We calculated this</p></li>
+<li><p>EAST: Leads to Ghost 2 min = +2</p></li>
+<li><p>SOUTH: Leads to Ghost 2 min = +1</p></li>
+</ul>
+</li>
+<li><p>Ghost 1 chooses MIN: min(+3, +2, +1) = <strong>+1</strong></p></li>
+</ul>
+<p><strong>Therefore: Pacman EAST → Final value = +1</strong></p>
+<p><strong>Step 3: Evaluate NORTH branch</strong>
+2.1. <strong>Pacman moves NORTH</strong> → Pacman at (1,2)</p>
+<p>2.2. <strong>Ghost 1’s turn</strong> → Tries all moves → Best for Ghost 1: +2
+2.3. <strong>Ghost 2’s turn</strong> → Tries all moves → Best for Ghost 2: +1
+2.4. <strong>Continue recursion…</strong> → Final evaluation: <strong>+1</strong></p>
+<p><strong>Step 4: Evaluate SOUTH branch</strong>
+2.1. <strong>Pacman moves SOUTH</strong> → Pacman at (1,0)
+2.2. <strong>Ghost 1’s turn</strong> → Tries all moves → Best for Ghost 1: -1
+2.3. <strong>Ghost 2’s turn</strong> → Tries all moves → Best for Ghost 2: -2<br />
+2.4. <strong>Continue recursion…</strong> → Final evaluation: <strong>-2</strong></p>
+<p><strong>Step 5: Pacman’s final decision</strong></p>
+<ul class="simple">
+<li><p>NORTH = +1</p></li>
+<li><p>EAST = +1  ← TIE! (Same as NORTH)</p></li>
+<li><p>SOUTH = -2</p></li>
+</ul>
+<p><strong>Pacman chooses NORTH or EAST</strong> (depends on which is evaluated first) because they both guarantee +1, which is better than -2.</p>
+</section>
+</section>
+<section id="implementation-for-pacman">
+<h3><span class="section-number">11.2.4. </span>Implementation for Pacman<a class="headerlink" href="#implementation-for-pacman" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MinimaxAgent</span><span class="p">(</span><span class="n">MultiAgentSearchAgent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Minimax agent for Pacman with multiple ghosts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">getAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gameState</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the minimax action using self.depth and self.evaluationFunction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">def</span> <span class="nf">minimax</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">gameState</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Recursive minimax function</span>
+<span class="sd">            </span>
+<span class="sd">            Args:</span>
+<span class="sd">            - agentIndex: Current agent (0=Pacman, 1+=Ghosts)  </span>
+<span class="sd">            - depth: Current depth in the game tree</span>
+<span class="sd">            - gameState: Current state of the game</span>
+<span class="sd">            </span>
+<span class="sd">            Returns:</span>
+<span class="sd">            - Best evaluation score for this state</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Base case: terminal state or maximum depth reached</span>
+            <span class="k">if</span> <span class="n">gameState</span><span class="o">.</span><span class="n">isWin</span><span class="p">()</span> <span class="ow">or</span> <span class="n">gameState</span><span class="o">.</span><span class="n">isLose</span><span class="p">()</span> <span class="ow">or</span> <span class="n">depth</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluationFunction</span><span class="p">(</span><span class="n">gameState</span><span class="p">)</span>
+
+            <span class="c1"># Pacman&#39;s turn (Maximizer)</span>
+            <span class="k">if</span> <span class="n">agentIndex</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">maxValue</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">gameState</span><span class="p">)</span>
+            <span class="c1"># Ghost&#39;s turn (Minimizer)  </span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">minValue</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">gameState</span><span class="p">)</span>
+        
+        <span class="k">def</span> <span class="nf">maxValue</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">gameState</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Handles Pacman&#39;s moves (maximizing player)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>  <span class="c1"># Start with worst possible value</span>
+            <span class="n">legalActions</span> <span class="o">=</span> <span class="n">gameState</span><span class="o">.</span><span class="n">getLegalActions</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">)</span>
+            
+            <span class="c1"># No legal actions available</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">legalActions</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluationFunction</span><span class="p">(</span><span class="n">gameState</span><span class="p">)</span>
+
+            <span class="c1"># Try each possible action and choose the best</span>
+            <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">legalActions</span><span class="p">:</span>
+                <span class="n">successor</span> <span class="o">=</span> <span class="n">gameState</span><span class="o">.</span><span class="n">generateSuccessor</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+                <span class="c1"># After Pacman moves, first ghost plays (agent 1)</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">minimax</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">successor</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">def</span> <span class="nf">minValue</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">gameState</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Handles Ghost moves (minimizing players)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># Start with best possible value for Pacman</span>
+            <span class="n">legalActions</span> <span class="o">=</span> <span class="n">gameState</span><span class="o">.</span><span class="n">getLegalActions</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">)</span>
+            
+            <span class="c1"># No legal actions available</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">legalActions</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluationFunction</span><span class="p">(</span><span class="n">gameState</span><span class="p">)</span>
+
+            <span class="c1"># Determine next agent and depth</span>
+            <span class="n">nextAgent</span> <span class="o">=</span> <span class="n">agentIndex</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">nextDepth</span> <span class="o">=</span> <span class="n">depth</span>
+            
+            <span class="c1"># If all ghosts have moved, return to Pacman and increment depth</span>
+            <span class="k">if</span> <span class="n">nextAgent</span> <span class="o">==</span> <span class="n">gameState</span><span class="o">.</span><span class="n">getNumAgents</span><span class="p">():</span>
+                <span class="n">nextAgent</span> <span class="o">=</span> <span class="mi">0</span>      <span class="c1"># Back to Pacman</span>
+                <span class="n">nextDepth</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># New ply begins</span>
+
+            <span class="c1"># Try each possible action and choose the worst for Pacman</span>
+            <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">legalActions</span><span class="p">:</span>
+                <span class="n">successor</span> <span class="o">=</span> <span class="n">gameState</span><span class="o">.</span><span class="n">generateSuccessor</span><span class="p">(</span><span class="n">agentIndex</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">minimax</span><span class="p">(</span><span class="n">nextAgent</span><span class="p">,</span> <span class="n">nextDepth</span><span class="p">,</span> <span class="n">successor</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="c1"># Main decision logic for Pacman</span>
+        <span class="n">bestAction</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">bestScore</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Try each legal action for Pacman</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">gameState</span><span class="o">.</span><span class="n">getLegalActions</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">successor</span> <span class="o">=</span> <span class="n">gameState</span><span class="o">.</span><span class="n">generateSuccessor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+            <span class="c1"># Start minimax with first ghost (agent 1) at current depth</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">minimax</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">successor</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">bestScore</span><span class="p">:</span>
+                <span class="n">bestScore</span> <span class="o">=</span> <span class="n">score</span>
+                <span class="n">bestAction</span> <span class="o">=</span> <span class="n">action</span>
+
+        <span class="k">return</span> <span class="n">bestAction</span>
+</pre></div>
+</div>
+</section>
+<section id="complete-execution-trace">
+<h3><span class="section-number">11.2.5. </span>Complete Execution Trace<a class="headerlink" href="#complete-execution-trace" title="Permalink to this heading">#</a></h3>
+<p>Let’s trace through our depth-2 example step by step:</p>
+<p><strong>Initial Call</strong>: <code class="docutils literal notranslate"><span class="pre">getAction(gameState)</span></code></p>
+<p><strong>1. Try Pacman action: EAST</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">generateSuccessor(0,</span> <span class="pre">EAST)</span></code> → New state with Pacman at (2,1)</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">minimax(1,</span> <span class="pre">0,</span> <span class="pre">successor_state)</span></code></p></li>
+</ul>
+<p><strong>2. Ghost’s turn (agentIndex=1, depth=0)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">minValue(1,</span> <span class="pre">0,</span> <span class="pre">state)</span></code> called</p></li>
+<li><p>Ghost legal actions: [NORTH, EAST, SOUTH]</p></li>
+</ul>
+<p><strong>2.1 Try Ghost 1 action: NORTH</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">generateSuccessor(1,</span> <span class="pre">NORTH)</span></code> → Ghost 1 at (3,0)</p></li>
+<li><p>nextAgent = 2 (Ghost 2), nextDepth = 0</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">minimax(2,</span> <span class="pre">0,</span> <span class="pre">successor_state)</span></code></p></li>
+</ul>
+<p><strong>2.1.1 Ghost 2’s turn (agentIndex=2, depth=0)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">minValue(2,</span> <span class="pre">0,</span> <span class="pre">state)</span></code> called</p></li>
+<li><p>Ghost 2 legal actions: [NORTH, EAST, SOUTH]</p></li>
+</ul>
+<p><strong>2.1.1.1 Try Ghost 2 action: NORTH</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">generateSuccessor(2,</span> <span class="pre">NORTH)</span></code> → Ghost 2 at (1,4)</p></li>
+<li><p>nextAgent = 3, but numAgents = 3, so nextAgent = 0, nextDepth = 1</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">minimax(0,</span> <span class="pre">1,</span> <span class="pre">successor_state)</span></code></p></li>
+</ul>
+<p><strong>2.1.1.1.1 Pacman’s turn (agentIndex=0, depth=1)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maxValue(0,</span> <span class="pre">1,</span> <span class="pre">state)</span></code> called</p></li>
+<li><p>Pacman legal actions: [NORTH, EAST, SOUTH]</p></li>
+<li><p>Try each action, call minimax for each with deeper depth…</p></li>
+<li><p>Eventually returns max value: +3</p></li>
+</ul>
+<p><strong>2.1.1.1 Back to Ghost 2 choice NORTH</strong> → value +3</p>
+<p><strong>2.1.1.2 Try Ghost 2 action: EAST</strong> → Eventually value +5</p>
+<p><strong>2.1.1.3 Try Ghost 2 action: SOUTH</strong> → Eventually value +4</p>
+<p><strong>2.1.1 Ghost 2 chooses minimum</strong>: min(+3, +5, +4) = +3</p>
+<p><strong>2.1 Back to Ghost 1 choice NORTH</strong> → value +3</p>
+<p><strong>2.2 Try Ghost 1 action: EAST</strong> → Eventually value +2</p>
+<p><strong>2.3 Try Ghost 1 action: SOUTH</strong> → Eventually value +1</p>
+<p><strong>3. Ghost 1 chooses minimum</strong>: min(+3, +2, +1) = +1</p>
+<p><strong>4. Pacman EAST final score</strong>: +1</p>
+<p><strong>Repeat for Pacman actions NORTH and SOUTH</strong></p>
+<p><strong>5. Final decision</strong>: max(NORTH:+1, EAST:+1, SOUTH:-2) = NORTH or EAST (tie)</p>
+</section>
+<section id="key-implementation-details">
+<h3><span class="section-number">11.2.6. </span>Key Implementation Details<a class="headerlink" href="#key-implementation-details" title="Permalink to this heading">#</a></h3>
+<section id="agent-turn-management">
+<h4><span class="section-number">11.2.6.1. </span>1. Agent Turn Management<a class="headerlink" href="#agent-turn-management" title="Permalink to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># After each agent acts, move to next agent</span>
+<span class="n">nextAgent</span> <span class="o">=</span> <span class="n">agentIndex</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># When all agents have acted, return to Pacman and increment depth  </span>
+<span class="k">if</span> <span class="n">nextAgent</span> <span class="o">==</span> <span class="n">gameState</span><span class="o">.</span><span class="n">getNumAgents</span><span class="p">():</span>
+    <span class="n">nextAgent</span> <span class="o">=</span> <span class="mi">0</span>      <span class="c1"># Back to Pacman</span>
+    <span class="n">nextDepth</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Start new ply</span>
+</pre></div>
+</div>
+</section>
+<section id="depth-progression">
+<h4><span class="section-number">11.2.6.2. </span>2. Depth Progression<a class="headerlink" href="#depth-progression" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Depth increments</strong> only when control returns to Pacman</p></li>
+<li><p>One <strong>complete ply</strong> = Pacman moves + Ghost 1 moves + Ghost 2 moves</p></li>
+<li><p><strong>Depth 0</strong>: First round - Pacman, Ghost 1, Ghost 2</p></li>
+<li><p><strong>Depth 1</strong>: Second round - Pacman, Ghost 1, Ghost 2</p></li>
+</ul>
+</section>
+<section id="agent-turn-cycle">
+<h4><span class="section-number">11.2.6.3. </span>3. Agent Turn Cycle<a class="headerlink" href="#agent-turn-cycle" title="Permalink to this heading">#</a></h4>
+<p>The complete cycle for one ply with 2 ghosts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Agent 0 (Pacman) → Agent 1 (Ghost 1) → Agent 2 (Ghost 2) → Agent 0 (Pacman, depth++)
+</pre></div>
+</div>
+</section>
+<section id="base-cases">
+<h4><span class="section-number">11.2.6.4. </span>3. Base Cases<a class="headerlink" href="#base-cases" title="Permalink to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stop recursion when:</span>
+<span class="c1"># 1. Game ends (win/lose)</span>
+<span class="c1"># 2. Maximum depth reached  </span>
+<span class="c1"># 3. No legal actions available</span>
+<span class="k">if</span> <span class="n">gameState</span><span class="o">.</span><span class="n">isWin</span><span class="p">()</span> <span class="ow">or</span> <span class="n">gameState</span><span class="o">.</span><span class="n">isLose</span><span class="p">()</span> <span class="ow">or</span> <span class="n">depth</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluationFunction</span><span class="p">(</span><span class="n">gameState</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Minimax algorithm guarantees that Pacman will make the best possible decision, assuming all ghosts also play optimally to minimize Pacman’s score. With multiple ghosts, the algorithm creates a deeper, more complex tree, but the same principle applies: Pacman maximizes while each ghost minimizes in sequence.</p>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="practice_3.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>Pacman with AI</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="alphabeta.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">12. </span>Alpha-Beta Pruning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-session-minimax-algorithm">11.1. Practical Session: Minimax Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">11.1.1. Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-minimax">11.1.2. What is Minimax?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#core-concepts">11.1.2.1. Core Concepts</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-minimax-principle">11.1.2.2. The Minimax Principle</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-example-tic-tac-toe">11.1.3. Simple Example: Tic-Tac-Toe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">11.1.4. Mathematical Formulation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-pacman">11.2. Application to Pacman</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#game-structure-in-pacman">11.2.1. Game Structure in Pacman</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-order">11.2.2. Agent Order</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-example-depth-2-with-2-ghosts">11.2.3. Detailed Example: Depth 2 with 2 Ghosts</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-setup">11.2.3.1. Initial Setup</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-game-tree-depth-2">11.2.3.2. The Game Tree (Depth 2)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-by-step-execution">11.2.3.3. Step-by-Step Execution</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-for-pacman">11.2.4. Implementation for Pacman</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-execution-trace">11.2.5. Complete Execution Trace</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-implementation-details">11.2.6. Key Implementation Details</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-turn-management">11.2.6.1. 1. Agent Turn Management</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-progression">11.2.6.2. 2. Depth Progression</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-turn-cycle">11.2.6.3. 3. Agent Turn Cycle</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#base-cases">11.2.6.4. 3. Base Cases</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
