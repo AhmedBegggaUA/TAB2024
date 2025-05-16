@@ -202,6 +202,86 @@ However, for some arrangements of the evaluation function on the leaves, <span s
 
 Similarly, once the root receives the value $10$ from the first child, and proceeds to expand the rightmost subtree, the root will stop such expansion as soon as thid rightmost subtree returs a value smaller or equal than $10$ ($5$ in this case). This is another kind of cutoff which is symmetric wrt previous one. 
 
+### The Alpha-Beta Method
+
+The above two types or cutoffs or *cuts* are implemented by the Alpha-Beta algorithm. They are illustrated by the yet classic  {numref}`Cuts` taken from Pearl's book. 
+
+Let us analize briefly what happens. 
+**Shallow cutoff**. In {numref}`Cuts`-Left, 
+1. MAX deploys its first level, and its first MIN child A proceeds to deploy its first MAX child which returns $10$. 
+2. Then, MIN knows that *the best it can do so far is to choose this move*. It keeps going on with its second MAX child.
+3. B receives a value of $14$. As $14\ge 10$, MAX knows he had yet beaten MIN. 
+4. Then, <span style="color:#f88146">**there is no need to expand more MAX children**</span>. This is a cutoff. 
+
+Let's go with the **deep cutoff**. In {numref}`Cuts`-Right,
+1. MAX deploys its first child and gets $10$. This is the best it can do so far. 
+2. This value is sent to its second child which is a MIN node. 
+3. The value $10$ reaches MAX node F and its respective child D. 
+4. Now D <span style="color:#f88146">**knows that its MAX leaves must play at least equal than $10$ to be interesting to explore**</span>.
+5. However, the first MAX leave returns $5$, which is very good for MIN since $5\ge 10$. 
+5. Now MIN node D is sure that **it will never beat the MAX root if it plays optimally**. This is a deep cutoff since no more child of D needs to be explored. 
+6. Actually, only a very large value of leave G, say $20$ may change things, **but only in favor of MAX**. 
+
+```{figure} ./images/Topic4/cuts-examples-removebg-preview.png
+---
+name: Cuts
+width: 800px
+align: center
+height: 500px
+---
+Alpha-Beta cuts. Swallow (leff) vs Deep. Source: Pearl's book.
+```
+
+**How to put these reasonings in an algorithm**. Well, the designers of ALPHA-BETA suggested the following mechanism: 
+1. MAX nodes start from $\alpha=-\infty$ and try to **increase** that **lower** bound. 
+2. MIN nodes start from $\beta=+\infty$ and try to **decrease** that **upper** bound. 
+
+Then, any node (whatever its type) will receive the a pair $(\alpha, \beta)$: 
+
+1. MAX nodes **will only update** $\alpha$ and will return $\beta$ as soon as $\alpha\ge\beta$. Otherwise they will return $\alpha$ after exploring their last child. 
+
+2. MIN nodes **will only update** $\beta$ and will return $\alpha$ as soon as $\beta\le\alpha$. Otherwise they will return $\beta$ after exploring their last child.
+
+Note that $\mathbf{\alpha\ge\beta}$ (the cutoff condition) is equal to $\mathbf{\beta\le\alpha}$ but it is read differently from the perspective of a MAX or a MIN node. 
+
+```{prf:algorithm} ALPHA-BETA
+:label: Alpha-Beta
+
+**Inputs** Root MAX node $J\leftarrow \mathbf{s}$, $\alpha=-\infty$, $\alpha=+\infty$\
+**Output** Optimal Minimax Value $V(J)$.
+
+1. **if** $J$ is terminal **then** **return** $V(J)=e(J)$. 
+2. **for** $k=1,2,\ldots, b$:
+    1. Generate $J_k$, the $k-$th successor of $J$ 
+    2. **if** $J$ is MAX **then**: 
+
+        1. $\alpha\leftarrow \max[\alpha, V(J_k; \alpha,\beta)]$ $\textbf{[recursive call]}$
+        2. **if** $\alpha\ge\beta$ **then** **return** $\beta$
+        3. **if** $k=b$ **then** **return** $\alpha$
+
+    3. **if** $J$ is MIN **then**: 
+
+        1. $\beta\leftarrow \min[\beta, V(J_k; \alpha,\beta)]$ $\textbf{[recursive call]}$
+        2. **if** $\beta\le\alpha$ **then** **return** $\alpha$
+        3. **if** $k=b$ **then** **return** $\beta$
+```
+
+**Algorithm's trace of the shallow cut**
+1. Assign $(-\infty,+\infty)$ to the MAX root. 
+2. A node gets $(-\infty,+\infty)$
+3. A updates its $\beta$ and sends $(-\infty,10)$ to B. 
+4. B updates its $\alpha$ obtaining $(14,10)$. Since B is a MAX node and $14\ge 10$, it detects a cut and returns $\beta=10$. 
+5. A still has $(-\infty,10)$ and this is wat returns to the root. 
+
+**Algorithm's trace of the deep cut**
+1. Assign $(-\infty,+\infty)$ to the MAX root.
+2. The root updates its $\alpha$ and sends $(10,+\infty)$ to is second child.
+3. The pair $(10,+\infty)$ passes through F and D. 
+4. D is a MIN node having $(10,+\infty)$ and it updates its $\beta$. This leads to $(10,5)$. As $\beta\le\alpha$, MIN declares a cut and returns its $\alpha=10$. 
+5. F has now the pair $(10,+\infty)$. No cut. It asks G. 
+
+
+
 <!--
 
 ##  Rubik's cube

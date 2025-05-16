@@ -407,6 +407,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#game-trees">4.2.1. Game Trees</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategies">4.2.2. Strategies</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-minimax-method">4.2.3. The Minimax Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-alpha-beta-method">4.2.4. The Alpha-Beta Method</a></li>
 </ul>
 </li>
 </ul>
@@ -604,6 +605,89 @@ e(J) = w_1 \cdot\text{score}(J) + w_2\cdot \text{food_distance}(J) + w_3\cdot \t
 <p>However, for some arrangements of the evaluation function on the leaves, <span style="color:#f88146">we may <strong>skip nodes to expand</strong> by exploiting the assumption that MAX/MIN plays the best it can assuming that the adversary does the same</span>.</p>
 <p><strong>Cutoffs</strong>. Consider for instance the MIN node <span class="math notranslate nohighlight">\(A\)</span>. His leftfost child MAX provides <span class="math notranslate nohighlight">\(10\)</span>. Then, as soon as the second one node <span class="math notranslate nohighlight">\(B\)</span> a value equal or greater than <span class="math notranslate nohighlight">\(10\)</span> (<span class="math notranslate nohighlight">\(14\)</span> in this case), we don’t need to expand the subtree rooted in the <span class="math notranslate nohighlight">\(C\)</span>. This is an <em>interesting case of cutoff</em> that saves many nodes to expand.</p>
 <p>Similarly, once the root receives the value <span class="math notranslate nohighlight">\(10\)</span> from the first child, and proceeds to expand the rightmost subtree, the root will stop such expansion as soon as thid rightmost subtree returs a value smaller or equal than <span class="math notranslate nohighlight">\(10\)</span> (<span class="math notranslate nohighlight">\(5\)</span> in this case). This is another kind of cutoff which is symmetric wrt previous one.</p>
+</section>
+<section id="the-alpha-beta-method">
+<h3><span class="section-number">4.2.4. </span>The Alpha-Beta Method<a class="headerlink" href="#the-alpha-beta-method" title="Permalink to this heading">#</a></h3>
+<p>The above two types or cutoffs or <em>cuts</em> are implemented by the Alpha-Beta algorithm. They are illustrated by the yet classic  <a class="reference internal" href="#cuts"><span class="std std-numref">Fig. 4.4</span></a> taken from Pearl’s book.</p>
+<p>Let us analize briefly what happens.
+<strong>Shallow cutoff</strong>. In <a class="reference internal" href="#cuts"><span class="std std-numref">Fig. 4.4</span></a>-Left,</p>
+<ol class="arabic simple">
+<li><p>MAX deploys its first level, and its first MIN child A proceeds to deploy its first MAX child which returns <span class="math notranslate nohighlight">\(10\)</span>.</p></li>
+<li><p>Then, MIN knows that <em>the best it can do so far is to choose this move</em>. It keeps going on with its second MAX child.</p></li>
+<li><p>B receives a value of <span class="math notranslate nohighlight">\(14\)</span>. As <span class="math notranslate nohighlight">\(14\ge 10\)</span>, MAX knows he had yet beaten MIN.</p></li>
+<li><p>Then, <span style="color:#f88146"><strong>there is no need to expand more MAX children</strong></span>. This is a cutoff.</p></li>
+</ol>
+<p>Let’s go with the <strong>deep cutoff</strong>. In <a class="reference internal" href="#cuts"><span class="std std-numref">Fig. 4.4</span></a>-Right,</p>
+<ol class="arabic simple">
+<li><p>MAX deploys its first child and gets <span class="math notranslate nohighlight">\(10\)</span>. This is the best it can do so far.</p></li>
+<li><p>This value is sent to its second child which is a MIN node.</p></li>
+<li><p>The value <span class="math notranslate nohighlight">\(10\)</span> reaches MAX node F and its respective child D.</p></li>
+<li><p>Now D <span style="color:#f88146"><strong>knows that its MAX leaves must play at least equal than <span class="math notranslate nohighlight">\(10\)</span> to be interesting to explore</strong></span>.</p></li>
+<li><p>However, the first MAX leave returns <span class="math notranslate nohighlight">\(5\)</span>, which is very good for MIN since <span class="math notranslate nohighlight">\(5\ge 10\)</span>.</p></li>
+<li><p>Now MIN node D is sure that <strong>it will never beat the MAX root if it plays optimally</strong>. This is a deep cutoff since no more child of D needs to be explored.</p></li>
+<li><p>Actually, only a very large value of leave G, say <span class="math notranslate nohighlight">\(20\)</span> may change things, <strong>but only in favor of MAX</strong>.</p></li>
+</ol>
+<figure class="align-center" id="cuts">
+<a class="reference internal image-reference" href="_images/cuts-examples-removebg-preview.png"><img alt="_images/cuts-examples-removebg-preview.png" src="_images/cuts-examples-removebg-preview.png" style="width: 800px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.4 </span><span class="caption-text">Alpha-Beta cuts. Swallow (leff) vs Deep. Source: Pearl’s book.</span><a class="headerlink" href="#cuts" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>How to put these reasonings in an algorithm</strong>. Well, the designers of ALPHA-BETA suggested the following mechanism:</p>
+<ol class="arabic simple">
+<li><p>MAX nodes start from <span class="math notranslate nohighlight">\(\alpha=-\infty\)</span> and try to <strong>increase</strong> that <strong>lower</strong> bound.</p></li>
+<li><p>MIN nodes start from <span class="math notranslate nohighlight">\(\beta=+\infty\)</span> and try to <strong>decrease</strong> that <strong>upper</strong> bound.</p></li>
+</ol>
+<p>Then, any node (whatever its type) will receive the a pair <span class="math notranslate nohighlight">\((\alpha, \beta)\)</span>:</p>
+<ol class="arabic simple">
+<li><p>MAX nodes <strong>will only update</strong> <span class="math notranslate nohighlight">\(\alpha\)</span> and will return <span class="math notranslate nohighlight">\(\beta\)</span> as soon as <span class="math notranslate nohighlight">\(\alpha\ge\beta\)</span>. Otherwise they will return <span class="math notranslate nohighlight">\(\alpha\)</span> after exploring their last child.</p></li>
+<li><p>MIN nodes <strong>will only update</strong> <span class="math notranslate nohighlight">\(\beta\)</span> and will return <span class="math notranslate nohighlight">\(\alpha\)</span> as soon as <span class="math notranslate nohighlight">\(\beta\le\alpha\)</span>. Otherwise they will return <span class="math notranslate nohighlight">\(\beta\)</span> after exploring their last child.</p></li>
+</ol>
+<p>Note that <span class="math notranslate nohighlight">\(\mathbf{\alpha\ge\beta}\)</span> (the cutoff condition) is equal to <span class="math notranslate nohighlight">\(\mathbf{\beta\le\alpha}\)</span> but it is read differently from the perspective of a MAX or a MIN node.</p>
+<div class="proof algorithm admonition" id="Alpha-Beta">
+<p class="admonition-title"><span class="caption-number">Algorithm 4.2 </span> (ALPHA-BETA)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Inputs</strong> Root MAX node <span class="math notranslate nohighlight">\(J\leftarrow \mathbf{s}\)</span>, <span class="math notranslate nohighlight">\(\alpha=-\infty\)</span>, <span class="math notranslate nohighlight">\(\alpha=+\infty\)</span><br />
+<strong>Output</strong> Optimal Minimax Value <span class="math notranslate nohighlight">\(V(J)\)</span>.</p>
+<ol class="arabic simple">
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(J\)</span> is terminal <strong>then</strong> <strong>return</strong> <span class="math notranslate nohighlight">\(V(J)=e(J)\)</span>.</p></li>
+<li><p><strong>for</strong> <span class="math notranslate nohighlight">\(k=1,2,\ldots, b\)</span>:</p>
+<ol class="arabic simple">
+<li><p>Generate <span class="math notranslate nohighlight">\(J_k\)</span>, the <span class="math notranslate nohighlight">\(k-\)</span>th successor of <span class="math notranslate nohighlight">\(J\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(J\)</span> is MAX <strong>then</strong>:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\leftarrow \max[\alpha, V(J_k; \alpha,\beta)]\)</span> <span class="math notranslate nohighlight">\(\textbf{[recursive call]}\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\alpha\ge\beta\)</span> <strong>then</strong> <strong>return</strong> <span class="math notranslate nohighlight">\(\beta\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(k=b\)</span> <strong>then</strong> <strong>return</strong> <span class="math notranslate nohighlight">\(\alpha\)</span></p></li>
+</ol>
+</li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(J\)</span> is MIN <strong>then</strong>:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\beta\leftarrow \min[\beta, V(J_k; \alpha,\beta)]\)</span> <span class="math notranslate nohighlight">\(\textbf{[recursive call]}\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(\beta\le\alpha\)</span> <strong>then</strong> <strong>return</strong> <span class="math notranslate nohighlight">\(\alpha\)</span></p></li>
+<li><p><strong>if</strong> <span class="math notranslate nohighlight">\(k=b\)</span> <strong>then</strong> <strong>return</strong> <span class="math notranslate nohighlight">\(\beta\)</span></p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p><strong>Algorithm’s trace of the shallow cut</strong></p>
+<ol class="arabic simple">
+<li><p>Assign <span class="math notranslate nohighlight">\((-\infty,+\infty)\)</span> to the MAX root.</p></li>
+<li><p>A node gets <span class="math notranslate nohighlight">\((-\infty,+\infty)\)</span></p></li>
+<li><p>A updates its <span class="math notranslate nohighlight">\(\beta\)</span> and sends <span class="math notranslate nohighlight">\((-\infty,10)\)</span> to B.</p></li>
+<li><p>B updates its <span class="math notranslate nohighlight">\(\alpha\)</span> obtaining <span class="math notranslate nohighlight">\((14,10)\)</span>. Since B is a MAX node and <span class="math notranslate nohighlight">\(14\ge 10\)</span>, it detects a cut and returns <span class="math notranslate nohighlight">\(\beta=10\)</span>.</p></li>
+<li><p>A still has <span class="math notranslate nohighlight">\((-\infty,10)\)</span> and this is wat returns to the root.</p></li>
+</ol>
+<p><strong>Algorithm’s trace of the deep cut</strong></p>
+<ol class="arabic simple">
+<li><p>Assign <span class="math notranslate nohighlight">\((-\infty,+\infty)\)</span> to the MAX root.</p></li>
+<li><p>The root updates its <span class="math notranslate nohighlight">\(\alpha\)</span> and sends <span class="math notranslate nohighlight">\((10,+\infty)\)</span> to is second child.</p></li>
+<li><p>The pair <span class="math notranslate nohighlight">\((10,+\infty)\)</span> passes through F and D.</p></li>
+<li><p>D is a MIN node having <span class="math notranslate nohighlight">\((10,+\infty)\)</span> and it updates its <span class="math notranslate nohighlight">\(\beta\)</span>. This leads to <span class="math notranslate nohighlight">\((10,5)\)</span>. As <span class="math notranslate nohighlight">\(\beta\le\alpha\)</span>, MIN declares a cut and returns its <span class="math notranslate nohighlight">\(\alpha=10\)</span>.</p></li>
+<li><p>F has now the pair <span class="math notranslate nohighlight">\((10,+\infty)\)</span>. No cut. It asks G.</p></li>
+</ol>
 <!--
 
 ##  Rubik's cube
@@ -1851,6 +1935,7 @@ KL divergences between Normals with different and same mean.
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#game-trees">4.2.1. Game Trees</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategies">4.2.2. Strategies</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-minimax-method">4.2.3. The Minimax Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-alpha-beta-method">4.2.4. The Alpha-Beta Method</a></li>
 </ul>
 </li>
 </ul>
