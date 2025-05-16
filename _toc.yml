@@ -28,3 +28,5 @@ parts:
 - caption: Practice 3
   chapters:
   - file: practice_3
+  - file: minimax
+  - file: alphabeta
