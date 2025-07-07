@@ -30,3 +30,7 @@ parts:
   - file: practice_3
   - file: minimax
   - file: alphabeta
+- caption: Exam solutions 
+  chapters:
+  - file: ExamC3of2025
+
