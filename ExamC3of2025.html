@@ -1,0 +1,1328 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>13. Assignment 06/25 &#8212; Técnicas y Algoritmos de Búsqueda IA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ExamC3of2025';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="12. Alpha-Beta Pruning" href="alphabeta.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Técnicas y Algoritmos de Búsqueda IA - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TAB2025
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">NP-Hardness and Graph Matching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic1.html">1. NP-Complete Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topic2.html">2. Simulated and Deterministic Annealing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Puzzles and Rubik</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic3.html">3. Heuristic Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Game Searching</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="topic4.html">4. Game Search</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_1_1.html">5. Introduction to the practical part of TAB2025</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_2.html">6. Graph Construction for Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_3.html">7. Graph Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice_1_4.html">8. Graph Matching with Topological Features</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_2.html">9. Clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practice 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="practice_3.html">10. Pacman with AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimax.html">11. Game Theory and Adversarial Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alphabeta.html">12. Alpha-Beta Pruning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Exam solutions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. Assignment 06/25</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FExamC3of2025.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/ExamC3of2025.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Assignment 06/25</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sat3-vs-clique">13.1. SAT3 vs Clique</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-matching">13.2. Graph Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#da-clustering">13.3. DA Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rubik-and-beam-search">13.4. Rubik and Beam Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha-beta-cuts">13.5. Alpha-Beta Cuts</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="assignment-06-25">
+<h1><span class="section-number">13. </span>Assignment 06/25<a class="headerlink" href="#assignment-06-25" title="Permalink to this heading">#</a></h1>
+<section id="sat3-vs-clique">
+<h2><span class="section-number">13.1. </span>SAT3 vs Clique<a class="headerlink" href="#sat3-vs-clique" title="Permalink to this heading">#</a></h2>
+<p><span style="color:#d94f0b"><strong>Exercise Q1</strong>. Is the formula
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\underbrace{(x_1\lor x_2\lor \neg x_3)}_{c_1}\land \underbrace{(\neg x_1\lor \neg x_2\lor x_3)}_{c_2}
+\)</span>
+</span>
+<span style="color:#d94f0b">satisfiable? Reason about it and show how to decide it by means of reducing SAT3 to Maximal Clique.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>. This formula is clearly satisfiable since each variable is true in one clause and false in the other or viceversa. For instance, if <span class="math notranslate nohighlight">\(x_1=1\)</span> in the first clause, then <span class="math notranslate nohighlight">\(\neg x_1=0\)</span> in the second, and the same reasoning is valid for the remaining variables. In other words, we can make <span class="math notranslate nohighlight">\(x_1=1\)</span> and <span class="math notranslate nohighlight">\(x_2=0\)</span> in the first clause, thus satifying <span class="math notranslate nohighlight">\(c_1\)</span>, because <span class="math notranslate nohighlight">\(x_1=1\)</span>, and also satisfying <span class="math notranslate nohighlight">\(c_2\)</span> since <span class="math notranslate nohighlight">\(\neg x_2 = 1\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">Concerning the mapping of SAT3 to the Maximal Clique, be aware that we have <span class="math notranslate nohighlight">\(2\)</span> clauses <span class="math notranslate nohighlight">\(c_1=(x_1\lor x_2\lor \neg x_3)\)</span> and <span class="math notranslate nohighlight">\(c_2=(\neg x_1\lor \neg x_2\lor x_3)\)</span>. Mapping SAT3 to Maximal Clique consists of creating a graph with as many nodes as literals: <span class="math notranslate nohighlight">\(3c\)</span>, where <span class="math notranslate nohighlight">\(c\)</span> is the number of clauses. The edges in the clique graph can link any pair of literals except <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(\neg x_i\)</span>. In  In <a class="reference internal" href="#sat3-clique"><span class="std std-numref">Fig. 13.1</span></a>, we show all the possible edges.
+</span>
+<br></br></p>
+<figure class="align-center" id="sat3-clique">
+<a class="reference internal image-reference" href="_images/SATcliqueExam-removebg-preview.png"><img alt="_images/SATcliqueExam-removebg-preview.png" src="_images/SATcliqueExam-removebg-preview.png" style="width: 450px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.1 </span><span class="caption-text">Possible to create many cliques of <span class="math notranslate nohighlight">\(c=2\)</span> nodes.</span><a class="headerlink" href="#sat3-clique" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+Once we have the <em>clique graph</em>, if the formula is satisfiable we will find cliques of size <span class="math notranslate nohighlight">\(c\)</span>. Since in the above problem, we have <span class="math notranslate nohighlight">\(c=2\)</span>, then **any edge in the above clique graph creates a clique of size <span class="math notranslate nohighlight">\(c=2\)</span>, in particular <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(\neg x_2\)</span>.
+</span></p>
+</section>
+<section id="graph-matching">
+<h2><span class="section-number">13.2. </span>Graph Matching<a class="headerlink" href="#graph-matching" title="Permalink to this heading">#</a></h2>
+<p><span style="color:#d94f0b"><strong>Exercise Q2</strong>. Given the pair of graphs <span class="math notranslate nohighlight">\(X=(V,E)\)</span> (left) and <span class="math notranslate nohighlight">\(Y=(V',E')\)</span> right in <a class="reference internal" href="#exmatching2"><span class="std std-numref">Fig. 13.2</span></a>, the current assignment encodes a way of making <span class="math notranslate nohighlight">\(X\)</span> a exact subgraph of <span class="math notranslate nohighlight">\(Y\)</span>. <strong>a)</strong> How many ways do we have of making <span class="math notranslate nohighlight">\(X\)</span> an exact subgraph of <span class="math notranslate nohighlight">\(Y\)</span>?
+</span>
+<br></br></p>
+<figure class="align-center" id="exmatching2">
+<a class="reference internal image-reference" href="_images/Matching2-Photoroom.png"><img alt="_images/Matching2-Photoroom.png" src="_images/Matching2-Photoroom.png" style="width: 600px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.2 </span><span class="caption-text">A Maximal Common Substructure.</span><a class="headerlink" href="#exmatching2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>. Since <span class="math notranslate nohighlight">\(Y\)</span> has <span class="math notranslate nohighlight">\(n=5\)</span> nodes and <span class="math notranslate nohighlight">\(X\)</span> has <span class="math notranslate nohighlight">\(r=3\)</span> nodes, there are <span class="math notranslate nohighlight">\(P(n,r)=n\cdot (n-1)\cdot (n-r+1)\)</span> <strong>r-permutations</strong>, i.e. <span class="math notranslate nohighlight">\(P(5,3)=5\cdot 4\cdot 3 = 60\)</span>  injective mappings <span class="math notranslate nohighlight">\(f_i: V\rightarrow V'\)</span>, where <span class="math notranslate nohighlight">\((v\in V, f_i(v)\in V')\)</span>. These mappings are <strong>order-dependent</strong> since they are permutations. As we are asking for Maximum Common Subgraphs (MCS), the only ways of achieving this is to <strong>pivoting on assigned notable vertices</strong>, i.e. <span class="math notranslate nohighlight">\(b=1\)</span> or <span class="math notranslate nohighlight">\(b=4\)</span>, i.e. <span class="math notranslate nohighlight">\((a=\ast,b=1,c=\ast)\)</span> and <span class="math notranslate nohighlight">\((a=\ast,b=4,c=\ast)\)</span>. Then, we have the following permutations leading to MCS:<br />
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+&amp;\begin{array}{cccc}
+\text{Subgraph} &amp; \text{Permutation} &amp; \text{Nodes} &amp; \text{Edges}\\
+s_1    &amp; f_1=(a=2, b=1, c=3) &amp; V_1'=\{1,2,3\} &amp; E_1'=\{(1,2),(1,3)\}\\
+s_2    &amp; f_2=(a=3, b=1, c=2) &amp; V_2'=\{1,2,3\} &amp; E_2'=\{(1,2),(1,3)\}\\ 
+s_3    &amp; f_3=(a=2, b=1, c=4) &amp; V_3'=\{1,2,4\} &amp; E_3'=\{(1,2),(1,4)\}\\
+s_4    &amp; f_4=(a=4, b=1, c=2) &amp; V_4'=\{1,2,4\} &amp; E_4'=\{(1,2),(1,4)\}\\
+s_5    &amp; f_5=(a=1, b=4, c=5) &amp; V_5'=\{1,4,5\} &amp; E_5'=\{(1,4),(4,5)\}\\
+s_6    &amp; f_6=(a=5, b=4, c=4) &amp; V_6'=\{1,4,5\} &amp; E_6'=\{(1,4),(4,5)\}\\
+\end{array}
+\end{aligned}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+As a result, only <span class="math notranslate nohighlight">\(6/60=10\%\)</span> of the permutations lead to an optimal solution or MCS.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>b)</strong> What is the formal space of solutions and the cost function to maximize.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>. Each candidate assignment <span class="math notranslate nohighlight">\(f:V\rightarrow V'\)</span> is encoded by a binary <strong>assignment matrix</strong> <span class="math notranslate nohighlight">\(\mathbf{M}\in\{0,1\}^{m\times n}\)</span> with <span class="math notranslate nohighlight">\(m\le n\)</span> and <span class="math notranslate nohighlight">\(m=|V|\)</span>, <span class="math notranslate nohighlight">\(n=|V'|\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+However, not every binary matrix of size <span class="math notranslate nohighlight">\(m\times n\)</span> encodes a candidate asignment. Only those whose <em>rows do not have more than <span class="math notranslate nohighlight">\(m\)</span> ones and whose columns do have either a single one or none</em>, encode <strong>injective functions</strong>, i.e. valid assignments. The solution/search space is given by the set of <strong>assignment matrices</strong> <span class="math notranslate nohighlight">\({\cal P}\)</span> where,
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+{\cal P}=&amp;\left\{\mathbf{M}\in \{0,1\}^{m\times n}:\forall a\in V:\sum_{i\in V'}\mathbf{M}_{ai}\le 1\;\text{and}\; \forall i\in V':\sum_{a\in V}\mathbf{M}_{ai}\le 1\;\right\}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Only if <span class="math notranslate nohighlight">\(m=n\)</span>, we have that <em>assignment matrices become permutation matrices</em>, i.e. a unique one per row and columb is allowed. Then, the solution space is the Permuthoedron <span class="math notranslate nohighlight">\(\Pi_n\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\Pi_n=&amp;\left\{\mathbf{M}\in \{0,1\}^{n\times n}:\forall a\in V:\sum_{i\in V'}\mathbf{M}_{ai}= 1\;\text{and}\; \forall i\in V':\sum_{a\in V}\mathbf{M}_{ai}= 1\;\right\}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Concerning the <strong>cost function</strong>, the most popular is the <strong>quadratic assignment function</strong> which counts the <strong>number of rectangles</strong> (if a node <span class="math notranslate nohighlight">\(a\)</span> in <span class="math notranslate nohighlight">\(X\)</span> matches another one <span class="math notranslate nohighlight">\(i\)</span> in <span class="math notranslate nohighlight">\(Y\)</span>, then their respective neighbors are enforced to match; otherwise this is not a godd choice). Remember that a rectangle exists if <em>its four sides do exist</em>, i.e. if
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\exists a,b\in V, \exists i,j\in V':\; \mathbf{M}_{ai}\mathbf{M}_{bj}\mathbf{X}_{ab}\mathbf{Y}_{ij}&gt;0\;,
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+where <span class="math notranslate nohighlight">\(\mathbf{X}_{ab}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{Y}_{ij}\)</span> encode the respective neighboring rules (sides of the rectangle) as we show in <a class="reference internal" href="#exrectangle"><span class="std std-numref">Fig. 13.3</span></a>.
+</span>
+<br></br></p>
+<figure class="align-center" id="exrectangle">
+<a class="reference internal image-reference" href="_images/Rectangle-Photoroom.png"><img alt="_images/Rectangle-Photoroom.png" src="_images/Rectangle-Photoroom.png" style="width: 600px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.3 </span><span class="caption-text">The Rectangle Rule in Graph Matching.</span><a class="headerlink" href="#exrectangle" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+Then the <strong>quadratic cost function</strong> that counts the number of rectangles closed by <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+F(\mathbf{M}) = \frac{1}{2}\sum_{a\in V}\sum_{i\in V'}\sum_{b\in V}\sum_{j\in V'}\mathbf{M}_{ai}\mathbf{M}_{bj}\mathbf{X}_{ab}\mathbf{Y}_{ij}\;,
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Whose <strong>matricial form</strong> is
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+F(\mathbf{M}) = \frac{1}{2}\sum_{a}\sum_{i}(((\mathbf{X}\mathbf{M})\mathbf{Y})\odot \mathbf{M})_{ai}\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>c)</strong> Propose a random walk in the solution space <span class="math notranslate nohighlight">\({\cal P}\)</span> such as <span class="math notranslate nohighlight">\(\omega_0\rightarrow\omega_1\rightarrow\omega_2\rightarrow\omega_3\)</span> generated by Simulated annealing starting by <span class="math notranslate nohighlight">\(\omega_0=(a=1,b=5,c=2)\)</span>. In each case justify the decision taken by SA based on the quadratic cost function.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>. SA creates a random walk <span class="math notranslate nohighlight">\(X_0,X_1,\ldots\)</span> on <span class="math notranslate nohighlight">\(\Omega={\cal P}\)</span> through the following Markov chain:
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+p(X_{t+1}=\omega'|X_{t}=\omega) =
+\begin{cases}
+     1 &amp;\;\text{if}\; \Delta F\ge 0 \\[2ex]
+     \exp(\beta(t)\cdot \Delta F)&amp;\;\text{otherwise}\\[2ex]
+\end{cases}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+where <span class="math notranslate nohighlight">\(\Delta F:=F(\omega')-F(\omega)\)</span> and <span class="math notranslate nohighlight">\(\beta(t):=\frac{1}{T(t)}\)</span> where <span class="math notranslate nohighlight">\(T\)</span> is the <strong>computational temperature</strong>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>1st step</strong>. Since <span class="math notranslate nohighlight">\(\omega_0=(a=1,b=5,c=2)\)</span>, and the Markov chain must be <strong>irreducible</strong> (every state in <span class="math notranslate nohighlight">\(\Omega\)</span> must be <em>reachable</em>), the neighbors <span class="math notranslate nohighlight">\(\omega'\in {\cal N}_{\omega_0}\)</span> are defined as follows:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Choose <em>one</em> to variables to change: <span class="math notranslate nohighlight">\(a\)</span>, <span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(c\)</span>. Say we choose <span class="math notranslate nohighlight">\(b\)</span>. This means that <span class="math notranslate nohighlight">\(\omega'\)</span> has the form <span class="math notranslate nohighlight">\((a=1,b=\ast,c=2)\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Since <span class="math notranslate nohighlight">\(\omega'\)</span> (actually, its matricial representation) must be in <span class="math notranslate nohighlight">\({\cal P}\)</span>, we have that <span class="math notranslate nohighlight">\(b\not\in\{1,2\}\)</span>. Therefore, <span class="math notranslate nohighlight">\(\omega'\in\{3,4,5\}\)</span>. We could repeat <span class="math notranslate nohighlight">\(5\)</span> but we decide (the sampler decides) to pick <span class="math notranslate nohighlight">\(b=4\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+With <span class="math notranslate nohighlight">\(\omega'=(a=1,b=4,c=2)\)</span> we have that <span class="math notranslate nohighlight">\(F(\omega')=1\)</span> since we close a unique rectangle. However, for <span class="math notranslate nohighlight">\(\omega_0=(a=1,b=5,c=2)\)</span> we have <span class="math notranslate nohighlight">\(F(\omega)=0\)</span> (no rectangles). As a result <span class="math notranslate nohighlight">\(\Delta F = 1 - 0 = 1&gt;0\)</span> and this indicates that <em>we must accept</em> <span class="math notranslate nohighlight">\(\omega'\)</span>, which (officially) becomes <span class="math notranslate nohighlight">\(\omega_1\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>2nd step</strong>. Now, we have <span class="math notranslate nohighlight">\(\omega_1=(a=1,b=4,c=2)\)</span> and we must choice <span class="math notranslate nohighlight">\(\omega'\in {\cal N}_{\omega_1}\)</span> and <span class="math notranslate nohighlight">\(\omega'\in{\cal P}\)</span>. One possibility is to make <span class="math notranslate nohighlight">\(a=3\)</span>. This results in <span class="math notranslate nohighlight">\(\omega'=(a=3,b=4,c=2)\)</span> which has <span class="math notranslate nohighlight">\(F(\omega')=0\)</span> (zero rectangles). Since <span class="math notranslate nohighlight">\(\Delta F = 0 - 1 &lt; 0\)</span>. This configuration is accepted with probability
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+q = \exp(\beta(t)\cdot \Delta F) = \exp\left(\frac{\Delta F}{T(t)}\right) = \exp\left(\frac{-1}{T(t)}\right)
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+We have that <span class="math notranslate nohighlight">\(exp(-1)=\frac{1}{e}=0.37\)</span>. This means that for <span class="math notranslate nohighlight">\(T(1)=10\)</span> we have:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+exp(-1/10)=\frac{1}{exp(1/10)}=\frac{1}{exp(0.1)}=\frac{1}{1.10}=0.9\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+This means that <span class="math notranslate nohighlight">\(p\approx 1\)</span>. Then, if we randomnly generate <span class="math notranslate nohighlight">\(p\in [0,1]\)</span> it is quite probable to get <span class="math notranslate nohighlight">\(q=0.9\ge p\)</span>. In other words, it is easy to accept <span class="math notranslate nohighlight">\(\omega'\)</span> which becomes the official <span class="math notranslate nohighlight">\(\omega_2\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>3rd step</strong>. From <span class="math notranslate nohighlight">\(\omega_2=(a=3,b=4,c=2)\)</span> we can easily select <span class="math notranslate nohighlight">\(b\)</span> and then set <span class="math notranslate nohighlight">\(b=1\)</span> leading to a <em>legal neighbor</em> <span class="math notranslate nohighlight">\(\omega'=(a=3,b=1,c=2)\)</span>. This results in <span class="math notranslate nohighlight">\(F(\omega')=2\)</span> and <span class="math notranslate nohighlight">\(\Delta F = 2 - 0 = 2&gt;0\)</span>, which is accepted. We thus get, <span class="math notranslate nohighlight">\(\omega_3=(a=3,b=1,c=2)\)</span>, an MCS!
+</span></p>
+</section>
+<section id="da-clustering">
+<h2><span class="section-number">13.3. </span>DA Clustering<a class="headerlink" href="#da-clustering" title="Permalink to this heading">#</a></h2>
+<p><span style="color:#d94f0b"><strong>Exercise Q3</strong>. Starting from the corresponding exercise in the first control, we explain the layout in <a class="reference internal" href="#exclusteringa"><span class="std std-numref">Fig. 13.4</span></a>.
+</span>
+<br></br></p>
+<figure class="align-center" id="exclusteringa">
+<a class="reference internal image-reference" href="_images/ClusteringDA1Da-removebg-preview.png"><img alt="_images/ClusteringDA1Da-removebg-preview.png" src="_images/ClusteringDA1Da-removebg-preview.png" style="width: 600px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.4 </span><span class="caption-text">Data-cluster assignment and one-dimensional data layout below.</span><a class="headerlink" href="#exclusteringa" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b"><strong>a)</strong> Find a value of <span class="math notranslate nohighlight">\(\epsilon\)</span> which is consistent with the above assignments.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>. The image shows a graph-like representation of the one-dimensional layout below. We have four 1D points <span class="math notranslate nohighlight">\(X_1,X_2,X_3\)</span> and <span class="math notranslate nohighlight">\(X_4\)</span>. The magenta lines of the graph show that <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span> belong to the cluster exemplified by <span class="math notranslate nohighlight">\(c_1\)</span> and <span class="math notranslate nohighlight">\(X_3\)</span> and <span class="math notranslate nohighlight">\(X_4\)</span> belong to the one exemplified by <span class="math notranslate nohighlight">\(c_2\)</span>.
+<br></br>
+For this to be true, we must have that the probabilities <span class="math notranslate nohighlight">\(\langle\mathbf{M}_{ai}\rangle\)</span> satisfy:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+&amp;\langle\mathbf{M}_{11}\rangle\approx \langle\mathbf{M}_{21}\rangle&gt;0.5\\
+&amp;\langle\mathbf{M}_{32}\rangle\approx \langle\mathbf{M}_{42}\rangle&gt;0.5\\
+&amp;\forall a\in\{1,2\}:\langle\mathbf{M}_{a1}\rangle&gt; 
+\langle\mathbf{M}_{a2}\rangle\\
+&amp;\forall a\in\{3,4\}:\langle\mathbf{M}_{a2}\rangle&gt; 
+\langle\mathbf{M}_{a1}\rangle\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+The left side of the two first condititions is due to symmetry (we add or subtract <span class="math notranslate nohighlight">\(\epsilon\)</span> to <span class="math notranslate nohighlight">\(c_i\)</span> to make <span class="math notranslate nohighlight">\(X_i\)</span>).
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Limit case</strong>. A good strategy to face a problem is to consider the limit case: <span class="math notranslate nohighlight">\(\epsilon=0\)</span>. This makes
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+X_1=X_2=c_1=-2\;\;\text{and}\;\;X_3=X_4=c_2=+2\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+However, doing so we have
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\langle\mathbf{M}_{a1}\rangle &amp;= \frac{e^{-\beta|X_{a}-c_1|}}{e^{-\beta|X_{a}-c_1|}+e^{-\beta|X_{a}-c_2|}} = 
+\begin{cases}
+     1 &amp;\;\text{if}\; (a=1\lor a=2)\\[2ex]
+     \frac{e^{-\beta|X_{a}-c_1|}}{e^{-\beta|X_{a}-c_1|}+e^{-\beta|X_{a}-c_2|}} &amp;\;\text{otherwise}\:.\\[2ex]
+\end{cases}\\
+\langle\mathbf{M}_{a2}\rangle &amp;= \frac{e^{-\beta|X_{a}-c_2|}}{e^{-\beta|X_{a}-c_1|}+e^{-\beta|X_{a}-c_2|}} = 
+\begin{cases}
+     1 &amp;\;\text{if}\; (a=3\lor a=4)\\[2ex]
+     \frac{e^{-\beta|X_{a}-c_1|}}{e^{-\beta|X_{a}-c_1|}+e^{-\beta|X_{a}-c_2|}} &amp;\;\text{otherwise}\:.\\[2ex]
+\end{cases}\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Note that the <span class="math notranslate nohighlight">\(1\)</span>s come from <span class="math notranslate nohighlight">\(e^{-\beta|X_a-c_1|}=1\rightarrow X_a=c_1\)</span>, when <span class="math notranslate nohighlight">\(X_a\in\{X_1,X_2\}\)</span>, and from <span class="math notranslate nohighlight">\(e^{-\beta|X_a-c_2|}=1\rightarrow X_a=c_2\)</span>, when <span class="math notranslate nohighlight">\(X_a\in\{X_3,X_4\}\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Otherwise, we have the “opposite probabilities”:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\langle\mathbf{M}_{31}\rangle &amp;= 
+\frac{e^{-\beta|X_{3}-c_1|}}{e^{-\beta|X_{3}-c_1|}+e^{-\beta|X_{3}-c_2|}} = \frac{e^{-\beta|2-(-2)|}}{e^{-\beta|2-(-2)|}+e^{-\beta|2-2|}}=\frac{e^{-4\beta}}{e^{-4\beta}+1}\\
+\langle\mathbf{M}_{41}\rangle &amp;= \langle\mathbf{M}_{31}\rangle\\
+\langle\mathbf{M}_{12}\rangle &amp;= 
+\frac{e^{-\beta|X_{1}-c_2|}}{e^{-\beta|X_{1}-c_2|}+e^{-\beta|X{1}-c_1|}} = \frac{e^{-\beta|-2-2|}}{e^{-\beta|-2-2|}+e^{-\beta|2-2|}}=\frac{e^{-4\beta}}{e^{-4\beta}+1}\\
+\langle\mathbf{M}_{41}\rangle &amp;= \langle\mathbf{M}_{31}\rangle\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Now, looking at
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+A:=\frac{e^{-4\beta}}{e^{-4\beta}+1}\ll 1\;\text{and}\;\lim_{\beta\rightarrow\infty} A = 0\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+For <span class="math notranslate nohighlight">\(\beta=1\)</span>, we have that
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+A(\beta=1):=\frac{e^{-4\beta}}{e^{-4\beta}+1} =  \frac{\frac{1}{e^4}}{\frac{1}{e^4}+1} = \frac{\frac{1}{e^4}}{\frac{1 + e^4}{e^4}}=\frac{1}{1 + e^4} = \frac{1}{1 + 54.6}=0.018\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Therefore, we have:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\langle\mathbf{M}\rangle=
+\begin{bmatrix}
+1 &amp; 0.018 \\
+1 &amp; 0.018 \\
+0.018 &amp; 1 \\
+0.018 &amp; 1 \\
+\end{bmatrix}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Which <strong>satisfies the requirement</strong> of <a class="reference internal" href="#exclusteringa"><span class="std std-numref">Fig. 13.4</span></a>.After normalization, we have
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\langle\mathbf{M}\rangle=
+\begin{bmatrix}
+0.98 &amp; 0.02 \\
+0.98 &amp; 0.02 \\
+0.02 &amp; 0.98 \\
+0.02 &amp; 0.98 \\
+\end{bmatrix}\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>b)</strong> Update the centers <span class="math notranslate nohighlight">\(c_i\)</span>. This is quite obvious if we apply the correct formula of expectation update.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+c_i' = \sum_a x_a\frac{\langle\mathbf{M}_{ai}\rangle}{\sum_a \langle\mathbf{M}_{ai}\rangle}\:.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Then, considering that <span class="math notranslate nohighlight">\(\sum_a \langle\mathbf{M}_{ai}\rangle\)</span> is the <span class="math notranslate nohighlight">\(i-th\)</span> column of <span class="math notranslate nohighlight">\(\langle \mathbf{M}\rangle\)</span>, we have:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\sum_a \langle\mathbf{M}_{a1}\rangle &amp;=0.98 + 0.98 + 0.02 + 0.02 = 2\\
+\sum_a \langle\mathbf{M}_{a2}\rangle &amp;=0.02 + 0.02 + 0.98 + 0.98 = 2\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Then, we have (looking and the first and second colums of the assignment matrix):
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+c_1' &amp;= \sum_a x_a\frac{\langle\mathbf{M}_{ai}\rangle}{2}=-2\frac{0.98}{2} + -2\frac{0.98}{2} + 2\frac{0.02}{2} + 2\frac{0.02}{2} = -0.98-0.98 + 0.02 + 0.02 = -1.92\\
+c_2' &amp;= \sum_a x_a\frac{\langle\mathbf{M}_{ai}\rangle}{2}=-2\frac{0.02}{2} + -2\frac{0.02}{2} + 2\frac{0.98}{2} + 2\frac{0.98}{2} = -0.02-0.02 + 0.98 + 0.98 = +1.92\;.\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Then, all we have is that the centers “approach” eachother:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+c_1=-2 &amp;\rightarrow c_1'=-1.98\\
+c_2=+2 &amp;\rightarrow c_1'=+1.98\:.\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+With this analysis to hand, <strong>Question Q3</strong> in the exam is quite straight: they ask for update the centers <strong>given the assignment matrix</strong>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\langle\mathbf{M}\rangle=
+\begin{bmatrix}
+0.98 &amp; 0.02 \\
+0.88 &amp; 0.12 \\
+0.12 &amp; 0.88 \\
+0.02 &amp; 0.98 \\
+\end{bmatrix}\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Which is achieved by setting <span class="math notranslate nohighlight">\(\epsilon=1\)</span>. Note that, as for <span class="math notranslate nohighlight">\(\epsilon=0\)</span>, the new assignment matrix is also consistent with clustering <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span> around center <span class="math notranslate nohighlight">\(c_1\)</span> and clustering <span class="math notranslate nohighlight">\(X_3\)</span> and <span class="math notranslate nohighlight">\(X_4\)</span> around center <span class="math notranslate nohighlight">\(c_2\)</span>. What is different now is as <span class="math notranslate nohighlight">\(\epsilon\)</span> moves from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span>, <span class="math notranslate nohighlight">\(X_2\)</span> and <span class="math notranslate nohighlight">\(X_3\)</span> “approach each other” and thus they belong less to their respective cluster!
+</span>
+<br></br>
+<span style="color:#d94f0b">
+This explais why, for <span class="math notranslate nohighlight">\(\epsilon=1\)</span>, the centers “attract more” each other than with <span class="math notranslate nohighlight">\(\epsilon=0\)</span>. If you redo the computations of <span class="math notranslate nohighlight">\(c_1'\)</span> and <span class="math notranslate nohighlight">\(c_2'\)</span> you will obtain:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+c_1=-2 &amp;\rightarrow c_1'=-1.82\\
+c_2=+2 &amp;\rightarrow c_1'=+1.83\:.\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+The message to take herein is that as you increment more <span class="math notranslate nohighlight">\(\epsilon\)</span> we have: <strong>a)</strong> it is more and more likely that <span class="math notranslate nohighlight">\(X_2\)</span> belongs to cluster <span class="math notranslate nohighlight">\(c_2\)</span> since <span class="math notranslate nohighlight">\(X_2 = c_1 + \epsilon\)</span>, and <strong>b)</strong> X_3 belongs to cluster <span class="math notranslate nohighlight">\(c_1\)</span> since <span class="math notranslate nohighlight">\(X_3 = c_2 - \epsilon\)</span> as we show in <a class="reference internal" href="#exclusteringb"><span class="std std-numref">Fig. 13.5</span></a>.
+</span>
+<br></br></p>
+<figure class="align-center" id="exclusteringb">
+<a class="reference internal image-reference" href="_images/ClusteringDA1Db-removebg-preview.png"><img alt="_images/ClusteringDA1Db-removebg-preview.png" src="_images/ClusteringDA1Db-removebg-preview.png" style="width: 600px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.5 </span><span class="caption-text">Data-cluster assignment and one-dimensional data layout below.</span><a class="headerlink" href="#exclusteringb" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+The configuration depicted in the above figure is just the standard situation where two clusters “intersect”. Finding a theoretical value for <span class="math notranslate nohighlight">\(\epsilon\)</span> is beyond what we answer in the control or exam. However, as in the limit case we may summarize the conditions to be satisfied by the corresponding assignment matrix as follows
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+&amp;\langle\mathbf{M}_{11}\rangle\approx \langle\mathbf{M}_{22}\rangle&gt;0.5\\
+&amp;\langle\mathbf{M}_{31}\rangle\approx\langle\mathbf{M}_{42}\rangle&gt;0.5\\
+&amp;\forall a\in\{1,3\}:\langle\mathbf{M}_{a1}\rangle&gt; 
+\langle\mathbf{M}_{a2}\rangle\\
+&amp;\forall a\in\{2,4\}:\langle\mathbf{M}_{a2}\rangle&gt; 
+\langle\mathbf{M}_{a1}\rangle\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Intuitively, <span class="math notranslate nohighlight">\(\langle\mathbf{M}_{11}\rangle\approx \langle\mathbf{M}_{22}\rangle&gt;0.5\)</span> tells us that
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+&amp;\frac{e^{-\beta |X_1-c_1|}}{e^{-\beta |X_1-c_1|}+e^{-\beta |X_1-c_2|}}\approx \frac{e^{-\beta |X_2-c_2|}}{e^{-\beta |X_2-c_1|}+e^{-\beta |X_2-c_2|}}&gt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Keeping in mind the definitions:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+X_1 &amp;= c_1 - \epsilon\\
+X_2 &amp;= c_1 + \epsilon\\
+X_3 &amp;= c_2 - \epsilon\\
+X_4 &amp;= c_2 + \epsilon\\
+\mathbf{c_1} &amp; \mathbf{= - c_2}\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+And applying in to the above equations, we have
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\frac{e^{-\beta |-\epsilon|}}{e^{-\beta |-\epsilon|}+e^{-\beta |2c_1-\epsilon|}} &amp;\approx \frac{e^{-\beta |2c_1 + \epsilon|}}{e^{-\beta |\epsilon|}+e^{-\beta |2c_1 + \epsilon|}}&gt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\frac{e^{-\beta\epsilon}}{e^{-\beta \epsilon}+e^{-\beta |2c_1-\epsilon|}} &amp;\approx \frac{e^{-\beta |2c_1 + \epsilon|}}{e^{-\beta\epsilon}+e^{-\beta |2c_1 + \epsilon|}}&gt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\frac{e^{-\beta\epsilon}}{e^{-\beta \epsilon}+e^{-\beta |2(-2)-\epsilon|}} &amp;\approx \frac{e^{-\beta |2\cdot (-2) + \epsilon|}}{e^{-\beta\epsilon}+e^{-\beta |2\cdot (-2) + \epsilon|}}&gt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\frac{e^{-\beta\epsilon}}{e^{-\beta \epsilon}+e^{-\beta |-4-\epsilon|}} &amp;\approx \frac{e^{-\beta |-4 + \epsilon|}}{e^{-\beta\epsilon}+e^{-\beta |-4 + \epsilon|}}&gt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Since <span class="math notranslate nohighlight">\(\epsilon=2\)</span> is the following integer value after <span class="math notranslate nohighlight">\(\epsilon=1\)</span>, we update the formulas as follows:<br />
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\frac{e^{-\beta 2}}{e^{-\beta 2}+e^{-\beta |-4-2|}} &amp;\approx \frac{e^{-\beta |-4 + 2|}}{e^{-\beta 2}+e^{-\beta |-4 + 2|}}&gt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+And for <span class="math notranslate nohighlight">\(\beta = 1\)</span>,
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\frac{e^{-2}}{e^{-2}+e^{-6}} &amp;\approx \frac{e^{-2}}{e^{-2}+e^{-2}}&gt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+However, this is not enough since
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+\frac{e^{-2}}{e^{-2}+e^{-2}} = \frac{e^{-2}}{2}=\frac{1}{2e^2}&lt;\frac{1}{2}\;.
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Actually, after computing and normalizing the assignment matrix we have
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\langle\mathbf{M}\rangle=
+\begin{bmatrix}
+0.98 &amp; 0.02 \\
+0.50 &amp; 0.50 \\
+0.50 &amp; 0.50 \\
+0.02 &amp; 0.98 \\
+\end{bmatrix}\;,
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+i.e. <span class="math notranslate nohighlight">\(\langle\mathbf{M}_{21}\rangle = \langle\mathbf{M}_{22}\rangle=1/2\)</span>. In other words, for <span class="math notranslate nohighlight">\(\epsilon=2\)</span>, <span class="math notranslate nohighlight">\(X_2\)</span> is equidistant from <span class="math notranslate nohighlight">\(c_1\)</span> and <span class="math notranslate nohighlight">\(c_2\)</span>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Consequently, the solution comes with <span class="math notranslate nohighlight">\(\epsilon&gt;2\)</span>, in particular, with <span class="math notranslate nohighlight">\(\epsilon=3\)</span> we obtain the following assignment matrix (after normalization):
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\langle\mathbf{M}\rangle=
+\begin{bmatrix}
+0.98 &amp; 0.02 \\
+0.12 &amp; 0.88 \\
+0.88 &amp; 0.12 \\
+0.02 &amp; 0.98 \\
+\end{bmatrix}\;,
+\)</span>
+</span>
+<span style="color:#d94f0b">
+Where <span class="math notranslate nohighlight">\(X_2\)</span> is assigned to cluster <span class="math notranslate nohighlight">\(c_2\)</span> and <span class="math notranslate nohighlight">\(X_3\)</span> to cluster <span class="math notranslate nohighlight">\(c_1\)</span>. The centers become:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+c_1=-2 &amp;\rightarrow c_1'=-2.79\\
+c_2=+2 &amp;\rightarrow c_1'=+2.79\:,\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Intrerpretation:</strong> as <span class="math notranslate nohighlight">\(X_2\)</span> approaches X_3 and their assigned clusters are twisted, the new centers “diverge” since <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_4\)</span> do also diverge.<br />
+</span>
+<br></br></p>
+</section>
+<section id="rubik-and-beam-search">
+<h2><span class="section-number">13.4. </span>Rubik and Beam Search<a class="headerlink" href="#rubik-and-beam-search" title="Permalink to this heading">#</a></h2>
+<p><span style="color:#d94f0b"><strong>Exercise Q4</strong>. This is an example of a practical question with a theoretical flavor. All we expect here is that you reason about the heuristic-search procsss. layout in <a class="reference internal" href="#exclusteringa"><span class="std std-numref">Fig. 13.4</span></a>.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>a)</strong> How does BEAM search bound the combinatorial explosion in the Rubik problem.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong> The Rubik-cube search problem is, as many combinatorial problems, a good example of <em>combinatorial explosion</em> of order <span class="math notranslate nohighlight">\(b^d\)</span>, where <span class="math notranslate nohighlight">\(b\)</span> is the branching factor, and <span class="math notranslate nohighlight">\(d\)</span> is depth. Then, if we assume that <span class="math notranslate nohighlight">\(b\)</span> is constant (as it is in Rubik, where <span class="math notranslate nohighlight">\(b=12\)</span>), we expand (by default) the following number of nodes <span class="math notranslate nohighlight">\(S\)</span> (see Iterative-deepening section):
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+S_b = \underbrace{b^0}_{\text{Root=1st level}} + 
+\underbrace{b^1}_{\text{2nd level}} + 
+\underbrace{b^2}_{\text{3rd level}} + \ldots + 
+\underbrace{b^{d}}_{\text{d level}} = \sum_{i=0}^db^i = b^0\left(\frac{1-b^{d}}{1-b}\right)\;.
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+For <span class="math notranslate nohighlight">\(b=2\)</span> we have:
+</span>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+S_2=\frac{1-2^{d}}{1-2} = -1 + 2^d = 2^d-1\;
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+For <span class="math notranslate nohighlight">\(d=5\)</span> we have: <span class="math notranslate nohighlight">\(2^5 - 1 = 31\)</span> generated nodes as we illustrate <a class="reference internal" href="#exbeam1"><span class="std std-numref">Fig. 13.6</span></a>:<br />
+</span>
+<br></br></p>
+<figure class="align-center" id="exbeam1">
+<a class="reference internal image-reference" href="_images/ExBEAM1-removebg-preview.png"><img alt="_images/ExBEAM1-removebg-preview.png" src="_images/ExBEAM1-removebg-preview.png" style="width: 800px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.6 </span><span class="caption-text">Branching process and combinatorial explosion: <span class="math notranslate nohighlight">\(b=2, d=5\)</span>.</span><a class="headerlink" href="#exbeam1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+The <strong>most important issue</strong> of combinatorial explosions is that the number of generated nodes is <span class="math notranslate nohighlight">\(O(b^d)\)</span>. For Rubik, where <span class="math notranslate nohighlight">\(b=12\)</span> this is unavodable even for modest values of <span class="math notranslate nohighlight">\(d\)</span>: For instance, <span class="math notranslate nohighlight">\(12^5 = 249,932\)</span> leads to explore nodes.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+BEAM search contains this explosions by allowing to hold the best <span class="math notranslate nohighlight">\(2^k\)</span> (<span class="math notranslate nohighlight">\(k\)</span> is constant) nodes in the OPEN list. Suposse, for instance that <span class="math notranslate nohighlight">\(k=2=b\)</span> in illustrate <a class="reference internal" href="#exbeam1"><span class="std std-numref">Fig. 13.6</span></a>. This means that OPEN can only hold no more that <span class="math notranslate nohighlight">\(2^2=4\)</span> nodes.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>First expansion</strong>. The number inside a give node is the probability of making this move from the parent according to a <strong>deep oracle</strong>. As <span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> is the product of probabilities from the root (we assume <span class="math notranslate nohighlight">\(g(A)=1.0\)</span>), for the first expansion we have <span class="math notranslate nohighlight">\(\text{OPEN}=\{1,16\}\)</span>:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+g(A) &amp;= \mathbf{1.0}\; (\text{not zero because it is the starting point})\\
+g(1) &amp;= 1.0\cdot 0.7 = 0.7\\
+g(16) &amp;= 1.0\cdot 0.8 = \mathbf{0.8}\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Second expansion</strong>. Then, we pick node <span class="math notranslate nohighlight">\(16\)</span> (maximum value) and <span class="math notranslate nohighlight">\(\text{OPEN}=\{1,17,24\}\)</span> whose length is not greater than <span class="math notranslate nohighlight">\(2^2=4\)</span>:
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+g(1) &amp;= 1.0\cdot 0.7 = 0.7\\
+g(17) &amp;= 1.0\cdot 0.8\cdot 0.8 = 0.64\\
+g(24) &amp;= 1.0\cdot 0.8\cdot 0.9 = \mathbf{0.72}\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+where the best node to expand is node <span class="math notranslate nohighlight">\(24\)</span>. This leads to <span class="math notranslate nohighlight">\(\text{OPEN}=\{1,17,25,28\}\)</span> and then
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+g(1) &amp;= 1.0\cdot 0.7 = \mathbf{0.7}\\
+g(17) &amp;= 1.0\cdot 0.8\cdot 0.8 = 0.64\\
+g(25) &amp;= 1.0\cdot 0.8\cdot 0.9\cdot 0.5 = 0.36\\
+g(28) &amp;= 1.0\cdot 0.8\cdot 0.9\cdot 0.1 = 0.072\;.\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+Now, the best node is the shallowest one (node <span class="math notranslate nohighlight">\(1\)</span>). After expanding it, we have <span class="math notranslate nohighlight">\(\text{OPEN}=\{2,9,17,25,28\}\)</span> and now <span class="math notranslate nohighlight">\(|\text{OPEN}|=5&gt;4\)</span> forces us to retain the best (maximal) <span class="math notranslate nohighlight">\(4\)</span> nodes (in bold):
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<span class="math notranslate nohighlight">\(
+\begin{align}
+g(17) &amp;= 1.0\cdot 0.8\cdot 0.8 = \mathbf{0.64}\\
+g(25) &amp;= 1.0\cdot 0.8\cdot 0.9\cdot 0.5 = \mathbf{0.36}\\
+g(28) &amp;= 1.0\cdot 0.8\cdot 0.9\cdot 0.1 = \mathbf{0.072}\\
+g(2) &amp;= 1.0\cdot 0.7\cdot 0.1 = 0.07\\
+g(9) &amp;= 1.0\cdot 0.7\cdot 0.3 = \mathbf{0.21}\\
+\end{align}
+\)</span>
+</span>
+<br></br>
+<span style="color:#d94f0b">
+And we “purge” node <span class="math notranslate nohighlight">\(2\)</span>. Then, the border becomes <span class="math notranslate nohighlight">\(\text{OPEN}=\{9,17,25,28\}\)</span>. As you can see, the fact that <span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> comes for a product keeps a balance between DFS and BFS. In <a class="reference internal" href="#exbeam2"><span class="std std-numref">Fig. 13.7</span></a>, we illustrate the process. The slashes’ colors show what nodes belong to each of the versions of the search border <span class="math notranslate nohighlight">\(\text{OPEN}\)</span>, before purging node <span class="math notranslate nohighlight">\(2\)</span>.
+</span>
+<br></br>
+<br></br></p>
+<figure class="align-center" id="exbeam2">
+<a class="reference internal image-reference" href="_images/ExBEAM2-removebg-preview.png"><img alt="_images/ExBEAM2-removebg-preview.png" src="_images/ExBEAM2-removebg-preview.png" style="width: 800px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.7 </span><span class="caption-text">BEAM search in action. Example: <span class="math notranslate nohighlight">\(k=2\)</span>.</span><a class="headerlink" href="#exbeam2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+<strong>b,c)</strong> How does the deep oracle work? What if all successors are equaly probable?
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>. At a given node <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>, the deep oracle (once trained, i.e. working in the test regimes) provides the proability of each of its succesors: <span class="math notranslate nohighlight">\(b=12\)</span> in Rubik. These are the numbers that we have coded in <a class="reference internal" href="#exbeam2"><span class="std std-numref">Fig. 13.7</span></a>. Remind that in Rubik, each successor is a different move from the configuration coded by <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. Then, <span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> is calculated as a concatenation of probabilities. Recursively we express this as <span class="math notranslate nohighlight">\(g(\mathbf{n})=p(\mathbf{n})\cdot g(\text{parent}(\mathbf{n}))\)</span> (section “Beam Search and Rubik”).
+</span>
+<br></br>
+<span style="color:#d94f0b">
+We have that <span class="math notranslate nohighlight">\(g(\mathbf{n})=\prod_i p(\mathbf{n}_i)\)</span> where <span class="math notranslate nohighlight">\(\mathbf{n}_i\)</span> are all the nodes in the (best) path from <span class="math notranslate nohighlight">\(\mathbf{n}_0\)</span> to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. In problems such as Rubik, where the configuration space <span class="math notranslate nohighlight">\(\Omega\)</span> is huge, <strong>this high-entropy regime is  very likely unless we use a vast amount of data to train the deep oracle</strong>, as we explain in section “Rubik State Space”. Basically, what happens is that the deep oracle is only “locally effective” and each transition has roughly <span class="math notranslate nohighlight">\(p(\text{successor}(\mathbf{n}))=\frac{1}{12}\)</span>. As a result, <span class="math notranslate nohighlight">\(g(\mathbf{n})\approx \frac{1}{12^d}\)</span>, where <span class="math notranslate nohighlight">\(d\)</span> is the depth of node <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>, and all <span class="math notranslate nohighlight">\(g(\mathbf{n})\)</span> are nearly equal, thus transforming BEAM-search in a constrained BFS. The most entropic the regime, the larger the length of the optimal path (God’s number is <span class="math notranslate nohighlight">\(N=20\)</span> for Rubik). This rationale is summarized in <a class="reference internal" href="#exentropy-rubik"><span class="std std-numref">Fig. 13.8</span></a>.
+</span>
+<br></br></p>
+<figure class="align-center" id="exentropy-rubik">
+<a class="reference internal image-reference" href="_images/Entropy-Beam-removebg-preview.png"><img alt="_images/Entropy-Beam-removebg-preview.png" src="_images/Entropy-Beam-removebg-preview.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.8 </span><span class="caption-text">Entropy analysis for many executions of Rubik Beam Search.</span><a class="headerlink" href="#exentropy-rubik" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+In other words, the less entropic (more informative) is the deep oracle, the better. And this often relies on both: a) increasing the size of the training set, b) increasing the <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(2^k\)</span> to uncover more alternative paths during BEAM search.
+</span>
+<br></br></p>
+</section>
+<section id="alpha-beta-cuts">
+<h2><span class="section-number">13.5. </span>Alpha-Beta Cuts<a class="headerlink" href="#alpha-beta-cuts" title="Permalink to this heading">#</a></h2>
+<p><span style="color:#d94f0b"><strong>Exercise Q5</strong>. Typical problem for testing the <span class="math notranslate nohighlight">\(\alpha-\beta\)</span> algorithm in a MINIMAX tree.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>a)</strong> Solve the a MINIMAX tree, noting the cuts and the saving over MINIMAX.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>: we put the solution directly in <a class="reference internal" href="#exalpha"><span class="std std-numref">Fig. 13.9</span></a>, showing (left-to-right or top-down) the order in which we update <span class="math notranslate nohighlight">\(\alpha\)</span> in MAX nodes and <span class="math notranslate nohighlight">\(\beta\)</span> in MIN nodes, if it proceeds. Put the values returned by the children to be more informative.<br />
+</span>
+<br></br></p>
+<figure class="align-center" id="exalpha">
+<a class="reference internal image-reference" href="_images/ExALPHA-removebg-preview.png"><img alt="_images/ExALPHA-removebg-preview.png" src="_images/ExALPHA-removebg-preview.png" style="width: 800px; height: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.9 </span><span class="caption-text">Alpha-Beta algorithm on a MINIMAX tree.</span><a class="headerlink" href="#exalpha" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><br></br>
+<span style="color:#d94f0b">
+Cuts <span class="math notranslate nohighlight">\(\alpha\ge\beta\)</span> are coded in blue, and the green value is that of the leaf node determining the best choice for the MAX root. Note that in the left part of the tree, the best value is <span class="math notranslate nohighlight">\(9\)</span>, but later on, the algorithm discovers <span class="math notranslate nohighlight">\(10\)</span> (right-part of the tree). <strong>It is always interesting to identify what leaf node leads to a partial or global solution</strong>. We have a single cut and we save only a single node wrt MINIMAX.
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>b)</strong> What should be the value in node <span class="math notranslate nohighlight">\(G\)</span> to create a cut?<br />
+</span>
+<br></br>
+<span style="color:#d94f0b">
+<strong>Answer</strong>: Note that when <span class="math notranslate nohighlight">\((-\infty, 16)\)</span> arrives to <span class="math notranslate nohighlight">\(F\)</span> (<span class="math notranslate nohighlight">\(G\)</span>’s parent), MAX must update its <span class="math notranslate nohighlight">\(\alpha\)</span> (which is <span class="math notranslate nohighlight">\(-\infty\)</span> at the time) so that <span class="math notranslate nohighlight">\(\alpha\ge\beta\)</span> (<span class="math notranslate nohighlight">\(\beta=16\)</span> at the time). As a result, the required value <span class="math notranslate nohighlight">\(X\)</span> should be <span class="math notranslate nohighlight">\(X\ge 16\)</span> to cut <span class="math notranslate nohighlight">\(H\)</span>.<br />
+</span></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="alphabeta.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">12. </span>Alpha-Beta Pruning</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sat3-vs-clique">13.1. SAT3 vs Clique</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-matching">13.2. Graph Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#da-clustering">13.3. DA Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rubik-and-beam-search">13.4. Rubik and Beam Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha-beta-cuts">13.5. Alpha-Beta Cuts</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Francisco Javier Escolano Ruiz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
